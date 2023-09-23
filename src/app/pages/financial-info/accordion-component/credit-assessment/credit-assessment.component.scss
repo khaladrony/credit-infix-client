@@ -18,3 +18,25 @@
     padding-left: 30px;
     padding-bottom: 30px;
 }
+
+.cr-color{
+    background-color: #ffc107;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 30px;
+    padding-left: 30px;
+    margin-top: 10px;
+    border-radius: 1rem;
+    text-align: center;
+    color: white;
+    font-size: 400%;
+}
+
+.progress {
+    border-radius: 0rem;
+}
+
+.rate-alph .progress-bar {
+    color: var(--default);   
+    background-color: var(--neutral);
+}
