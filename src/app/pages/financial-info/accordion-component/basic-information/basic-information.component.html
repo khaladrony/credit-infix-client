@@ -1,0 +1,83 @@
+<div class="header pb-4 pt-0 pt-lg-0 d-flex align-items-center">
+
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-12 pb-2">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
+                                                class="fa fa-plus"></i>
+                                            Add New</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered">                                
+                                <tbody>
+                                    <tr *ngFor="let basicInfo of basicInfoList; let i = index">
+                                        
+                                        <td style="width: 30%; font-weight: bold;">
+                                            <div *ngIf="basicInfo.isEdit">
+                                                <input type="text" [(ngModel)]="basicInfo.item">
+                                                <div class="text-danger" *ngIf="validateField(basicInfo.item)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!basicInfo.isEdit">
+                                                {{basicInfo.item}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 60%;white-space: normal;">
+                                            <div *ngIf="basicInfo.isEdit">
+                                                <input type="text" [(ngModel)]="basicInfo.description">
+                                                <div class="text-danger" *ngIf="validateField(basicInfo.description)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!basicInfo.isEdit">
+                                                {{basicInfo.description}}
+                                            </div>
+                                        </td>
+                                        
+                                        <td style="width: 10%;">
+                                            <div *ngIf="!basicInfo.isEdit">
+                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
+                                                        class="bi bi-pencil-fill" (click)="onEdit(basicInfo)"></i></a>
+                                                <a class="delete" title="Delete" data-toggle="tooltip"><i
+                                                        class="bi bi-trash-fill" (click)="onDelete(basicInfo)"></i></a>
+                                            </div>
+                                            <div *ngIf="basicInfo.isEdit">
+                                                <a class="add" [ngClass]="{'isDisabled':validateForm(basicInfo)}"
+                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                        (click)="onUpdate(basicInfo)"></i></a>
+                                                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
+                                                        class="fa fa-times-circle" (click)="onCancel(basicInfo)"></i></a>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pl-lg-4 pb-4">
+                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

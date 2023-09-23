@@ -1,0 +1,106 @@
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
+
+</div>
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
+            <div class="card bg-secondary shadow">
+                <div class="card-header bg-white border-0">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <h3 class="mb-0">{{title}}</h3>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="menusForm">
+                        <div class="pl-lg-4">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input type="text" id="menuId" name="menuId" hidden>
+                                        <label class="form-control-label" for="menusName">Menus Name</label>
+                                        <input type="text" id="menusName" name="menusName" formControlName="menusName"
+                                            class="form-control form-control-alternative" placeholder="" value="">
+
+                                        <div class="text-danger float-end"
+                                            *ngIf="menusForm['controls']['menusName'].errors?.['required'] && menusForm['controls']['menusName'].touched">
+                                            *Menus name is required.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label class="form-control-label">Status</label>
+
+                                        <div class="custom-control custom-radio mb-3">
+                                            <input class="custom-control-input" id="active" formControlName="status"
+                                                type="radio" value="Active">
+                                            <label class="custom-control-label" for="active">Active</label>
+                                        </div>
+                                        <div class="custom-control custom-radio">
+                                            <input class="custom-control-input" id="inactive" formControlName="status"
+                                                type="radio" value="Inactive">
+                                            <label class="custom-control-label" for="inactive">Inactive</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pl-lg-4">
+                            <button *ngIf="!isUpdateMode" type="button" class="btn btn-success"
+                                (click)="submit()">Save</button>
+                            <button *ngIf="isUpdateMode" type="button" class="btn btn-warning"
+                                (click)="updateSelectedRow()">Update</button>
+                            <button *ngIf="isUpdateMode" type="button" class="btn btn-danger float-right ml-2"
+                                (click)="delete()">Delete</button>
+                            <button type="button" class="btn btn-primary float-right"
+                                (click)="resetForm()">Reset</button>
+                        </div>
+
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Menus list</h3>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">Menus Name</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="menus?.length != 0">
+                            <tr *ngFor="let menu of menus; let i = index" style="cursor:pointer"
+                                (click)="onSelectRow(menu, i)" [ngClass]="{'selectedRow' : i == selectedRowIndex}">
+                                <td>{{menu.name}}</td>
+                                <td class="align-middle text-left text-sm">
+                                    <span
+                                        [ngClass]="menu.status=='Active'? 'badge badge-sm badge-success':'badge badge-sm badge-danger'">{{menu.status}}</span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>

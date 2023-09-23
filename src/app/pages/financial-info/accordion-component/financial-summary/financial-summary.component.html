@@ -1,0 +1,132 @@
+<div class="header pb-4 pt-0 pt-lg-0 d-flex align-items-center">
+
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-8 pb-2">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
+                                                class="fa fa-plus"></i>
+                                            Add New</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bg-secondary text-black">
+                                        <th>Financial Item</th>
+                                        <th>Currency</th>
+                                        <th>Amount</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let fSummary of financialSummaryList">
+                                        <td style="width: 40%;">
+                                            <div *ngIf="fSummary.isEdit">
+                                                <input type="text" [(ngModel)]="fSummary.itemCode">
+                                                <div class="text-danger" *ngIf="validateField(fSummary.itemCode)">
+                                                    <span class="required-text">*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!fSummary.isEdit">
+                                                {{fSummary.itemCode}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 10%;">
+                                            <div *ngIf="fSummary.isEdit">                                               
+
+                                                <ng-select id="currency" [(ngModel)]="fSummary.currency"
+                                                    (change)="onCurrencyChange($event)"
+                                                    (search)="loadCurrencyList()" (scrollToEnd)="onCurrencyScrollToEnd()">
+                                                    <ng-option *ngFor="let currency of currencyList" [value]="currency.code">
+                                                        {{currency.code}}
+                                                    </ng-option>
+                                                </ng-select>
+
+                                            </div>
+                                            <div *ngIf="!fSummary.isEdit">
+                                                {{fSummary.currency}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 40%;">
+                                            <div *ngIf="fSummary.isEdit">
+                                                <input type="text" [(ngModel)]="fSummary.amount">
+                                                <div class="text-danger" *ngIf="validateField(fSummary.amount)">
+                                                    <span class="required-text">*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!fSummary.isEdit">
+                                                {{fSummary.amount}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 10%;">
+                                            <div *ngIf="!fSummary.isEdit">
+                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
+                                                        class="bi bi-pencil-fill" (click)="onEdit(fSummary)"></i></a>
+                                                <a class="delete" title="Delete" data-toggle="tooltip"><i
+                                                        class="bi bi-trash-fill" (click)="onDelete(fSummary)"></i></a>
+                                            </div>
+                                            <div *ngIf="fSummary.isEdit">
+                                                <a class="add" [ngClass]="{'isDisabled':validateForm(fSummary)}"
+                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                        (click)="onUpdate(fSummary)"></i></a>
+                                                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
+                                                        class="fa fa-times-circle" (click)="onCancel(fSummary)"></i></a>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label class="form-control-label" for="assessmentRemarks"> Comments</label>
+                            <textarea _ngcontent-c6="" class="form-control form-control-alternative"
+                                id="assessmentRemarks" name="assessmentRemarks" formControlName="assessmentRemarks"
+                                placeholder="" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pl-lg-4 pb-4">
+                <!-- <div class="mt-1 d-flex form-group">
+                    <label class="col-md-5" for="excelUploadChk">By Excel Upload: </label>
+                    <div class="col-md-7 px-0">
+                        <input class="me-2" type="checkbox" name="excelUploadChk" id="excelUploadChk"
+                            formControlName="excelUploadChk" (change)="onChangeExcelUploadChk($event)">
+                        <button class="btn btn-sm btn-success p-0" (click)="downLoadExcelFormat()">
+                            <i class="fa-solid fa-download me-2"></i>Download Xls Format
+                        </button>
+                    </div>
+                </div> -->
+                <div class="mt-1 d-flex form-group">
+                    <label class="col-md-5" for="excelAttachment">Excel File Upload: </label>
+                    <input class="col-md-7" type="file" name="excelAttachment" id="excelAttachment"
+                        (change)="onExcelFileUpload($event)" [disabled]="!isExcel">
+                </div>
+            </div>
+
+            <div class="pl-lg-4 pb-4">
+                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

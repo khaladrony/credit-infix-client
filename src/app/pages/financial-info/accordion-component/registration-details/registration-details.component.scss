@@ -1,0 +1,94 @@
+.pt-lg-8,
+.py-lg-8 {
+    padding-top: 0rem !important;
+}
+
+.pl-lg-4, .px-lg-4 {
+    padding-left: 0rem !important;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0rem;
+}
+
+
+
+
+// table css start
+.table-title .add-new {
+    float: right;
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+}
+
+.table-title .add-new i {
+    margin-right: 4px;
+}
+
+table.table {
+    table-layout: fixed;
+}
+
+// table.table td {
+//     // word-wrap: break-word;
+//     // white-space: normal;
+// }
+
+table.table th {
+    font-weight: bold;
+}
+
+table.table th:last-child {
+    width: 100px;
+}
+
+table.table td a {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 5px;
+    min-width: 24px;
+}
+
+table.table td a.add {
+    color: #27C46B;
+}
+
+table.table td a.edit {
+    color: #FFC107;
+}
+
+table.table td a.delete {
+    color: #E34724;
+}
+
+table.table td input[type=text],
+select {
+    width: 100%;
+    padding: 7px 10px;
+    margin: 0px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.isDisabled{
+    pointer-events: none;
+}
+
+.bi.bi-pencil-fill, .bi-trash-fill, .fa-cloud, .fa-times-circle{
+    font-size: 1rem;
+}
+
+.text-danger {
+    font-size: 0.7rem;
+    color: #f5365c !important;
+}
+// table css end

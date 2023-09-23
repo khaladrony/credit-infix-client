@@ -1,0 +1,76 @@
+.pt-lg-8,
+.py-lg-8 {
+    padding-top: 4rem !important;
+}
+
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+button.btn {
+    width: 70px;
+}
+
+.pointerCursor {
+    cursor: pointer;
+}
+
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0rem;
+}
+
+a {
+    // color: #f5365b;
+    color: #ffffff;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+h5,
+.h5 {
+    font-size: 0.9125rem;
+}
+
+.col-xl-12 {
+    position: relative;
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.pl-lg-4,
+.px-lg-4 {
+    padding-left: 0rem !important;
+}
+
+.card-header {
+    padding: 0.5rem 1.5rem;
+    margin-bottom: 0;
+    background-color: var(--green);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+    border-radius: 25px;
+}
+
+.fa-3x {
+    font-size: 1.1em;
+}
+
+//full div clickable
+a.fill-div {
+    display: block;
+    height: 100%;
+    width: 100%;
+    text-decoration: none;
+}
+
+.card.multi{
+    border-radius: 0.3rem;
+}

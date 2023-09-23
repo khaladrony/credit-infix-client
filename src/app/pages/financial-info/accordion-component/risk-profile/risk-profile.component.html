@@ -1,0 +1,90 @@
+<div class="header pb-4 pt-0 pt-lg-0 d-flex align-items-center">
+
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-12 pb-2">
+                        <div class="table-wrapper">
+
+                            <table class="table table-bordered">
+                                <tbody>
+
+                                    <tr>
+                                        <td style="width: 30%;">
+                                            <label>Age / Operation</label>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <div class="pb-4">
+                                                <span style="float: left;">1%</span>
+                                                <span style="float: right;">100%</span>
+                                            </div>                                            
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': getPercentage(1)}"
+                                                    aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
+                                                    {{getPercentage(1)}}
+                                                </div>
+                                            </div>
+                                            <span class="span-st">Moderate</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 30%;">
+                                            <label>Management</label>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': getPercentage(2)}"
+                                                    aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
+                                                    {{getPercentage(2)}}
+                                                </div>
+                                            </div>
+                                            <span class="span-st">Good</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 30%;">
+                                            <label>Finance</label>
+                                        </td>
+                                        <td style="width: 70%;">
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': getPercentage(3)}"
+                                                    aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
+                                                    {{getPercentage(3)}}
+                                                </div>
+                                            </div>
+                                            <span class="span-st">Excellent</span>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="2" style="white-space: normal;">
+                                            <label>The risk profile provides a snapshot of the current state of the
+                                                business.
+                                                Associated with each area you will find an individual assessment,
+                                                indicating how well the business is performing. These areas are all part
+                                                of the Rating model. The graphs show how high on each scale the
+                                                business is performing. If all boxes are filled, it indicates best
+                                                possible
+                                                performance within that area.</label>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,88 @@
+<div class="header pb-4 pt-0 pt-lg-0 d-flex align-items-center">
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-12 pb-2">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
+                                                class="fa fa-plus"></i>
+                                            Add New</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr *ngFor="let shareholder of shareholderList; let i = index">
+
+                                        <td style="width: 30%; font-weight: bold;">
+                                            <div *ngIf="shareholder.isEdit">
+                                                <input type="text" [(ngModel)]="shareholder.itemCode">
+                                                <div class="text-danger" *ngIf="validateField(shareholder.itemCode)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!shareholder.isEdit">
+                                                {{shareholder.itemCode}}
+                                            </div>
+                                        </td>                                        
+                                        <td style="width: 60%;white-space: normal;">
+                                            <div *ngIf="shareholder.isEdit">
+                                                <input type="text" [(ngModel)]="shareholder.itemValue">
+                                                <div class="text-danger"
+                                                    *ngIf="validateField(shareholder.itemValue)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!shareholder.isEdit">
+                                                {{shareholder.itemValue}}
+                                            </div>
+                                        </td>
+
+                                        <td style="width: 10%;">
+                                            <div *ngIf="!shareholder.isEdit">
+                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
+                                                        class="bi bi-pencil-fill"
+                                                        (click)="onEdit(shareholder)"></i></a>
+                                                <a class="delete" title="Delete" data-toggle="tooltip"><i
+                                                        class="bi bi-trash-fill"
+                                                        (click)="onDelete(shareholder)"></i></a>
+                                            </div>
+                                            <div *ngIf="shareholder.isEdit">
+                                                <a class="add"
+                                                    [ngClass]="{'isDisabled':validateForm(shareholder)}"
+                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                        (click)="onUpdate(shareholder)"></i></a>
+                                                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
+                                                        class="fa fa-times-circle"
+                                                        (click)="onCancel(shareholder)"></i></a>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pl-lg-4 pb-4">
+                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

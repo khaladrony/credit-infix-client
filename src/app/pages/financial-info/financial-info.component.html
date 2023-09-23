@@ -1,0 +1,102 @@
+<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center">
+
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
+            <!-- <div class="card bg-secondary shadow"> -->
+                <div class="card-body">
+
+
+                    <div id="accordionExample-2" role="tablist" class="accordion">
+
+                        <div *ngFor="let feature of featureList; let i = index" class="card multi">
+                            <div class="card-header" role="tab" id="{{feature.cardHeaderId}}">
+                                <h5 class="mb-0">
+                                    <a (click)="clickedEvent(i)" class="fill-div" data-toggle="collapse" data-parent="#accordionExample-2" href="{{feature.href}}"
+                                        role="button" aria-expanded="{{feature.ariaExpanded}}" aria-controls="{{feature.ariaControls}}">
+                                        <div  [ngClass]="feature.id == i && feature.ariaExpanded ?'fas fa-arrow-up fa-pull-right fa-3x':'fas fa-arrow-down fa-pull-right fa-3x'">
+                                            
+                                        </div>
+                                        {{feature.name}}
+                                    </a>
+                                </h5>
+                            </div>
+                            <div id="{{feature.ariaControls}}" class="collapse {{feature.collapseClass}}" role="tabpanel"
+                                aria-labelledby="{{feature.cardHeaderId}}">
+
+                                <div class="card-body" *ngIf="feature.name==='Company Info'">
+                                    <app-company-info></app-company-info>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Credit Assessment'">
+                                    <app-credit-assessment></app-credit-assessment>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Financial Summary'">
+                                    <app-financial-summary></app-financial-summary>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Risk Profile'">
+                                    <app-risk-profile></app-risk-profile>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Order Details'">
+                                    <app-order-details></app-order-details>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Contacts'">
+                                    <app-contacts></app-contacts>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Basic Information'">
+                                    <app-basic-information></app-basic-information>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Location'">
+                                    <app-location></app-location>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Registration Details'">
+                                    <app-registration-details></app-registration-details>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Management'">
+                                    <app-management></app-management>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Shareholder'">
+                                    <app-shareholder></app-shareholder>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Operation Information'">
+                                    <app-operation-information></app-operation-information>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Nature Of Business'">
+                                    <app-nature-of-business></app-nature-of-business>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Corporate Structure'">
+                                    <app-corporate-structure></app-corporate-structure>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Financial Information'">
+                                    <app-financial-information></app-financial-information>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Infix Credit Information'">
+                                    <app-infix-credit-information></app-infix-credit-information>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Summary & Opinion'">
+                                    <app-summary-opinion></app-summary-opinion>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Country Risk'">
+                                    <app-country-risk></app-country-risk>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Infix Rating Glossary'">
+                                    <app-infix-rating-glossary></app-infix-rating-glossary>
+                                </div>
+                                <div class="card-body" *ngIf="feature.name==='Inline Table Editing'">
+                                    <app-inline-table></app-inline-table>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div> <!--  accordion end -->
+
+
+                </div>
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

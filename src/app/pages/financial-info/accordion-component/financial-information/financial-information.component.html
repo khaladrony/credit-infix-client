@@ -1,0 +1,142 @@
+<div class="header pb-4 pt-0 pt-lg-0 d-flex align-items-center">
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-lg-12 pb-2">
+                        <div class="table-wrapper">
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
+                                                class="fa fa-plus"></i>
+                                            Add New</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 30%;"></td>
+                                        <td colspan="3" align="right" style="width: 60%; font-weight: bold;">{{firstRowData}}</td>
+                                    </tr>
+                                    <tr *ngFor="let financialInformation of financialInformationList; let i = index">
+
+                                        <td style="width: 30%; font-weight: bold;">
+                                            <div *ngIf="financialInformation.isEdit">
+                                                <input type="text" [(ngModel)]="financialInformation.itemCode">
+                                                <div class="text-danger" *ngIf="validateField(financialInformation.itemCode)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!financialInformation.isEdit">
+                                                {{financialInformation.itemCode}}
+                                            </div>
+                                        </td>                                        
+                                        <td style="width: 20%;white-space: normal;">
+                                            <div *ngIf="financialInformation.isEdit">
+                                                <input type="text" [(ngModel)]="financialInformation.currentYear">
+                                                <div class="text-danger"
+                                                    *ngIf="validateField(financialInformation.currentYear)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!financialInformation.isEdit">
+                                                {{financialInformation.currentYear}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 20%;white-space: normal;">
+                                            <div *ngIf="financialInformation.isEdit">
+                                                <input type="text" [(ngModel)]="financialInformation.middleYear">
+                                                <div class="text-danger"
+                                                    *ngIf="validateField(financialInformation.middleYear)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!financialInformation.isEdit">
+                                                {{financialInformation.middleYear}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 20%;white-space: normal;">
+                                            <div *ngIf="financialInformation.isEdit">
+                                                <input type="text" [(ngModel)]="financialInformation.firstYear">
+                                                <div class="text-danger"
+                                                    *ngIf="validateField(financialInformation.firstYear)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!financialInformation.isEdit">
+                                                {{financialInformation.firstYear}}
+                                            </div>
+                                        </td>
+
+                                        <td style="width: 10%;">
+                                            <div *ngIf="!financialInformation.isEdit">
+                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
+                                                        class="bi bi-pencil-fill"
+                                                        (click)="onEdit(financialInformation)"></i></a>
+                                                <a class="delete" title="Delete" data-toggle="tooltip"><i
+                                                        class="bi bi-trash-fill"
+                                                        (click)="onDelete(financialInformation)"></i></a>
+                                            </div>
+                                            <div *ngIf="financialInformation.isEdit">
+                                                <a class="add"
+                                                    [ngClass]="{'isDisabled':validateForm(financialInformation)}"
+                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                        (click)="onUpdate(financialInformation)"></i></a>
+                                                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
+                                                        class="fa fa-times-circle"
+                                                        (click)="onCancel(financialInformation)"></i></a>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="pl-lg-4">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-control-label" for="financialNote">Financial Note</label>
+                            <textarea _ngcontent-c6="" class="form-control form-control-alternative"
+                                id="financialNote" name="financialNote" formControlName="financialNote" placeholder=""
+                                rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="form-control-label" for="auditor">Auditor</label>
+                            <textarea _ngcontent-c6="" class="form-control form-control-alternative"
+                                id="auditor" name="auditor" formControlName="auditor" placeholder=""
+                                rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pl-lg-4 pb-4">
+                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
