@@ -24,13 +24,15 @@ export class OrderDetailsComponent implements OnInit {
 
     getOrderDetailList() {
         let orderDetailObj = new OrderDetail();
-        orderDetailObj.item='Name Given'
-        orderDetailObj.description='Chiefway Katunayake (Pvt) Limited'
+        orderDetailObj.id=this.getId();
+        orderDetailObj.item='Name Given';
+        orderDetailObj.description='Chiefway Katunayake (Pvt) Limited';
 
         this.orderDetailList.push(orderDetailObj);
         orderDetailObj = new OrderDetail();
-        orderDetailObj.item='Address Given'
-        orderDetailObj.description='Ring Road 3, Phase II. E.P.Z. Katunayake. 11450. Sri Lanka, Katunayake 10500, Sri Lanka'
+        orderDetailObj.id=this.getId();
+        orderDetailObj.item='Address Given';
+        orderDetailObj.description='Ring Road 3, Phase II. E.P.Z. Katunayake. 11450. Sri Lanka, Katunayake 10500, Sri Lanka';
         this.orderDetailList.push(orderDetailObj);
     }
 
@@ -44,7 +46,7 @@ export class OrderDetailsComponent implements OnInit {
     }
 
     onDelete(orderDetailObj: OrderDetail) {
-        this.orderDetailList.splice(this.orderDetailList.findIndex(e => e.item === orderDetailObj.item),1);
+        this.orderDetailList.splice(this.orderDetailList.findIndex(e => e.id === orderDetailObj.id),1);
     }
 
     onAdd() {
@@ -66,7 +68,7 @@ export class OrderDetailsComponent implements OnInit {
     onCancel(orderDetailObj: OrderDetail) {
         if (this.oldOrderDetailObj == undefined || this.oldOrderDetailObj == null) {
             orderDetailObj.isEdit = true;
-            this.orderDetailList.splice(this.orderDetailList.findIndex(e => e.item === orderDetailObj.item),1);
+            this.orderDetailList.splice(this.orderDetailList.findIndex(e => e.id === orderDetailObj.id),1);
         } else {
            
             orderDetailObj.item = this.oldOrderDetailObj.item;
@@ -100,5 +102,13 @@ export class OrderDetailsComponent implements OnInit {
         }
     }
 
+    getId() {
+        if (this.orderDetailList.length == 0) {
+            return 1;
+        } else {
+            let lastOrderDetailObj: OrderDetail = this.orderDetailList[this.orderDetailList.length - 1];
+            return lastOrderDetailObj.id + 1;
+        }
+    }
 
 }

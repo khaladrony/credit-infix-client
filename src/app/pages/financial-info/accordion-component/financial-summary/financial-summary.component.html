@@ -104,24 +104,6 @@
             </div>
 
             <div class="pl-lg-4 pb-4">
-                <!-- <div class="mt-1 d-flex form-group">
-                    <label class="col-md-5" for="excelUploadChk">By Excel Upload: </label>
-                    <div class="col-md-7 px-0">
-                        <input class="me-2" type="checkbox" name="excelUploadChk" id="excelUploadChk"
-                            formControlName="excelUploadChk" (change)="onChangeExcelUploadChk($event)">
-                        <button class="btn btn-sm btn-success p-0" (click)="downLoadExcelFormat()">
-                            <i class="fa-solid fa-download me-2"></i>Download Xls Format
-                        </button>
-                    </div>
-                </div> -->
-                <div class="mt-1 d-flex form-group">
-                    <label class="col-md-5" for="excelAttachment">Excel File Upload: </label>
-                    <input class="col-md-7" type="file" name="excelAttachment" id="excelAttachment"
-                        (change)="onExcelFileUpload($event)" [disabled]="!isExcel">
-                </div>
-            </div>
-
-            <div class="pl-lg-4 pb-4">
                 <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
             </div>
 

@@ -6,33 +6,35 @@
         <div class="col-xl-12 order-xl-1">
 
             <div class="card-body">
-                <form>
+                <form [formGroup]="companyInfoForm">
                     <div class="pl-lg-4">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="companyName">Company Name</label>
-                                    <input type="text" id="companyName" name="companyName" formControlName="companyName"
-                                        class="form-control form-control-alternative" placeholder="Company Name"
-                                        value="">
+                                    <label class="form-control-label" for="name">Company Name</label>
+                                    <input type="text" [(ngModel)]="companyInfo.name" name="name" id="name"
+                                        formControlName="name" class="form-control form-control-alternative"
+                                        placeholder="Company Name" value="">
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="legalAddress">Legal address</label>
-                                    <input type="text" id="legalAddress" name="legalAddress"
-                                        formControlName="legalAddress" class="form-control form-control-alternative"
-                                        placeholder="Legal address" value="">
+                                    <input type="text" [(ngModel)]="companyInfo.legalAddress" name="legalAddress"
+                                        id="legalAddress" formControlName="legalAddress"
+                                        class="form-control form-control-alternative" placeholder="Legal address"
+                                        value="">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="operationAddress">Operation address</label>
-                                    <input type="text" id="operationAddress" name="operationAddress"
-                                        formControlName="operationAddress" class="form-control form-control-alternative"
-                                        placeholder="Operation address" value="">
+                                    <input type="text" [(ngModel)]="companyInfo.operationAddress"
+                                        name="operationAddress" id="operationAddress" formControlName="operationAddress"
+                                        class="form-control form-control-alternative" placeholder="Operation address"
+                                        value="">
                                 </div>
                             </div>
                         </div>
@@ -41,25 +43,26 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="telephoneNumber">Telephone Number</label>
-                                    <input type="text" id="telephoneNumber" name="telephoneNumber"
-                                        formControlName="telephoneNumber" class="form-control form-control-alternative"
-                                        placeholder="">
+                                    <input type="text" [(ngModel)]="companyInfo.telephoneNumber" name="telephoneNumber"
+                                        id="telephoneNumber" formControlName="telephoneNumber"
+                                        class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label class="form-control-label" for="website">Website</label>
-                                    <input type="text" id="website" name="website" formControlName="website"
-                                        class="form-control form-control-alternative" placeholder="www.example.com">
+                                    <input type="text" [(ngModel)]="companyInfo.website" name="website" id="website"
+                                        formControlName="website" class="form-control form-control-alternative"
+                                        placeholder="www.example.com">
                                 </div>
-                            </div>                            
+                            </div>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="faxNo">Fax No</label>
-                                    <input type="text" id="faxNo" name="faxNo"
+                                    <input type="text" [(ngModel)]="companyInfo.faxNo" name="faxNo" id="faxNo"
                                         formControlName="faxNo" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -67,7 +70,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="email">E-mail</label>
-                                    <input type="text" id="email" name="email"
+                                    <input type="text" [(ngModel)]="companyInfo.email" name="email"  id="email"
                                         formControlName="email" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -75,7 +78,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="industryType">Industry Type</label>
-                                    <input type="text" id="industryType" name="industryType"
+                                    <input type="text" [(ngModel)]="companyInfo.industryType" name="industryType" id="industryType"
                                         formControlName="industryType" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -87,7 +90,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="yearEstablished">Year Established</label>
-                                    <input type="text" id="yearEstablished" name="yearEstablished"
+                                    <input type="text" [(ngModel)]="companyInfo.yearEstablished" name="yearEstablished" id="yearEstablished"
                                         formControlName="yearEstablished" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -95,7 +98,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="ageOfBusiness">Age Of Business</label>
-                                    <input type="text" id="ageOfBusiness" name="ageOfBusiness"
+                                    <input type="text" [(ngModel)]="companyInfo.ageOfBusiness" name="ageOfBusiness" id="ageOfBusiness"
                                         formControlName="ageOfBusiness" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -103,7 +106,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="businessType">Business Type</label>
-                                    <input type="text" id="businessType" name="businessType"
+                                    <input type="text" [(ngModel)]="companyInfo.businessType" name="businessType" id="businessType"
                                         formControlName="businessType" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -114,7 +117,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="country">Country</label>
-                                    <input type="text" id="country" name="country"
+                                    <input type="text" [(ngModel)]="companyInfo.country" name="country" id="country"
                                         formControlName="country" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -122,7 +125,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="state">State</label>
-                                    <input type="text" id="state" name="state"
+                                    <input type="text" [(ngModel)]="companyInfo.state" name="state" id="state"
                                         formControlName="state" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -130,7 +133,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="businessScale">Business Scale</label>
-                                    <input type="text" id="businessScale" name="businessScale"
+                                    <input type="text" [(ngModel)]="companyInfo.businessScale" name="businessScale" id="businessScale"
                                         formControlName="businessScale" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -141,15 +144,15 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="paymentPractices">Payment Practices</label>
-                                    <input type="text" id="paymentPractices" name="paymentPractices"
-                                        formControlName="paymentPractices" class="form-control form-control-alternative"
-                                        placeholder="">
+                                    <input type="text" [(ngModel)]="companyInfo.paymentPractices"
+                                        name="paymentPractices" id="paymentPractices" formControlName="paymentPractices"
+                                        class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="listedStatus">Listed Status</label>
-                                    <input type="text" id="listedStatus" name="listedStatus"
+                                    <input type="text" [(ngModel)]="companyInfo.listedStatus" name="listedStatus" id="listedStatus"
                                         formControlName="listedStatus" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -157,7 +160,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="status">Status</label>
-                                    <input type="text" id="status" name="status"
+                                    <input type="text" [(ngModel)]="companyInfo.status" name="status" id="status"
                                         formControlName="status" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -173,26 +176,26 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="numberOfDirector">Number Of Director</label>
-                                    <input type="text" id="numberOfDirector" name="numberOfDirector"
-                                        formControlName="numberOfDirector" class="form-control form-control-alternative"
-                                        placeholder="">
+                                    <input type="text" [(ngModel)]="companyInfo.numberOfDirector"
+                                        name="numberOfDirector" id="numberOfDirector" formControlName="numberOfDirector"
+                                        class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="numberOfShareholders">Number Of
                                         Shareholders</label>
-                                    <input type="text" id="numberOfShareholders" name="numberOfShareholders"
-                                        formControlName="numberOfShareholders"
+                                    <input type="text" [(ngModel)]="companyInfo.numberOfShareholders"
+                                        name="numberOfShareholders" id="numberOfShareholders" formControlName="numberOfShareholders"
                                         class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="numberOfEmployee">Number Of Employee</label>
-                                    <input type="text" id="numberOfEmployee" name="numberOfEmployee"
-                                        formControlName="numberOfEmployee" class="form-control form-control-alternative"
-                                        placeholder="">
+                                    <input type="text" [(ngModel)]="companyInfo.numberOfEmployee"
+                                        name="numberOfEmployee" id="numberOfEmployee" formControlName="numberOfEmployee"
+                                        class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -203,15 +206,15 @@
                                 <div class="form-group">
                                     <label class="form-control-label" for="numberOfSubsidiaries">number Of
                                         Subsidiaries</label>
-                                    <input type="text" id="numberOfSubsidiaries" name="numberOfSubsidiaries"
-                                        formControlName="numberOfSubsidiaries"
+                                    <input type="text" [(ngModel)]="companyInfo.numberOfSubsidiaries"
+                                        name="numberOfSubsidiaries" id="numberOfSubsidiaries" formControlName="numberOfSubsidiaries"
                                         class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="holdingCompany">Holding Company</label>
-                                    <input type="text" id="holdingCompany" name="holdingCompany"
+                                    <input type="text" [(ngModel)]="companyInfo.holdingCompany" name="holdingCompany" id="holdingCompany"
                                         formControlName="holdingCompany" class="form-control form-control-alternative"
                                         placeholder="">
                                 </div>
@@ -220,8 +223,8 @@
                                 <div class="form-group">
                                     <label class="form-control-label" for="affiliatedCompanies">Affiliated
                                         Companies</label>
-                                    <input type="text" id="affiliatedCompanies" name="affiliatedCompanies"
-                                        formControlName="affiliatedCompanies"
+                                    <input type="text" [(ngModel)]="companyInfo.affiliatedCompanies"
+                                        name="affiliatedCompanies" id="affiliatedCompanies" formControlName="affiliatedCompanies"
                                         class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
@@ -231,23 +234,25 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="legalStatus">Legal Status</label>
-                                    <input type="text" id="legalStatus" name="legalStatus" formControlName="legalStatus"
-                                        class="form-control form-control-alternative" placeholder="">
+                                    <input type="text" [(ngModel)]="companyInfo.legalStatus" name="legalStatus" id="legalStatus"
+                                        formControlName="legalStatus" class="form-control form-control-alternative"
+                                        placeholder="">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label class="form-control-label" for="noOfCharge">No Of Charge</label>
-                                    <input type="text" id="noOfCharge" name="noOfCharge" formControlName="noOfCharge"
-                                        class="form-control form-control-alternative" placeholder="">
+                                    <input type="text" [(ngModel)]="companyInfo.noOfCharge" name="noOfCharge" id="noOfCharge"
+                                        formControlName="noOfCharge" class="form-control form-control-alternative"
+                                        placeholder="">
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="noOfJudicalRecord">No Of Judical Record
+                                    <label class="form-control-label" for="noOfJudicialRecord">No Of Judical Record
                                         (s)</label>
-                                    <input type="text" id="noOfJudicalRecord" name="noOfJudicalRecord"
-                                        formControlName="noOfJudicalRecord"
+                                    <input type="text" [(ngModel)]="companyInfo.noOfJudicialRecord"
+                                        name="noOfJudicialRecord" id="noOfJudicialRecord" formControlName="noOfJudicialRecord"
                                         class="form-control form-control-alternative" placeholder="">
                                 </div>
                             </div>
@@ -255,7 +260,13 @@
                     </div>
 
                     <div class="pl-lg-4 pb-4">
-                        <button type="button" class="btn btn-primary">Save</button>
+                        <button *ngIf="!isUpdateMode" type="button" class="btn btn-success"
+                            (click)="submit()">Save</button>
+                        <button *ngIf="isUpdateMode" type="button" class="btn btn-warning"
+                            (click)="update()">Update</button>
+                        <button *ngIf="isUpdateMode" type="button" class="btn btn-danger float-right ml-2"
+                            (click)="delete()">Delete</button>
+                        <button type="button" class="btn btn-primary float-right" (click)="resetForm()">Reset</button>
                     </div>
 
 
@@ -263,5 +274,5 @@
             </div>
         </div>
     </div>
-    
+
 </div>

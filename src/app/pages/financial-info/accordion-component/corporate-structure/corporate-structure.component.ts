@@ -36,36 +36,88 @@ export class CorporateStructureComponent implements OnInit {
 
         corporateStructureObj = new CorporateStructure();
         corporateStructureObj.id = this.getId();
-        corporateStructureObj.itemCode = 'Stock Code:';
-        corporateStructureObj.itemValue = 'NA';
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = 'Stock Code : NA';
         this.corporateStructureList.push(corporateStructureObj);
 
         corporateStructureObj = new CorporateStructure();
         corporateStructureObj.id = this.getId();
-        corporateStructureObj.itemCode = 'Stock Exchange :';
-        corporateStructureObj.itemValue = 'NA';
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = 'Stock Exchange : NA';
         this.corporateStructureList.push(corporateStructureObj);
 
         corporateStructureObj = new CorporateStructure();
         corporateStructureObj.id = this.getId();
         corporateStructureObj.itemCode = 'Holding Company:';
-        corporateStructureObj.itemValue = 'Sterling Apparel Limited\n'
-        'Address: No. 18–20/F, Win Plaza, 9 Sheung Hai Street, San Po Kong, Hong Kong\n'
-        'Factory: Zhi Wei (Guangzhou) Garment Co., Limited\n'
-        'Address: 2/F, Block A, Heyu Industrial Park, Chao Tian Industrial Zone,\n'
-        'Song Shan Road, Shi Lou Town, Panyu City, Guangdong, P.R.C.';
+        corporateStructureObj.itemValue = 'Sterling Apparel Limited';
+        this.corporateStructureList.push(corporateStructureObj);
+
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = 'Address: No. 18–20/F, Win Plaza, 9 Sheung Hai Street, San Po Kong, Hong Kong';
+        this.corporateStructureList.push(corporateStructureObj);
+
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = 'Factory: Zhi Wei (Guangzhou) Garment Co., Limited';
+        this.corporateStructureList.push(corporateStructureObj);
+
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = `Address: 2/F, Block A, Heyu Industrial Park, Chao Tian Industrial Zone,
+        Song Shan Road, Shi Lou Town, Panyu City, Guangdong, P.R.C.`;
         this.corporateStructureList.push(corporateStructureObj);
 
         corporateStructureObj = new CorporateStructure();
         corporateStructureObj.id = this.getId();
         corporateStructureObj.itemCode = 'Sister Concern:';
-        corporateStructureObj.itemValue = '●Sterling Group Holdings Limited\n'
-        '●Chiefway International Limited\n'
-        '●Chiefway (Private) Limited';
+        corporateStructureObj.itemValue = `Sterling Group Holdings Limited::Chiefway International Limited::Chiefway (Private) Limited`;
         this.corporateStructureList.push(corporateStructureObj);
 
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = 'Affiliated Companies:';
+        corporateStructureObj.itemValue = `Nil`;
+        this.corporateStructureList.push(corporateStructureObj);
 
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = 'Adverse Data Monitoring:';
+        corporateStructureObj.itemValue = "Dishonored Checks:No Records Found";
+        this.corporateStructureList.push(corporateStructureObj);
 
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = `Debt:No Records Found`;
+        this.corporateStructureList.push(corporateStructureObj);
+
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = `Litigation:No Records Found`;
+        this.corporateStructureList.push(corporateStructureObj);
+
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = `Performance Defaults:No Records Found`;
+        this.corporateStructureList.push(corporateStructureObj);
+
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = `Adverse Press Coverage:No Records Found`;
+        this.corporateStructureList.push(corporateStructureObj);
+
+        corporateStructureObj = new CorporateStructure();
+        corporateStructureObj.id = this.getId();
+        corporateStructureObj.itemCode = '';
+        corporateStructureObj.itemValue = `Money Laundering:No Records Found`;
+        this.corporateStructureList.push(corporateStructureObj);
     }
 
     onEdit(corporateStructureObj: CorporateStructure) {
@@ -90,9 +142,18 @@ export class CorporateStructureComponent implements OnInit {
         this.newCorporateStructureObj.itemValue = '';
         this.newCorporateStructureObj.isEdit = true;
         this.corporateStructureList.push(this.newCorporateStructureObj);
+    }
 
+    addRow(index: number) {
+        this.oldCorporateStructureObj = null;
 
+        this.newCorporateStructureObj = new CorporateStructure();
+        this.newCorporateStructureObj.id = this.getId();
+        this.newCorporateStructureObj.itemCode = '';
+        this.newCorporateStructureObj.itemValue = '';
+        this.newCorporateStructureObj.isEdit = true;
 
+        this.corporateStructureList.splice(index + 1, 0, this.newCorporateStructureObj);
     }
 
     onUpdate(corporateStructureObj: CorporateStructure) {
@@ -130,10 +191,10 @@ export class CorporateStructureComponent implements OnInit {
     }
 
     validateForm(corporateStructureObj: CorporateStructure) {
-        if (corporateStructureObj.itemCode !== '' && corporateStructureObj.itemValue !== '') {
-            return false;
-        } else {
+        if (corporateStructureObj.itemCode == '' && corporateStructureObj.itemValue == '') {
             return true;
+        } else {
+            return false;
         }
     }
 

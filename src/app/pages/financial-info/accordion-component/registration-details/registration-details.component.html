@@ -25,54 +25,36 @@
                                 <tbody>
                                     <tr *ngFor="let registrationDetail of registrationDetailList; let i = index">
 
-                                        <td style="width: 30%; font-weight: bold;">
+                                        <td style="width: 20%; font-weight: bold;">
                                             <div *ngIf="registrationDetail.isEdit">
                                                 <input type="text" [(ngModel)]="registrationDetail.item">
-                                                <div class="text-danger" *ngIf="validateField(registrationDetail.item)">
-                                                    <span>*Required</span>
-                                                </div>
+                                                
                                             </div>
                                             <div *ngIf="!registrationDetail.isEdit">
                                                 {{registrationDetail.item}}
                                             </div>
                                         </td>
-                                        <td style="width: 40%; font-weight: bold; white-space: normal;">
+                                        <td style="width: 30%; font-weight: bold; white-space: normal;">
                                             <div *ngIf="registrationDetail.isEdit">
                                                 <input type="text" [(ngModel)]="registrationDetail.subItem">
-                                                <div style="text-align: right;">
-                                                    <i class="fa fa-plus-circle" style="margin-right: 5px;color: green;font-size: 15px;"></i>
-                                                    <i class="fa fa-minus-circle" style="margin-right: 5px;color: red;font-size: 15px;"></i>
-                                                </div>
-                                                <div class="text-danger"
-                                                    *ngIf="validateField(registrationDetail.subItem)">
-                                                    <span>*Required</span>                                                    
-                                                </div>
-                                            </div>
-                                            <div *ngIf="!registrationDetail.isEdit" class="row">
-                                                <div class="col-sm-8">
-                                                    {{registrationDetail.subItem}}
-                                                </div>
                                                 
-                                                <div class="col-sm-4" style="text-align: right;">
-                                                    <i class="fa fa-plus-circle" style="margin-right: 5px;color: green;font-size: 15px;"></i>
-                                                    <i class="fa fa-minus-circle" style="margin-right: 5px;color: red;font-size: 15px;"></i>
+                                            </div>
+                                            <div *ngIf="!registrationDetail.isEdit">
+                                                <div>
+                                                    {{registrationDetail.subItem}}
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="width: 20%;white-space: normal;">
+                                        <td style="width: 40%;white-space: normal;">
                                             <div *ngIf="registrationDetail.isEdit">
-                                                <input type="text" [(ngModel)]="registrationDetail.itemValue">
-                                                <div class="text-danger"
-                                                    *ngIf="validateField(registrationDetail.itemValue)">
-                                                    <span>*Required</span>
-                                                </div>
+                                                <textarea  [(ngModel)]="registrationDetail.itemValue" rows="2"></textarea>                                                
                                             </div>
                                             <div *ngIf="!registrationDetail.isEdit">
                                                 {{registrationDetail.itemValue}}
                                             </div>
                                         </td>
 
-                                        <td style="width: 10%;">
+                                        <td class="action-td">
                                             <div *ngIf="!registrationDetail.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill"
@@ -80,11 +62,14 @@
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
                                                         (click)="onDelete(registrationDetail)"></i></a>
+                                                <a class="add" title="Add" data-toggle="tooltip"
+                                                    style="font-size: 1rem;"><i class="fa fa-plus"
+                                                        (click)="addRow(i)"></i></a>
                                             </div>
-                                            <div *ngIf="registrationDetail.isEdit">
-                                                <a class="add"
+                                            <div *ngIf="registrationDetail.isEdit" style="font-size: 1rem;">
+                                                <a class="update"
                                                     [ngClass]="{'isDisabled':validateForm(registrationDetail)}"
-                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(registrationDetail)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                                                         class="fa fa-times-circle"

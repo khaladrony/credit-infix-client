@@ -36,6 +36,11 @@ table.table th {
     font-weight: bold;
 }
 
+.table th,
+.table td {
+    padding: 0.3rem;
+}
+
 table.table th:last-child {
     width: 100px;
 }

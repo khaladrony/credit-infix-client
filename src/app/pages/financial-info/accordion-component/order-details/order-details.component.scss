@@ -36,10 +36,10 @@ table.table {
     table-layout: fixed;
 }
 
-// table.table td {
-//     // word-wrap: break-word;
-//     // white-space: normal;
-// }
+.table th,
+.table td {
+    padding: 0.3rem;
+}
 
 table.table th {
     font-weight: bold;

@@ -28,28 +28,22 @@
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="corporateStructure.isEdit">
                                                 <input type="text" [(ngModel)]="corporateStructure.itemCode">
-                                                <div class="text-danger" *ngIf="validateField(corporateStructure.itemCode)">
-                                                    <span>*Required</span>
-                                                </div>
                                             </div>
                                             <div *ngIf="!corporateStructure.isEdit">
                                                 {{corporateStructure.itemCode}}
                                             </div>
-                                        </td>                                        
+                                        </td>
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="corporateStructure.isEdit">
-                                                <input type="text" [(ngModel)]="corporateStructure.itemValue">
-                                                <div class="text-danger"
-                                                    *ngIf="validateField(corporateStructure.itemValue)">
-                                                    <span>*Required</span>
-                                                </div>
+                                                <textarea [(ngModel)]="corporateStructure.itemValue"
+                                                    rows="2"></textarea>
                                             </div>
                                             <div *ngIf="!corporateStructure.isEdit">
                                                 {{corporateStructure.itemValue}}
                                             </div>
                                         </td>
 
-                                        <td style="width: 10%;">
+                                        <td class="action-td">
                                             <div *ngIf="!corporateStructure.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill"
@@ -57,11 +51,13 @@
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
                                                         (click)="onDelete(corporateStructure)"></i></a>
+                                                <a class="add" title="Add" data-toggle="tooltip"><i class="fa fa-plus"
+                                                        (click)="addRow(i)"></i></a>
                                             </div>
                                             <div *ngIf="corporateStructure.isEdit">
-                                                <a class="add"
+                                                <a class="update"
                                                     [ngClass]="{'isDisabled':validateForm(corporateStructure)}"
-                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(corporateStructure)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                                                         class="fa fa-times-circle"

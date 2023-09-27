@@ -18,10 +18,10 @@ export class OperationInformationComponent implements OnInit {
     ngOnInit(): void {
         this.title = 'Operation Information';
 
-        this.getshareholderList();
+        this.getOperationInfoList();
     }
 
-    getshareholderList() {
+    getOperationInfoList() {
         let operationInfoObj = new OperationInfo();
         operationInfoObj.id = this.getId();
         operationInfoObj.itemCode = 'Activity Status :';

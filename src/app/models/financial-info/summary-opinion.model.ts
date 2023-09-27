@@ -1,13 +1,10 @@
-export class RegistrationDetail {
+export class SummaryOpinion {
     id: number;
     version: number;
 
-    item: string;
-    subItem: string;
+    itemCode: string;
     itemValue: string
     isEdit: boolean;
-    isRowSpan: boolean;
-    isColSpan: boolean;
 
     createdBy: number;
     updatedBy: number;

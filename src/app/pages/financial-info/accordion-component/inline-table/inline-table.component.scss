@@ -16,6 +16,7 @@
 
 
 
+
 // table css start
 .table-title .add-new {
     float: right;
@@ -30,6 +31,15 @@
 
 .table-title .add-new i {
     margin-right: 4px;
+}
+
+table.table {
+    table-layout: fixed;
+}
+
+.table th,
+.table td {
+    padding: 0.3rem;
 }
 
 table.table th {
@@ -47,7 +57,7 @@ table.table td a {
     min-width: 24px;
 }
 
-table.table td a.add {
+table.table td a.update {
     color: #27C46B;
 }
 
@@ -57,6 +67,10 @@ table.table td a.edit {
 
 table.table td a.delete {
     color: #E34724;
+}
+
+table.table td a.cancel {
+    color: #5a6268;
 }
 
 table.table td input[type=text],
@@ -70,11 +84,14 @@ select {
     box-sizing: border-box;
 }
 
-.isDisabled{
+.isDisabled {
     pointer-events: none;
 }
 
-.bi.bi-pencil-fill, .bi-trash-fill, .fa-cloud, .fa-times-circle{
+.bi.bi-pencil-fill,
+.bi-trash-fill,
+.fa-cloud,
+.fa-times-circle {
     font-size: 1rem;
 }
 
@@ -82,8 +99,14 @@ select {
     font-size: 0.7rem;
     color: #f5365c !important;
 }
-// table css end
 
-span.required-text{
-    font-weight: bold;
+table.table td.action-td {
+    width: 10%;
+    text-align: center;
 }
+
+table.table td {
+    white-space: normal;
+}
+
+// table css end

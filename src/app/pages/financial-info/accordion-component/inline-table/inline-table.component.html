@@ -1,102 +1,100 @@
-<div class="header pb-4 pt-0 pt-lg-0 d-flex align-items-center"></div>
+<div class="header pb-4 pt-0 pt-lg-0 d-flex align-items-center">
+
+</div>
 
 <div class="container">
    <div class="row">
       <div class="col-xl-12 order-xl-1">
          <div class="pl-lg-4">
             <div class="row">
-               <div class="col-lg-8 pb-2">
+               <div class="col-lg-12 pb-2">
                   <div class="table-wrapper">
-                     <div class="table-title">
-                        <div class="row">
-                           <div class="col-sm-8">
-                           </div>
-                           <div class="col-sm-4 pb-2">
-                              <button type="button" class="btn btn-primary add-new" (click)="addRow()"><i
-                                    class="fa fa-plus"></i>
-                                 Add New</button>
-                           </div>
-                        </div>
-                     </div>
-                     <table class="table table-bordered">
-                        <thead>
-                           <tr class="bg-secondary text-black">
-                              <th>First Name</th>
-                              <th>Last Name</th>
-                              <th>City</th>
-                              <th>State</th>
-                              <th>Status</th>
-                              <th>Actions</th>
-                           </tr>
-                        </thead>
-                        <tbody [formGroup]="finSummaryForm">
-                           <ng-container formArrayName="tableRows"
-                              *ngFor="let group of getFormControls.controls; let i=index">
-                              <tr [formGroupName]="i">
-                                 <td style="width: 20%;">
-                                    <div *ngIf="getFormControls.controls[i].get('isEdit')">
-                                       <input type="text" class="form-control" formControlName="firstname"
-                                       placeholder="Enter First">
-                                    </div>
-                                    <div *ngIf="!getFormControls.controls[i].get('isEdit')">
-                                       {{getFormControls.controls[i].get(firstname)}}
-                                    </div>
                                     
-                                 </td>
-                                 <td style="width: 20%;">
-                                    <input type="text" class="form-control" formControlName="lastname"
-                                       placeholder="Enter Last">
-                                 </td>
-                                 <td style="width: 10%;">
-                                       <ng-select id="city" formControlName="city" placeholder="-Select city-"
-                                          (change)="onCityChange($event,i)">
-                                          <ng-option *ngFor="let city of cityList" [value]="city.code"
-                                             [ngValue]="city.code">
-                                             {{city.code}}
-                                          </ng-option>
-                                       </ng-select>                                   
-                                 </td>
-                                 <td style="width: 20%;">
-                                    <input type="text" class="form-control" formControlName="state"
-                                       placeholder="Enter state">
-                                 </td>
-                                 <td style="width: 20%;">
-                                    <input type="text" class="form-control" formControlName="status"
-                                       placeholder="Enter status">
-                                 </td>
 
-                                 <td style="width: 10%;">
-                                    <div *ngIf="!getFormControls.controls[i].get('isEdit')">
-                                       <a class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill"
-                                             (click)="onEdit(i)"></i></a>
-                                       <a class="delete" title="Delete" data-toggle="tooltip"><i
-                                             class="bi bi-trash-fill" (click)="onDelete(i)"></i></a>
-                                    </div>
-                                    <div *ngIf="getFormControls.controls[i].get('isEdit')">
-                                       <a class="add" title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
-                                             (click)="onUpdate(i)"></i></a>
-                                       <a class="cancel" title="Cancel" data-toggle="tooltip"><i
-                                             class="fa fa-times-circle" (click)="onCancel()"></i></a>
-                                    </div>
 
-                                 </td>
-                              </tr>
-                           </ng-container>
+
+
+                     <!-- <table class="table table-bordered">
+                        <tbody>
+
+                           <tr *ngFor="let row of data">
+                              <td *ngFor="let col of row" [attr.rowSpan]="col.rowspan" [attr.colSpan]="col.colspan">{{
+                                 col.text }}</td>
+                           </tr>
 
                         </tbody>
                      </table>
+                     <br> -->
+
+                     <!-- Registration Detail -->
+                     <table class="table table-bordered">
+                        <tbody>
+
+                           <tr *ngFor="let row of data">
+                              <td [attr.rowspan]='row[0].rowspan' style="font-weight: bold;">{{row[0].text}}</td>
+                              <td *ngIf='row.length > 1' [attr.rowspan]='row[1].rowspan' [attr.colspan]='row[1].colspan'
+                                 [ngStyle]="{'font-weight': row[0].rowspan==1 ? 'normal' : 'bold'}">
+                                 {{row[1].text}}
+                              </td>
+
+                              <td *ngIf='row.length > 2' [attr.rowspan]='row[2].rowspan'
+                                 [attr.colspan]='row[2].colspan'>
+                                 {{row[2].text}}
+                              </td>
+                           </tr>
+
+                        </tbody>
+                     </table>
+
+                     <br>
+
+                     <!-- operation Information -->
+                     <table class="table table-bordered">
+                        <tbody>
+
+                           <tr *ngFor="let row of opdata">
+                              <td [attr.rowspan]='row[0].rowspan'
+                                 [ngStyle]="{'font-weight': row.length==1 ? 'normal' : 'bold'}">
+                                 <div *ngIf='row[0].htmlTag === "b"; else noHtmlTag' [innerHtml]="setWordBold(row[0].text)">
+                                   
+                                 </div>
+                                 <ng-template #noHtmlTag>
+                                    {{row[0].text}}
+                                 </ng-template>
+                              </td>
+
+                              <td *ngIf='row.length > 1' [attr.rowspan]='row[1].rowspan'
+                                 [attr.colspan]='row[1].colspan' style="width: 70%;white-space: normal;">
+                                 <div *ngIf='row[1].htmlTag === "li"; else noHtmlTag'>
+                                    <ul>
+                                       <li *ngFor="let country of getItems(row[1].text)">{{country}}</li>
+                                    </ul>
+                                 </div>
+                                 <ng-template #noHtmlTag>
+                                    {{row[1].text}}
+                                 </ng-template>
+                              </td>
+                           </tr>
+
+                        </tbody>
+                     </table>
+
+                     <!-- <div>
+                        <ul>
+                           <li *ngFor="let country of getItems('Australia :: Hong–Kong :: USA')">{{country}}</li>
+                        </ul>
+
+                     </div> -->
+
+                     <div [innerHtml]="setWordBold('Asset: I have no asset')">                      
+                       
+                     </div>
+
+
                   </div>
-               </div>              
+               </div>
             </div>
          </div>
-
-         <div class="pl-lg-4 pb-4">
-
-
-         <div class="pl-lg-4 pb-4">
-            <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
-         </div>
-
 
       </div>
    </div>
