@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { FinancialInformation } from 'src/app/models/financial-info/financial-information.model';
+import { FinancialNote } from 'src/app/models/financial-info/financial-note.model';
+import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
     selector: 'app-financial-information',
@@ -14,106 +18,183 @@ export class FinancialInformationComponent implements OnInit {
     oldFinancialInformationObj: FinancialInformation;
     newFinancialInformationObj: FinancialInformation;
 
-    constructor() { }
+    financialNoteList: FinancialNote[] = [];
+    oldFinancialNoteObj: FinancialNote;
+    newFinancialNoteObj: FinancialNote;
+
+    public FINANCIAL_INFO = 'FINANCIAL_INFO';
+    public FINANCIAL_NOTE = 'FINANCIAL_NOTE';
+
+    constructor(
+        private excelUploadService: ExcelUploadService,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+    ) { }
 
     ngOnInit(): void {
         this.title = 'Financial Information';
 
-        this.firstRowData='Figure in LKR - Million';
+        this.firstRowData = 'Figure in LKR - Million';
 
         this.getFinancialInformationList();
+        this.getFinancialNoteList();
     }
 
 
     getFinancialInformationList() {
         let financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId();
+        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
         financialInformationObj.itemCode = 'Year';
-        financialInformationObj.currentYear = '2022';
-        financialInformationObj.middleYear = '2021';
+        financialInformationObj.thirdYear = '2022';
+        financialInformationObj.secondYear = '2021';
         financialInformationObj.firstYear = '2020';
         this.financialInformationList.push(financialInformationObj);
 
         financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId();
+        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
         financialInformationObj.itemCode = 'Turnover';
-        financialInformationObj.currentYear = '3325.17';
-        financialInformationObj.middleYear = '3291.42';
+        financialInformationObj.thirdYear = '3325.17';
+        financialInformationObj.secondYear = '3291.42';
         financialInformationObj.firstYear = '3259.85';
         this.financialInformationList.push(financialInformationObj);
 
         financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId();
+        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
         financialInformationObj.itemCode = 'Profit/(Loss)';
-        financialInformationObj.currentYear = '89.90';
-        financialInformationObj.middleYear = '81.53';
+        financialInformationObj.thirdYear = '89.90';
+        financialInformationObj.secondYear = '81.53';
         financialInformationObj.firstYear = '73.82';
         this.financialInformationList.push(financialInformationObj);
 
         financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId();
+        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
         financialInformationObj.itemCode = 'Liability';
-        financialInformationObj.currentYear = '2187.00';
-        financialInformationObj.middleYear = '2194.76';
+        financialInformationObj.thirdYear = '2187.00';
+        financialInformationObj.secondYear = '2194.76';
         financialInformationObj.firstYear = '2170.11';
         this.financialInformationList.push(financialInformationObj);
 
         financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId();
+        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
         financialInformationObj.itemCode = 'Assets';
-        financialInformationObj.currentYear = '2280.29';
-        financialInformationObj.middleYear = '2265.10';
+        financialInformationObj.thirdYear = '2280.29';
+        financialInformationObj.secondYear = '2265.10';
         financialInformationObj.firstYear = '2258.30';
         this.financialInformationList.push(financialInformationObj);
-
-        
     }
 
-    onEdit(financialInformationObj: FinancialInformation) {
-        this.oldFinancialInformationObj = financialInformationObj;
-        this.financialInformationList.forEach(obj => {
-            obj.isEdit = false;
-        });
-        financialInformationObj.isEdit = true;
+    getFinancialNoteList() {
+        let financialNoteObj = new FinancialNote();
+        financialNoteObj.id = this.getId('');
+        financialNoteObj.itemCode = 'Financial Note';
+        financialNoteObj.itemValue = 'Financial Year ended as of 30th June.';
+        this.financialNoteList.push(financialNoteObj);
+
+        financialNoteObj = new FinancialNote();
+        financialNoteObj.id = this.getId('');
+        financialNoteObj.itemCode = '';
+        financialNoteObj.itemValue = `The information provided is collected unofficially. Noted based on the
+        Corporate Laws of Sri Lanka, Legal Entities Which is Private Company with
+        Limited Liability is not required to Make Public Disclosure of Their Annual
+        Financials. Therefore, No Financials are Available for this Entity.`;
+        this.financialNoteList.push(financialNoteObj);
+
+        financialNoteObj = new FinancialNote();
+        financialNoteObj.id = this.getId('');
+        financialNoteObj.itemCode = 'Auditor';
+        financialNoteObj.itemValue = `Name: BDO Partners`;
+        this.financialNoteList.push(financialNoteObj);
+
+        financialNoteObj = new FinancialNote();
+        financialNoteObj.id = this.getId('');
+        financialNoteObj.itemCode = '';
+        financialNoteObj.itemValue = `Address: Charter House” No. 65/2, Sir. Chittampalam A. Gardiner Mawatha,
+        Colombo–2, Sri Lanka`;
+        this.financialNoteList.push(financialNoteObj);
+    }
+
+    onEdit(object: any, type: string) {
+        if (type === this.FINANCIAL_INFO) {
+            let financialInformationObj = object;
+            this.oldFinancialInformationObj = financialInformationObj;
+            this.financialInformationList.forEach(obj => {
+                obj.isEdit = false;
+            });
+            financialInformationObj.isEdit = true;
+        } else {
+            let financialNoteObj = object;
+            this.oldFinancialNoteObj = financialNoteObj;
+            this.financialNoteList.forEach(obj => {
+                obj.isEdit = false;
+            });
+            financialNoteObj.isEdit = true;
+        }
 
     }
 
-    onDelete(financialInformationObj: FinancialInformation) {
-        this.financialInformationList.splice(this.financialInformationList.findIndex(e => e.id === financialInformationObj.id), 1);
+    onDelete(object: any, type: string) {
+        if (type === this.FINANCIAL_INFO) {
+            let financialInformationObj = object;
+            this.financialInformationList.splice(this.financialInformationList.findIndex(e => e.id === financialInformationObj.id), 1);
+        } else {
+            let financialNoteObj = object;
+            this.financialNoteList.splice(this.financialNoteList.findIndex(e => e.id === financialNoteObj.id), 1);
+        }
+
     }
 
     onAdd() {
         this.oldFinancialInformationObj = null;
 
         this.newFinancialInformationObj = new FinancialInformation();
-        this.newFinancialInformationObj.id = this.getId();
+        this.newFinancialInformationObj.id = this.getId(this.FINANCIAL_INFO);
         this.newFinancialInformationObj.itemCode = '';
-        this.newFinancialInformationObj.currentYear = '';
-        this.newFinancialInformationObj.middleYear = '';
+        this.newFinancialInformationObj.thirdYear = '';
+        this.newFinancialInformationObj.secondYear = '';
         this.newFinancialInformationObj.firstYear = '';
         this.newFinancialInformationObj.isEdit = true;
         this.financialInformationList.push(this.newFinancialInformationObj);
-
-
-
     }
 
-    onUpdate(financialInformationObj: FinancialInformation) {
-        console.log(financialInformationObj);
-        financialInformationObj.isEdit = false;
+    addRow() {
+        this.oldFinancialNoteObj = null;
+
+        this.newFinancialNoteObj = new FinancialNote();
+        this.newFinancialNoteObj.id = this.getId('');
+        this.newFinancialNoteObj.itemCode = '';
+        this.newFinancialNoteObj.itemValue = '';
+        this.newFinancialNoteObj.isEdit = true;
+        this.financialNoteList.push(this.newFinancialNoteObj);
     }
 
-    onCancel(financialInformationObj: FinancialInformation) {
-        if (this.oldFinancialInformationObj == undefined || this.oldFinancialInformationObj == null) {
-            financialInformationObj.isEdit = true;
-            this.financialInformationList.splice(this.financialInformationList.findIndex(e => e.id === financialInformationObj.id), 1);
+    onUpdate(object: any) {
+        object.isEdit = false;
+    }
+
+    onCancel(object: any, type: string) {
+        if (type === this.FINANCIAL_INFO) {
+            let financialInformationObj = object;
+            if (this.oldFinancialInformationObj == undefined || this.oldFinancialInformationObj == null) {
+                financialInformationObj.isEdit = true;
+                this.financialInformationList.splice(this.financialInformationList.findIndex(e => e.id === financialInformationObj.id), 1);
+            } else {
+
+                financialInformationObj.itemCode = this.oldFinancialInformationObj.itemCode;
+                financialInformationObj.thirdYear = this.oldFinancialInformationObj.thirdYear;
+                financialInformationObj.secondYear = this.oldFinancialInformationObj.secondYear;
+                financialInformationObj.firstYear = this.oldFinancialInformationObj.firstYear;
+                financialInformationObj.isEdit = false;
+            }
         } else {
-
-            financialInformationObj.itemCode = this.oldFinancialInformationObj.itemCode;
-            financialInformationObj.currentYear = this.oldFinancialInformationObj.currentYear;
-            financialInformationObj.middleYear = this.oldFinancialInformationObj.middleYear;
-            financialInformationObj.firstYear = this.oldFinancialInformationObj.firstYear;
-            financialInformationObj.isEdit = false;
+            let financialNoteObj = object;
+            if (this.oldFinancialNoteObj == undefined || this.oldFinancialNoteObj == null) {
+                financialNoteObj.isEdit = true;
+                this.financialNoteList.splice(this.financialNoteList.findIndex(e => e.id === financialNoteObj.id), 1);
+            } else {
+                financialNoteObj.itemCode = this.oldFinancialNoteObj.itemCode;
+                financialNoteObj.itemValue = this.oldFinancialNoteObj.itemValue;
+                financialNoteObj.isEdit = false;
+            }
         }
 
     }
@@ -134,20 +215,80 @@ export class FinancialInformationComponent implements OnInit {
 
     }
 
-    validateForm(financialInformationObj: FinancialInformation) {
-        if (financialInformationObj.itemCode !== '') {
-            return false;
+    validateForm(object: any, type: string) {
+        if (type === this.FINANCIAL_INFO) {
+            let financialInformationObj = object;
+            if (financialInformationObj.itemCode !== '') {
+                return false;
+            } else {
+                return true;
+            }
         } else {
-            return true;
+            let financialNoteObj = object;
+            if (financialNoteObj.itemCode !== '') {
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 
-    getId() {
-        if (this.financialInformationList.length == 0) {
-            return 1;
+    getId(type: string) {
+        if (type === this.FINANCIAL_INFO) {
+            if (this.financialInformationList.length == 0) {
+                return 1;
+            } else {
+                let lastFinancialInformationObj: FinancialInformation = this.financialInformationList[this.financialInformationList.length - 1];
+                return lastFinancialInformationObj.id + 1;
+            }
         } else {
-            let lastFinancialInformationObj: FinancialInformation = this.financialInformationList[this.financialInformationList.length - 1];
-            return lastFinancialInformationObj.id + 1;
+            if (this.financialNoteList.length == 0) {
+                return 1;
+            } else {
+                let lastFinancialNoteObj: FinancialNote = this.financialNoteList[this.financialNoteList.length - 1];
+                return lastFinancialNoteObj.id + 1;
+            }
+        }
+    }
+
+
+
+    // Excel upload    
+    onExcelFileUpload(event: any) {
+        let fileName = event.target.files[0].name;
+        let regex = /(.xlsx|.xls)$/;
+        this.financialInformationList = [];
+
+        if (regex.test(fileName.toLowerCase())) {
+            let formData = new FormData();
+            formData.append('file', event.target.files[0]);
+            formData.append('fileName', event.target.files[0].name);
+            formData.append('type', event.target.files[0].type);
+            formData.append('size', event.target.files[0].size);
+
+            this.loader.show();
+
+            this.excelUploadService.financialInformationFile(formData).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.financialInformationList = response.data.responseDTOs;
+                },
+                complete: () => {
+                    event.target.value = null;
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.loader.hide();
+                    event.target.value = null;
+                    this.notifyService.showError('error', err.error?.message);
+                }
+            });
+
+        } else {
+            this.notifyService.showError('error', 'Please upload a valid Excel file!');
+            event.target.value = null;
+            this.loader.hide();
         }
     }
 

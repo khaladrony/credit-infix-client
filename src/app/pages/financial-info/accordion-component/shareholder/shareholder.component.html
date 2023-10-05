@@ -23,7 +23,8 @@
 
                             <table class="table table-bordered">
                                 <tbody>
-                                    <tr *ngFor="let shareholder of shareholderList; let i = index">
+                                    <tr *ngFor="let shareholder of shareholderList; let i = index"
+                                    [ngStyle]="styleObject(i+1)">
 
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="shareholder.isEdit">
@@ -35,12 +36,11 @@
                                             <div *ngIf="!shareholder.isEdit">
                                                 {{shareholder.itemCode}}
                                             </div>
-                                        </td>                                        
+                                        </td>
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="shareholder.isEdit">
                                                 <input type="text" [(ngModel)]="shareholder.itemValue">
-                                                <div class="text-danger"
-                                                    *ngIf="validateField(shareholder.itemValue)">
+                                                <div class="text-danger" *ngIf="validateField(shareholder.itemValue)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
@@ -52,15 +52,13 @@
                                         <td style="width: 10%;">
                                             <div *ngIf="!shareholder.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                        class="bi bi-pencil-fill"
-                                                        (click)="onEdit(shareholder)"></i></a>
+                                                        class="bi bi-pencil-fill" (click)="onEdit(shareholder)"></i></a>
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
                                                         (click)="onDelete(shareholder)"></i></a>
                                             </div>
                                             <div *ngIf="shareholder.isEdit">
-                                                <a class="add"
-                                                    [ngClass]="{'isDisabled':validateForm(shareholder)}"
+                                                <a class="add" [ngClass]="{'isDisabled':validateForm(shareholder)}"
                                                     title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
                                                         (click)="onUpdate(shareholder)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
@@ -69,11 +67,20 @@
                                             </div>
 
                                         </td>
+
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="pl-lg-4">
+                <div class="mt-1 d-flex form-group">
+                    <label class="col-md-0 exl-label" for="excelAttachment">Excel File Upload: </label>
+                    <input class="col-md-7 exl-input" type="file" name="excelAttachment" id="excelAttachment"
+                        (change)="onExcelFileUpload($event)">
                 </div>
             </div>
 

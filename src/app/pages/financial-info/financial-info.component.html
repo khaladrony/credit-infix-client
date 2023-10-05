@@ -7,8 +7,6 @@
         <div class="col-xl-12 order-xl-1">
             <!-- <div class="card bg-secondary shadow"> -->
                 <div class="card-body">
-
-
                     <div id="accordionExample-2" role="tablist" class="accordion">
 
                         <div *ngFor="let feature of featureList; let i = index" class="card multi">
@@ -26,10 +24,10 @@
                             <div id="{{feature.ariaControls}}" class="collapse {{feature.collapseClass}}" role="tabpanel"
                                 aria-labelledby="{{feature.cardHeaderId}}">
 
-                                <div class="card-body" *ngIf="feature.name==='Company Info'">
+                                <div class="card-body pb-4" *ngIf="feature.name==='Company Info'">
                                     <app-company-info></app-company-info>
                                 </div>
-                                <div class="card-body" *ngIf="feature.name==='Credit Assessment'">
+                                <div class="card-body pb-4" *ngIf="feature.name==='Credit Assessment'">
                                     <app-credit-assessment></app-credit-assessment>
                                 </div>
                                 <div class="card-body" *ngIf="feature.name==='Financial Summary'">

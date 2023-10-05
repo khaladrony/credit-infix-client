@@ -101,3 +101,20 @@ table.table td.action-td {
     text-align: center;
 }
 // table css end
+
+//Excel upload button
+.exl-label {
+    background-color: darkorange;
+    color: white;
+}
+
+.exl-input {
+    font-size: 0.8rem;
+    line-height: normal;
+}
+//Excel upload button end
+
+//table border set
+table.table, tr, td {
+    border: none;
+}

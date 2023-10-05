@@ -1,9 +1,9 @@
 export class FinancialNote {
     id: number;
     version: number;
-
-    note: string;
-    auditor: string
+    
+    itemCode: string;
+    itemValue: string
     isEdit: boolean;
 
     createdBy: number;

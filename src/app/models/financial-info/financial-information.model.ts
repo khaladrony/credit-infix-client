@@ -3,8 +3,8 @@ export class FinancialInformation {
     version: number;
 
     itemCode: string;
-    currentYear: string
-    middleYear: string
+    thirdYear: string
+    secondYear: string
     firstYear: string
     isEdit: boolean;
 

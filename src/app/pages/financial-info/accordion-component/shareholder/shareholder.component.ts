@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Shareholder } from 'src/app/models/financial-info/shareholder.model';
+import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
     selector: 'app-shareholder',
@@ -12,13 +15,19 @@ export class ShareholderComponent implements OnInit {
     shareholderList: Shareholder[] = [];
     oldShareholderObj: Shareholder;
     newShareholderObj: Shareholder;
+    trGroupMax: number;
 
-    constructor() { }
+    constructor(
+        private excelUploadService: ExcelUploadService,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+    ) {}
 
     ngOnInit(): void {
         this.title = 'Shareholder';
 
         this.getshareholderList();
+
     }
 
     getshareholderList() {
@@ -143,6 +152,57 @@ export class ShareholderComponent implements OnInit {
             let lastShareholderObj: Shareholder = this.shareholderList[this.shareholderList.length - 1];
             return lastShareholderObj.id + 1;
         }
+    }
+
+    // Excel upload    
+    onExcelFileUpload(event: any) {
+        let fileName = event.target.files[0].name;
+        let regex = /(.xlsx|.xls)$/;
+        this.shareholderList = [];
+
+        if (regex.test(fileName.toLowerCase())) {
+            let formData = new FormData();
+            formData.append('file', event.target.files[0]);
+            formData.append('fileName', event.target.files[0].name);
+            formData.append('type', event.target.files[0].type);
+            formData.append('size', event.target.files[0].size);
+
+            this.loader.show();
+
+            this.excelUploadService.shareholderFile(formData).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.shareholderList = response.data.responseDTOs;
+
+                    this.trGroupMax = Math.max.apply(null, this.shareholderList.map(function (o) { return o.sequence; }));
+                },
+                complete: () => {
+                    event.target.value = null;
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.loader.hide();
+                    event.target.value = null;
+                    this.notifyService.showError('error', err.error?.message);
+                }
+            });
+
+        } else {
+            this.notifyService.showError('error', 'Please upload a valid Excel file!');
+            event.target.value = null;
+            this.loader.hide();
+        }
+    }
+
+    styleObject(index: number): Object {
+
+        if (index == 1) {
+            return { 'border-top': '2px solid  #e9ecef' };
+        } else if (index % this.trGroupMax == 0) {
+            return { 'border-bottom': '2px solid  #e9ecef' };
+        }
+
     }
 
 }

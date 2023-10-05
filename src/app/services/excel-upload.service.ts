@@ -15,12 +15,30 @@ export class ExcelUploadService {
         private environment: EnvService
     ) { }
 
-    excelFileUpload(formData: any): Observable<any> {
-        const token = localStorage.getItem('token');
+    financialInformationFile(formData: any): Observable<any> {
+        const token = sessionStorage.getItem("token");
         const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         });
 
-        return this.httpClient.post(`${this.environment.apiURL}/api/excel/excel-upload`, formData, { headers: headers });
+        return this.httpClient.post(`${this.environment.apiURL}/api/excel/financial-information`, formData, { headers: headers });
+    }
+
+    shareholderFile(formData: any): Observable<any> {
+        const token = sessionStorage.getItem("token");
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${token}`,
+        });
+
+        return this.httpClient.post(`${this.environment.apiURL}/api/excel/shareholder`, formData, { headers: headers });
+    }
+
+    managementFile(formData: any): Observable<any> {
+        const token = sessionStorage.getItem("token");
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${token}`,
+        });
+
+        return this.httpClient.post(`${this.environment.apiURL}/api/excel/management`, formData, { headers: headers });
     }
 }

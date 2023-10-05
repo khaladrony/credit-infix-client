@@ -3,7 +3,8 @@
     padding-top: 0rem !important;
 }
 
-.pl-lg-4, .px-lg-4 {
+.pl-lg-4,
+.px-lg-4 {
     padding-left: 0rem !important;
 }
 
@@ -56,7 +57,7 @@ table.table td a {
     min-width: 24px;
 }
 
-table.table td a.add {
+table.table td a.update {
     color: #27C46B;
 }
 
@@ -66,6 +67,10 @@ table.table td a.edit {
 
 table.table td a.delete {
     color: #E34724;
+}
+
+table.table td a.cancel {
+    color: #5a6268;
 }
 
 table.table td input[type=text],
@@ -79,11 +84,25 @@ select {
     box-sizing: border-box;
 }
 
-.isDisabled{
+table.table td textarea,
+select {
+    width: 100%;
+    padding: 7px 10px;
+    margin: 0px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.isDisabled {
     pointer-events: none;
 }
 
-.bi.bi-pencil-fill, .bi-trash-fill, .fa-cloud, .fa-times-circle{
+.bi.bi-pencil-fill,
+.bi-trash-fill,
+.bi-floppy-fill,
+.fa-times-circle {
     font-size: 1rem;
 }
 
@@ -91,4 +110,22 @@ select {
     font-size: 0.7rem;
     color: #f5365c !important;
 }
+
+table.table td.action-td {
+    width: 10%;
+    text-align: center;
+}
+
 // table css end
+
+//Excel upload button
+.exl-label {
+    background-color: darkorange;
+    color: white;
+}
+
+.exl-input {
+    font-size: 0.8rem;
+    line-height: normal;
+}
+//Excel upload button end

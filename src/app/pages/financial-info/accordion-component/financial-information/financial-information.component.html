@@ -25,46 +25,48 @@
                                 <tbody>
                                     <tr>
                                         <td style="width: 30%;"></td>
-                                        <td colspan="3" align="right" style="width: 60%; font-weight: bold;">{{firstRowData}}</td>
+                                        <td colspan="3" align="right" style="width: 60%; font-weight: bold;">
+                                            {{firstRowData}}</td>
                                     </tr>
                                     <tr *ngFor="let financialInformation of financialInformationList; let i = index">
 
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="financialInformation.isEdit">
                                                 <input type="text" [(ngModel)]="financialInformation.itemCode">
-                                                <div class="text-danger" *ngIf="validateField(financialInformation.itemCode)">
+                                                <div class="text-danger"
+                                                    *ngIf="validateField(financialInformation.itemCode)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!financialInformation.isEdit">
                                                 {{financialInformation.itemCode}}
                                             </div>
-                                        </td>                                        
-                                        <td style="width: 20%;white-space: normal;">
+                                        </td>
+                                        <td style="width: 20%; text-align: center;">
                                             <div *ngIf="financialInformation.isEdit">
-                                                <input type="text" [(ngModel)]="financialInformation.currentYear">
+                                                <input type="text" [(ngModel)]="financialInformation.thirdYear">
                                                 <div class="text-danger"
-                                                    *ngIf="validateField(financialInformation.currentYear)">
+                                                    *ngIf="validateField(financialInformation.thirdYear)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!financialInformation.isEdit">
-                                                {{financialInformation.currentYear}}
+                                                {{financialInformation.thirdYear}}
                                             </div>
                                         </td>
-                                        <td style="width: 20%;white-space: normal;">
+                                        <td style="width: 20%; text-align: center;">
                                             <div *ngIf="financialInformation.isEdit">
-                                                <input type="text" [(ngModel)]="financialInformation.middleYear">
+                                                <input type="text" [(ngModel)]="financialInformation.secondYear">
                                                 <div class="text-danger"
-                                                    *ngIf="validateField(financialInformation.middleYear)">
+                                                    *ngIf="validateField(financialInformation.secondYear)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!financialInformation.isEdit">
-                                                {{financialInformation.middleYear}}
+                                                {{financialInformation.secondYear}}
                                             </div>
                                         </td>
-                                        <td style="width: 20%;white-space: normal;">
+                                        <td style="width: 20%; text-align: center;">
                                             <div *ngIf="financialInformation.isEdit">
                                                 <input type="text" [(ngModel)]="financialInformation.firstYear">
                                                 <div class="text-danger"
@@ -77,23 +79,23 @@
                                             </div>
                                         </td>
 
-                                        <td style="width: 10%;">
+                                        <td class="action-td">
                                             <div *ngIf="!financialInformation.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill"
-                                                        (click)="onEdit(financialInformation)"></i></a>
+                                                        (click)="onEdit(financialInformation,FINANCIAL_INFO)"></i></a>
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
-                                                        (click)="onDelete(financialInformation)"></i></a>
+                                                        (click)="onDelete(financialInformation, FINANCIAL_INFO)"></i></a>
                                             </div>
                                             <div *ngIf="financialInformation.isEdit">
-                                                <a class="add"
-                                                    [ngClass]="{'isDisabled':validateForm(financialInformation)}"
-                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                <a class="update"
+                                                    [ngClass]="{'isDisabled':validateForm(financialInformation,FINANCIAL_INFO)}"
+                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(financialInformation)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                                                         class="fa fa-times-circle"
-                                                        (click)="onCancel(financialInformation)"></i></a>
+                                                        (click)="onCancel(financialInformation,FINANCIAL_INFO)"></i></a>
                                             </div>
 
                                         </td>
@@ -105,33 +107,63 @@
                 </div>
             </div>
 
-
-            <div class="pl-lg-4">
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label class="form-control-label" for="financialNote">Financial Note</label>
-                            <textarea _ngcontent-c6="" class="form-control form-control-alternative"
-                                id="financialNote" name="financialNote" formControlName="financialNote" placeholder=""
-                                rows="4"></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label class="form-control-label" for="auditor">Auditor</label>
-                            <textarea _ngcontent-c6="" class="form-control form-control-alternative"
-                                id="auditor" name="auditor" formControlName="auditor" placeholder=""
-                                rows="4"></textarea>
-                        </div>
-                    </div>
+            <div class="pl-lg-4">                
+                <div class="mt-1 d-flex form-group">
+                    <label class="col-md-0 exl-label" for="excelAttachment">Excel File Upload: </label>
+                    <input class="col-md-7 exl-input" type="file" name="excelAttachment" id="excelAttachment"
+                        (change)="onExcelFileUpload($event)">
                 </div>
             </div>
 
-            <div class="pl-lg-4 pb-4">
+
+            <div class="pl-lg-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr *ngFor="let financialNote of financialNoteList; let i = index">
+
+                            <td style="width: 10%; font-weight: bold;">
+                                <div *ngIf="financialNote.isEdit">
+                                    <input type="text" [(ngModel)]="financialNote.itemCode">
+                                </div>
+                                <div *ngIf="!financialNote.isEdit">
+                                    {{financialNote.itemCode}}
+                                </div>
+                            </td>
+                            <td style="width: 80%;white-space: normal;">
+                                <div *ngIf="financialNote.isEdit">
+                                    <textarea [(ngModel)]="financialNote.itemValue" rows="4"></textarea>
+                                </div>
+                                <div *ngIf="!financialNote.isEdit">
+                                    {{financialNote.itemValue}}
+                                </div>
+                            </td>
+
+                            <td class="action-td">
+                                <div *ngIf="!financialNote.isEdit">
+                                    <a class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill"
+                                            (click)="onEdit(financialNote,'')"></i></a>
+                                    <a class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash-fill"
+                                            (click)="onDelete(financialNote, '')"></i></a>
+                                    <a class="add" title="Add" data-toggle="tooltip"><i class="fa fa-plus"
+                                            (click)="addRow(i)"></i></a>
+                                </div>
+                                <div *ngIf="financialNote.isEdit">
+                                    <a class="update"
+                                        [ngClass]="{'isDisabled':validateForm(financialNote,'')}"
+                                        title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
+                                            (click)="onUpdate(financialNote)"></i></a>
+                                    <a class="cancel" title="Cancel" data-toggle="tooltip"><i class="fa fa-times-circle"
+                                            (click)="onCancel(financialNote,'')"></i></a>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="pl-lg-4 pb-4 pt-4">
                 <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
             </div>
 

@@ -3,7 +3,8 @@
     padding-top: 0rem !important;
 }
 
-.pl-lg-4, .px-lg-4 {
+.pl-lg-4,
+.px-lg-4 {
     padding-left: 0rem !important;
 }
 
@@ -79,11 +80,14 @@ select {
     box-sizing: border-box;
 }
 
-.isDisabled{
+.isDisabled {
     pointer-events: none;
 }
 
-.bi.bi-pencil-fill, .bi-trash-fill, .fa-cloud, .fa-times-circle{
+.bi.bi-pencil-fill,
+.bi-trash-fill,
+.fa-cloud,
+.fa-times-circle {
     font-size: 1rem;
 }
 
@@ -91,4 +95,22 @@ select {
     font-size: 0.7rem;
     color: #f5365c !important;
 }
+
 // table css end
+
+//Excel upload button
+.exl-label {
+    background-color: darkorange;
+    color: white;
+}
+
+.exl-input {
+    font-size: 0.8rem;
+    line-height: normal;
+}
+//Excel upload button end
+
+//table border set
+table.table, tr, td {
+    border: none;
+}

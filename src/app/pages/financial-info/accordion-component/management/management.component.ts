@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Management } from 'src/app/models/financial-info/management.model';
+import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
 
 @Component({
     selector: 'app-management',
@@ -12,9 +15,13 @@ export class ManagementComponent implements OnInit {
     managementList: Management[] = [];
     oldManagementObj: Management;
     newManagementObj: Management;
-    isExcel: boolean = false;
+    trGroupMax: number;
 
-    constructor() { }
+    constructor(
+        private excelUploadService: ExcelUploadService,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+    ) { }
 
     ngOnInit(): void {
         this.title = 'Management';
@@ -158,110 +165,55 @@ export class ManagementComponent implements OnInit {
         }
     }
 
-    // Excel upload
-    onChangeExcelUploadChk(event: any) {
-        // if (this.bkashMoneyForm.value.bankAccount == null || this.bkashMoneyForm.value.bankAccount == undefined) {
-        //   event.target.checked = false;
-        //   this.detailsForm.controls['excelUploadChk'].setValue(false);
-
-        //   this.notifierService.notify('error', 'Please Select a Bank Account !');
-        //   this.bkashMoneyForm['controls']['bankAccount'].markAsTouched();
-        //   // return;
-        // }
-        // if (this.detailsForm.value.commission == "" || this.detailsForm.value.commission == undefined) {
-        //   event.target.checked = false;
-        //   this.detailsForm.controls['excelUploadChk'].setValue(false);
-
-        //   this.notifierService.notify('error', 'Please Enter Commission deduct(%) !');
-        //   this.detailsForm['controls']['commission'].markAsTouched();
-        //   // return;
-        // }
-
-        // this.isExcel = this.detailsForm.value.excelUploadChk;
-    }
-
-    downLoadExcelFormat() {
-        // this.utilService.downloadExcel('excel-format-of-bkash-money.xlsx');
-    }
-
-
+    // Excel upload    
     onExcelFileUpload(event: any) {
         let fileName = event.target.files[0].name;
         let regex = /(.xlsx|.xls)$/;
-        // this.bkashMoneyDetailsList = [];
+        this.managementList = [];
 
-        // if (regex.test(fileName.toLowerCase())) {
-        //   let formData = new FormData();
-        //   formData.append('file', event.target.files[0]);
-        //   formData.append('fileName', event.target.files[0].name);
-        //   formData.append('type', event.target.files[0].type);
-        //   formData.append('size', event.target.files[0].size);
-        //   formData.append('category', this.bkashMoneyForm.value.category);
-        //   formData.append('commission', this.detailsForm.value.commission);
-        //   formData.append('particulars', this.detailsForm.value.particulars);
+        if (regex.test(fileName.toLowerCase())) {
+            let formData = new FormData();
+            formData.append('file', event.target.files[0]);
+            formData.append('fileName', event.target.files[0].name);
+            formData.append('type', event.target.files[0].type);
+            formData.append('size', event.target.files[0].size);
 
-        //   this.loader.show();
-        //   this.totalAmount = 0;
-        //   if(this.bkashMoneyDetailsList.length > 0) {
-        //     this.deletedBkashMoneyDetailsList = this.bkashMoneyDetailsList;
-        //   }
-        //   this.bkashMoneyDetailsList = [];
-        //   this.bkashMoneyService.bkashExcelFileUpload(formData).subscribe({
-        //     next: (response) => {
-        //       console.log(response);
-        //       let bkashMoneyDetailsModels = response.data.responseModels;
+            this.loader.show();
 
-        //       for (let i = 0; i < bkashMoneyDetailsModels.length; i += 1) {
-        //         let bkashMoneyDetails = {
-        //           slNumber: bkashMoneyDetailsModels[i].slNumber,
-        //           projectSetup: bkashMoneyDetailsModels[i].projectSetup,
-        //           projectSetupId: bkashMoneyDetailsModels[i].projectSetup.id,
-        //           areaCurrentAccountCode: bkashMoneyDetailsModels[i].areaCurrentAccCode,
-        //           areaCurrentAccCode: bkashMoneyDetailsModels[i].areaCurrentAccCode.areaCurrentAcCode,
-        //           amount: bkashMoneyDetailsModels[i].amount,
-        //           commission: bkashMoneyDetailsModels[i].commission,
-        //           commissionDeduct: this.detailsForm.value.commission,
-        //           netAmount: bkashMoneyDetailsModels[i].netAmount,
-        //           narration: bkashMoneyDetailsModels[i].narration
-        //         };
+            this.excelUploadService.managementFile(formData).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.managementList = response.data.responseDTOs;
 
-        //         this.totalAmount += bkashMoneyDetails.netAmount;
-        //         this.bkashMoneyDetailsList.push(bkashMoneyDetails);
-        //       }
+                    this.trGroupMax = Math.max.apply(null, this.managementList.map(function (o) { return o.sequence; }));
+                },
+                complete: () => {
+                    event.target.value = null;
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.loader.hide();
+                    event.target.value = null;
+                    this.notifyService.showError('error', err.error?.message);
+                }
+            });
 
-        //       if (response.data.invalidExists == 'true' || response.data.invalidExists == true) {
-        //         this.reportName = "areaCodeNotFoundErrorList";
-        //         this.requestMap = {
-        //           'userId': localStorage.getItem('userId'),
-        //           'module': 'BkashMoneyMaster',
-        //           'domainErrorName': 'bKash Money Receive'
-        //         }
-        //         this.reportService.showInvalidAreaReport(this.reportName, this.requestMap);
-        //       }
-        //     },
-        //     complete: () => {
-        //       event.target.value = null;
-        //       this.totalAmountInWords = this.amountInWordsService.amountToTextWithDecimal(this.totalAmount);
-        //       // this.notifierService.notify('success', 'File Loaded Successfuly!');
-        //       this.detailsForm.controls['excelUploadChk'].setValue(false);
-        //       this.isExcel = this.detailsForm.value.excelUploadChk;
-        //       this.selectedRowIndex = -1;
-        //       this.loader.hide();
-        //     },
-        //     error: (err) => {
-        //       console.log(err);
-        //       this.loader.hide();
-        //       event.target.value = null;
-        //       this.notifierService.notify('error', err.error?.message);
-        //     }
-        //   });
+        } else {
+            this.notifyService.showError('error', 'Please upload a valid Excel file!');
+            event.target.value = null;
+            this.loader.hide();
+        }
+    }
 
-        // } else {
-        //   // UtilService.hideLoader();
-        //   this.notifierService.notify('error', 'Please upload a valid Excel file!');
-        //   event.target.value = null;
-        //   this.loader.hide();
-        // }
+    styleObject(index: number): Object {
+
+        if (index == 1) {
+            return { 'border-top': '2px solid  #e9ecef' };
+        } else if (index % this.trGroupMax == 0) {
+            return { 'border-bottom': '2px solid  #e9ecef' };
+        }
+
     }
 
 }

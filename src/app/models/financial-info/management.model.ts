@@ -3,7 +3,8 @@ export class Management {
     version: number;
 
     itemCode: string;
-    itemValue: string
+    itemValue: string;
+    sequence: number;
     isEdit: boolean;
 
     createdBy: number;

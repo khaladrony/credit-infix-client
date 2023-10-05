@@ -23,6 +23,10 @@ export const ROUTES: RouteInfo[] = [
     {
         path: '/admin/financial-info', title: 'Financial Info', icon: 'ni-money-coins text-primary', type: 'link', isCollapsed: false,
         children: []
+    },
+    {
+        path: '/admin/company-list', title: 'Company List', icon: 'fa fa-list-alt text-success', type: 'link', isCollapsed: false,
+        children: []
     }
 ];
 
@@ -33,7 +37,8 @@ export const ALLROUTES: any[] = [
     { path: '/admin/feature', title: 'Features' },
     { path: '/admin/feature-map', title: 'Features Mapping' },
     { path: '/admin/organization', title: 'Organization' },
-    { path: '/admin/financial-info', title: 'Financial Info' }
+    { path: '/admin/financial-info', title: 'Financial Info' },
+    { path: '/admin/company-list', title: 'Company List' }
 ]
 
 @Component({

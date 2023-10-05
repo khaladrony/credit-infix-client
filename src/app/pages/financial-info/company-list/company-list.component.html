@@ -1,0 +1,86 @@
+<div class="header pb-4 pt-5 pt-lg-8 d-flex align-items-center">
+
+</div>
+<div class="container-fluid mt--7">
+    <div class="row mt-5">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Company list</h3>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-items-center table-flush">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">SL</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Legal Address</th>
+                                <th scope="col">Telephone Number</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Website</th>
+                                <th scope="col">Industry Type</th>
+                                <th scope="col">Year Established</th>
+                                <th scope="col">Age of Business</th>
+                                <th scope="col">Business Type</th>
+                                <th scope="col">Country</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="companyInfoList?.length != 0">
+                            <tr *ngFor="let companyInfo of companyInfoList; let i = index" style="cursor:pointer"
+                                [ngClass]="{'selectedRow' : i == selectedRowIndex}">
+                                <td>{{i+1}}</td>
+                                <td>{{companyInfo.name}}</td>
+                                <td>{{companyInfo.legalAddress}}</td>
+                                <td>{{companyInfo.telephoneNumber}}</td>
+                                <td>{{companyInfo.email}}</td>
+                                <td>{{companyInfo.website}}</td>
+                                <td>{{companyInfo.industryType}}</td>
+                                <td>{{companyInfo.yearEstablished}}</td>
+                                <td>{{companyInfo.ageOfBusiness}}</td>
+                                <td>{{companyInfo.businessType}}</td>
+                                <td>{{companyInfo.country}}</td>
+                                <td class="align-middle text-left text-sm">
+                                    <span
+                                        [ngClass]="companyInfo.status=='Active'? 'badge badge-sm badge-success':'badge badge-sm badge-danger'">
+                                        {{companyInfo.status}}
+                                    </span>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card-footer py-4">
+                    <nav aria-label="...">
+                        <ul class="pagination justify-content-end mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="javascript:void(0)" tabindex="-1">
+                                    <i class="fas fa-angle-left"></i>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="javascript:void(0)">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">2 <span
+                                        class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="javascript:void(0)">
+                                    <i class="fas fa-angle-right"></i>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

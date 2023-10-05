@@ -64,6 +64,6 @@ export class CompanyInfoService {
             'Authorization': `Bearer ${token}`
         });
 
-        return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/list`, formData, { headers: headers });
+        return this.httpClient.get(`${this.environment.apiURL}${this.API_FEATURE_NAME}/list`, { headers: headers });
     }
 }

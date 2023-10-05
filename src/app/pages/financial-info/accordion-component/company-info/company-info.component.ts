@@ -70,15 +70,6 @@ export class CompanyInfoComponent implements OnInit {
             return;
         }
 
-        // this.companyInfo = new CompanyInfo();
-        // this.user.username = this.userProfileForm.value.username;
-        // this.user.password = this.userProfileForm.value.password;
-        // this.user.email = this.userProfileForm.value.email;
-        // this.user.address = this.userProfileForm.value.address;
-        // this.user.phoneNo = this.userProfileForm.value.phoneNo;
-        // this.user.status = this.userProfileForm.value.status;
-        // this.user.role = this.selectedRole;
-
         if (this.companyInfoForm.valid) {
             this.loader.show();
 
@@ -87,7 +78,7 @@ export class CompanyInfoComponent implements OnInit {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
 
-                    this.router.navigate(["admin/user-profile"]);
+                    this.router.navigate(["admin/financial-info"]);
                 },
                 complete: () => {
                     this.loader.hide();
