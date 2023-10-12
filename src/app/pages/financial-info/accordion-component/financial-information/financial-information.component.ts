@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { FinancialInformation } from 'src/app/models/financial-info/financial-information.model';
 import { FinancialNote } from 'src/app/models/financial-info/financial-note.model';
 import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { FinancialInformationService } from 'src/app/services/financial-info/financial-information.service';
+import { FinancialNoteService } from 'src/app/services/financial-info/financial-note.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-financial-information',
@@ -21,20 +26,29 @@ export class FinancialInformationComponent implements OnInit {
     financialNoteList: FinancialNote[] = [];
     oldFinancialNoteObj: FinancialNote;
     newFinancialNoteObj: FinancialNote;
+    companyInfo: CompanyInfo;
 
     public FINANCIAL_INFO = 'FINANCIAL_INFO';
     public FINANCIAL_NOTE = 'FINANCIAL_NOTE';
 
     constructor(
+        private router: Router,
         private excelUploadService: ExcelUploadService,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
-    ) { }
+        private sharedService: SharedService,
+        private financialInformationService: FinancialInformationService,
+        private financialNoteService: FinancialNoteService
+    ) {
+        this.companyInfo = new CompanyInfo();
+    }
 
     ngOnInit(): void {
         this.title = 'Financial Information';
 
         this.firstRowData = 'Figure in LKR - Million';
+
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
 
         this.getFinancialInformationList();
         this.getFinancialNoteList();
@@ -42,75 +56,162 @@ export class FinancialInformationComponent implements OnInit {
 
 
     getFinancialInformationList() {
-        let financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        financialInformationObj.itemCode = 'Year';
-        financialInformationObj.thirdYear = '2022';
-        financialInformationObj.secondYear = '2021';
-        financialInformationObj.firstYear = '2020';
-        this.financialInformationList.push(financialInformationObj);
+        // let financialInformationObj = new FinancialInformation();
+        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
+        // financialInformationObj.itemCode = 'Year';
+        // financialInformationObj.thirdYear = '2022';
+        // financialInformationObj.secondYear = '2021';
+        // financialInformationObj.firstYear = '2020';
+        // this.financialInformationList.push(financialInformationObj);
 
-        financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        financialInformationObj.itemCode = 'Turnover';
-        financialInformationObj.thirdYear = '3325.17';
-        financialInformationObj.secondYear = '3291.42';
-        financialInformationObj.firstYear = '3259.85';
-        this.financialInformationList.push(financialInformationObj);
+        // financialInformationObj = new FinancialInformation();
+        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
+        // financialInformationObj.itemCode = 'Turnover';
+        // financialInformationObj.thirdYear = '3325.17';
+        // financialInformationObj.secondYear = '3291.42';
+        // financialInformationObj.firstYear = '3259.85';
+        // this.financialInformationList.push(financialInformationObj);
 
-        financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        financialInformationObj.itemCode = 'Profit/(Loss)';
-        financialInformationObj.thirdYear = '89.90';
-        financialInformationObj.secondYear = '81.53';
-        financialInformationObj.firstYear = '73.82';
-        this.financialInformationList.push(financialInformationObj);
+        // financialInformationObj = new FinancialInformation();
+        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
+        // financialInformationObj.itemCode = 'Profit/(Loss)';
+        // financialInformationObj.thirdYear = '89.90';
+        // financialInformationObj.secondYear = '81.53';
+        // financialInformationObj.firstYear = '73.82';
+        // this.financialInformationList.push(financialInformationObj);
 
-        financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        financialInformationObj.itemCode = 'Liability';
-        financialInformationObj.thirdYear = '2187.00';
-        financialInformationObj.secondYear = '2194.76';
-        financialInformationObj.firstYear = '2170.11';
-        this.financialInformationList.push(financialInformationObj);
+        // financialInformationObj = new FinancialInformation();
+        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
+        // financialInformationObj.itemCode = 'Liability';
+        // financialInformationObj.thirdYear = '2187.00';
+        // financialInformationObj.secondYear = '2194.76';
+        // financialInformationObj.firstYear = '2170.11';
+        // this.financialInformationList.push(financialInformationObj);
 
-        financialInformationObj = new FinancialInformation();
-        financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        financialInformationObj.itemCode = 'Assets';
-        financialInformationObj.thirdYear = '2280.29';
-        financialInformationObj.secondYear = '2265.10';
-        financialInformationObj.firstYear = '2258.30';
-        this.financialInformationList.push(financialInformationObj);
+        // financialInformationObj = new FinancialInformation();
+        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
+        // financialInformationObj.itemCode = 'Assets';
+        // financialInformationObj.thirdYear = '2280.29';
+        // financialInformationObj.secondYear = '2265.10';
+        // financialInformationObj.firstYear = '2258.30';
+        // this.financialInformationList.push(financialInformationObj);
+
+        this.loader.show();
+        this.financialInformationService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.financialInformationList = data.data;
+            },
+            complete: () => {
+                this.financialInformationList.forEach(obj => {
+                    obj.isEdit = false;
+                });
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
     }
 
     getFinancialNoteList() {
-        let financialNoteObj = new FinancialNote();
-        financialNoteObj.id = this.getId('');
-        financialNoteObj.itemCode = 'Financial Note';
-        financialNoteObj.itemValue = 'Financial Year ended as of 30th June.';
-        this.financialNoteList.push(financialNoteObj);
+        // let financialNoteObj = new FinancialNote();
+        // financialNoteObj.id = this.getId('');
+        // financialNoteObj.itemCode = 'Financial Note';
+        // financialNoteObj.itemValue = 'Financial Year ended as of 30th June.';
+        // this.financialNoteList.push(financialNoteObj);
 
-        financialNoteObj = new FinancialNote();
-        financialNoteObj.id = this.getId('');
-        financialNoteObj.itemCode = '';
-        financialNoteObj.itemValue = `The information provided is collected unofficially. Noted based on the
-        Corporate Laws of Sri Lanka, Legal Entities Which is Private Company with
-        Limited Liability is not required to Make Public Disclosure of Their Annual
-        Financials. Therefore, No Financials are Available for this Entity.`;
-        this.financialNoteList.push(financialNoteObj);
+        // financialNoteObj = new FinancialNote();
+        // financialNoteObj.id = this.getId('');
+        // financialNoteObj.itemCode = 'Financial Note';
+        // financialNoteObj.itemValue = `The information provided is collected unofficially. Noted based on the
+        // Corporate Laws of Sri Lanka, Legal Entities Which is Private Company with
+        // Limited Liability is not required to Make Public Disclosure of Their Annual
+        // Financials. Therefore, No Financials are Available for this Entity.`;
+        // this.financialNoteList.push(financialNoteObj);
 
-        financialNoteObj = new FinancialNote();
-        financialNoteObj.id = this.getId('');
-        financialNoteObj.itemCode = 'Auditor';
-        financialNoteObj.itemValue = `Name: BDO Partners`;
-        this.financialNoteList.push(financialNoteObj);
+        // financialNoteObj = new FinancialNote();
+        // financialNoteObj.id = this.getId('');
+        // financialNoteObj.itemCode = 'Auditor';
+        // financialNoteObj.itemValue = `Name: BDO Partners`;
+        // this.financialNoteList.push(financialNoteObj);
 
-        financialNoteObj = new FinancialNote();
-        financialNoteObj.id = this.getId('');
-        financialNoteObj.itemCode = '';
-        financialNoteObj.itemValue = `Address: Charter House” No. 65/2, Sir. Chittampalam A. Gardiner Mawatha,
-        Colombo–2, Sri Lanka`;
-        this.financialNoteList.push(financialNoteObj);
+        // financialNoteObj = new FinancialNote();
+        // financialNoteObj.id = this.getId('');
+        // financialNoteObj.itemCode = 'Auditor';
+        // financialNoteObj.itemValue = `Address: Charter House” No. 65/2, Sir. Chittampalam A. Gardiner Mawatha,
+        // Colombo–2, Sri Lanka`;
+        // this.financialNoteList.push(financialNoteObj);
+
+
+        this.loader.show();
+        this.financialNoteService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.financialNoteList = data.data;
+            },
+            complete: () => {
+                this.financialNoteList.forEach(obj => {
+                    obj.isEdit = false;
+                });
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    onSave(type: string) {
+        if (this.FINANCIAL_NOTE && this.financialNoteList.length > 0) {
+            this.loader.show();
+            this.financialNoteList.forEach(obj => {
+                obj.companyInfo = this.companyInfo;
+            });
+
+            this.financialNoteService.save(this.financialNoteList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getFinancialNoteList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        } else if (this.FINANCIAL_INFO && this.financialInformationList.length > 0) {
+            this.loader.show();
+            this.financialInformationList.forEach(obj => {
+                obj.companyInfo = this.companyInfo;
+            });
+
+            this.financialInformationService.save(this.financialInformationList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getFinancialInformationList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     onEdit(object: any, type: string) {
@@ -197,13 +298,6 @@ export class FinancialInformationComponent implements OnInit {
             }
         }
 
-    }
-
-    onSave() {
-        this.financialInformationList.forEach(obj => {
-            obj.isEdit = false;
-        });
-        console.log(this.financialInformationList);
     }
 
     validateField(item: any) {

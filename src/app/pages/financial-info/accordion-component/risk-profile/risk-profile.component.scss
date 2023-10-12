@@ -37,10 +37,10 @@ table.table {
     table-layout: fixed;
 }
 
-// table.table td {
-//     // word-wrap: break-word;
-//     // white-space: normal;
-// }
+.table th,
+.table td {
+    padding: 0.3rem;
+}
 
 table.table th {
     font-weight: bold;
@@ -69,6 +69,10 @@ table.table td a.delete {
     color: #E34724;
 }
 
+table.table td a.cancel {
+    color: #5a6268;
+}
+
 table.table td input[type=text],
 select {
     width: 100%;
@@ -80,14 +84,11 @@ select {
     box-sizing: border-box;
 }
 
-.isDisabled {
+.isDisabled{
     pointer-events: none;
 }
 
-.bi.bi-pencil-fill,
-.bi-trash-fill,
-.fa-cloud,
-.fa-times-circle {
+.bi.bi-pencil-fill, .bi-trash-fill, .bi-floppy-fill, .fa-times-circle{
     font-size: 1rem;
 }
 
@@ -96,7 +97,17 @@ select {
     color: #f5365c !important;
 }
 
+table.table td.action-td {
+    width: 10%;
+    text-align: center;
+}
 // table css end
+
+
+//table border set
+table #t2, tr, td {
+    border: none;
+}
 
 //Progress bar
 .table td .progress {

@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { Shareholder } from 'src/app/models/financial-info/shareholder.model';
 import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { ShareholderService } from 'src/app/services/financial-info/shareholder.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-shareholder',
@@ -16,44 +20,69 @@ export class ShareholderComponent implements OnInit {
     oldShareholderObj: Shareholder;
     newShareholderObj: Shareholder;
     trGroupMax: number;
+    companyInfo: CompanyInfo;
 
     constructor(
+        private router: Router,
         private excelUploadService: ExcelUploadService,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
-    ) {}
+        private sharedService: SharedService,
+        private shareholderService:ShareholderService
+    ) {
+        this.companyInfo = new CompanyInfo();
+    }
 
     ngOnInit(): void {
         this.title = 'Shareholder';
 
-        this.getshareholderList();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.getList();
 
     }
 
-    getshareholderList() {
-        let shareholderObj = new Shareholder();
-        shareholderObj.id = this.getId();
-        shareholderObj.itemCode = 'Name:';
-        shareholderObj.itemValue = 'Sterling Apparel Limited';
-        this.shareholderList.push(shareholderObj);
+    getList() {
+        // let shareholderObj = new Shareholder();
+        // shareholderObj.id = this.getId();
+        // shareholderObj.itemCode = 'Name:';
+        // shareholderObj.itemValue = 'Sterling Apparel Limited';
+        // this.shareholderList.push(shareholderObj);
 
-        shareholderObj = new Shareholder();
-        shareholderObj.id = this.getId();
-        shareholderObj.itemCode = 'Share Amount:'
-        shareholderObj.itemValue = '69,619,000.00'
-        this.shareholderList.push(shareholderObj);
+        // shareholderObj = new Shareholder();
+        // shareholderObj.id = this.getId();
+        // shareholderObj.itemCode = 'Share Amount:'
+        // shareholderObj.itemValue = '69,619,000.00'
+        // this.shareholderList.push(shareholderObj);
 
-        shareholderObj = new Shareholder();
-        shareholderObj.id = this.getId();
-        shareholderObj.itemCode = 'Share Percent:'
-        shareholderObj.itemValue = '100%'
-        this.shareholderList.push(shareholderObj);
+        // shareholderObj = new Shareholder();
+        // shareholderObj.id = this.getId();
+        // shareholderObj.itemCode = 'Share Percent:'
+        // shareholderObj.itemValue = '100%'
+        // this.shareholderList.push(shareholderObj);
 
-        shareholderObj = new Shareholder();
-        shareholderObj.id = this.getId();
-        shareholderObj.itemCode = 'Country:'
-        shareholderObj.itemValue = 'Hong Kong'
-        this.shareholderList.push(shareholderObj);
+        // shareholderObj = new Shareholder();
+        // shareholderObj.id = this.getId();
+        // shareholderObj.itemCode = 'Country:'
+        // shareholderObj.itemValue = 'Hong Kong'
+        // this.shareholderList.push(shareholderObj);
+
+        this.loader.show();
+        this.shareholderService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.shareholderList = data.data;
+            },
+            complete: () => {
+                this.shareholderList.forEach(obj => {
+                    obj.isEdit = false;
+                });
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
     }
 
     onEdit(shareholderObj: Shareholder) {
@@ -123,9 +152,31 @@ export class ShareholderComponent implements OnInit {
 
     onSave() {
         this.shareholderList.forEach(obj => {
-            obj.isEdit = false;
+            obj.companyInfo = this.companyInfo;
         });
         console.log(this.shareholderList);
+
+        if (this.shareholderList.length > 0) {
+            this.loader.show();
+
+            this.shareholderService.save(this.shareholderList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     validateField(item: any) {

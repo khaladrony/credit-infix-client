@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { Management } from 'src/app/models/financial-info/management.model';
 import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { ManagementService } from 'src/app/services/financial-info/management.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-management',
@@ -16,50 +20,104 @@ export class ManagementComponent implements OnInit {
     oldManagementObj: Management;
     newManagementObj: Management;
     trGroupMax: number;
+    companyInfo: CompanyInfo;
 
     constructor(
+        private router: Router,
         private excelUploadService: ExcelUploadService,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
-    ) { }
+        private sharedService: SharedService,
+        private managementService:ManagementService
+    ) { 
+        this.companyInfo = new CompanyInfo();
+    }
 
     ngOnInit(): void {
         this.title = 'Management';
 
-        this.getManagementList();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.getList();
     }
 
 
-    getManagementList() {
-        let managementObj = new Management();
-        managementObj.id = this.getId();
-        managementObj.itemCode = 'Name'
-        managementObj.itemValue = 'Mr. Wickramasinghe Senanayake Appuhamilage Vipul Abayanga Senanayake'
-        this.managementList.push(managementObj);
+    getList() {
+        // let managementObj = new Management();
+        // managementObj.id = this.getId();
+        // managementObj.itemCode = 'Name'
+        // managementObj.itemValue = 'Mr. Wickramasinghe Senanayake Appuhamilage Vipul Abayanga Senanayake'
+        // this.managementList.push(managementObj);
 
-        managementObj = new Management();
-        managementObj.id = this.getId();
-        managementObj.itemCode = 'Designation:'
-        managementObj.itemValue = 'Managing Director'
-        this.managementList.push(managementObj);
+        // managementObj = new Management();
+        // managementObj.id = this.getId();
+        // managementObj.itemCode = 'Designation:'
+        // managementObj.itemValue = 'Managing Director'
+        // this.managementList.push(managementObj);
 
-        managementObj = new Management();
-        managementObj.id = this.getId();
-        managementObj.itemCode = 'NIC/Passport No.'
-        managementObj.itemValue = '692440129 V'
-        this.managementList.push(managementObj);
+        // managementObj = new Management();
+        // managementObj.id = this.getId();
+        // managementObj.itemCode = 'NIC/Passport No.'
+        // managementObj.itemValue = '692440129 V'
+        // this.managementList.push(managementObj);
 
-        managementObj = new Management();
-        managementObj.id = this.getId();
-        managementObj.itemCode = 'Address:'
-        managementObj.itemValue = 'No. 45/2, Negombo Road, Bopitiya, Sri Lanka'
-        this.managementList.push(managementObj);
+        // managementObj = new Management();
+        // managementObj.id = this.getId();
+        // managementObj.itemCode = 'Address:'
+        // managementObj.itemValue = 'No. 45/2, Negombo Road, Bopitiya, Sri Lanka'
+        // this.managementList.push(managementObj);
 
-        managementObj = new Management();
-        managementObj.id = this.getId();
-        managementObj.itemCode = 'Nationality:'
-        managementObj.itemValue = 'Sri Lankan'
-        this.managementList.push(managementObj);
+        // managementObj = new Management();
+        // managementObj.id = this.getId();
+        // managementObj.itemCode = 'Nationality:'
+        // managementObj.itemValue = 'Sri Lankan'
+        // this.managementList.push(managementObj);
+
+        this.loader.show();
+        this.managementService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.managementList = data.data;
+            },
+            complete: () => {
+                this.managementList.forEach(obj => {
+                    obj.isEdit = false;
+                });
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    onSave() {
+        this.managementList.forEach(obj => {
+            obj.companyInfo = this.companyInfo;
+        });
+        console.log(this.managementList);
+
+        if (this.managementList.length > 0) {
+            this.loader.show();
+
+            this.managementService.save(this.managementList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     onEdit(managementObj: Management) {
@@ -130,13 +188,6 @@ export class ManagementComponent implements OnInit {
             managementObj.isEdit = false;
         }
 
-    }
-
-    onSave() {
-        this.managementList.forEach(obj => {
-            obj.isEdit = false;
-        });
-        console.log(this.managementList);
     }
 
     validateField(item: any) {

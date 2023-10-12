@@ -6,73 +6,119 @@
 <div class="container">
     <div class="row">
         <div class="col-xl-12 order-xl-1">
+
+            <div class="card-body">
+                <form [formGroup]="contactsForm">
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label class="form-control-label">Registration Address :</label>
+                                    <input type="text" formControlName="name" [(ngModel)]="companyInfo.name"
+                                        class="form-control form-control-alternative" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="telephoneNo">Telephone No</label>
+                                    <textarea [(ngModel)]="contact.telephoneNo" id="telephoneNo" rows="4"
+                                        formControlName="telephoneNo" class="form-control form-control-alternative"
+                                        placeholder="Telephone No">
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="faxNo">Fax No</label>
+                                    <textarea [(ngModel)]="contact.faxNo" id="faxNo" formControlName="faxNo" rows="4"
+                                        class="form-control form-control-alternative" placeholder="Fax No">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="email">E-mail</label>
+                                    <textarea [(ngModel)]="contact.email" id="email" formControlName="email" rows="4"
+                                        class="form-control form-control-alternative" placeholder="E-mail">
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="website">Website</label>
+                                    <textarea type="text" [(ngModel)]="contact.website" id="website" rows="4"
+                                        formControlName="website" class="form-control form-control-alternative"
+                                        placeholder="Website">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pl-lg-4 pb-4">
+                        <button *ngIf="!isUpdateMode" type="button" class="btn btn-success"
+                            (click)="submit()">Save</button>
+                        <button *ngIf="isUpdateMode" type="button" class="btn btn-warning"
+                            (click)="update()">Update</button>
+                        <button type="button" class="btn btn-primary float-right" (click)="resetForm()">Reset</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-xl-12 order-xl-1">
             <div class="pl-lg-4">
                 <div class="row">
                     <div class="col-lg-12 pb-2">
                         <div class="table-wrapper">
-                            
+
                             <table class="table table-bordered">
                                 <thead>
                                     <tr class="bg-secondary text-black">
-                                        <th colspan="4">Registration Address</th>        
+                                        <th colspan="4">Registration Address</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td colspan="4">Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka</td>                                        
+                                        <td colspan="4">{{companyInfo.name}}</td>
                                     </tr>
                                 </tbody>
 
                                 <thead>
                                     <tr class="bg-secondary text-black">
-                                        <th>Telephone No</th>                                        
-                                        <th>Fex No</th>                                        
-                                        <th>Email</th>                                        
-                                        <th>Website</th>                                        
+                                        <th>Telephone No</th>
+                                        <th>Fex No</th>
+                                        <th>Email</th>
+                                        <th>Website</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>+94 112252542,
-                                            +94 112252557
-                                        </td>    
-                                        <td>Nil</td>                                    
-                                        <td>info@chiefwaygroup.com</td>                                    
-                                        <td>www.chiefwaygroup.com
-                                            www.sterlingapparel.com.hk
-                                        </td>                                    
+                                        <td style="width: 25%;white-space: normal;">{{contact.telephoneNo}}</td>
+                                        <td style="width: 25%;white-space: normal;">{{contact.faxNo}}</td>
+                                        <td style="width: 25%;white-space: normal;">{{contact.email}}</td>
+                                        <td style="width: 25%;white-space: normal;">{{contact.website}}</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <!-- <table class="table table-bordered">
-                                <thead>
-                                    <tr class="bg-secondary text-black">
-                                        <th>Telephone No</th>                                        
-                                        <th>Fex No</th>                                        
-                                        <th>Email</th>                                        
-                                        <th>Website</th>                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>+94 112252542,
-                                            +94 112252557
-                                        </td>    
-                                        <td>Nil</td>                                    
-                                        <td>info@chiefwaygroup.com</td>                                    
-                                        <td>www.chiefwaygroup.com
-                                            www.sterlingapparel.com.hk
-                                        </td>                                    
-                                    </tr>
-                                </tbody>
-                            </table> -->
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
 
-            
+
 
         </div>
     </div>

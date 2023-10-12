@@ -2,103 +2,145 @@ import { Component, OnInit } from '@angular/core';
 import { BasicInfo } from 'src/app/models/financial-info/basic-info.model';
 
 @Component({
-  selector: 'app-basic-information',
-  templateUrl: './basic-information.component.html',
-  styleUrls: ['./basic-information.component.scss']
+    selector: 'app-basic-information',
+    templateUrl: './basic-information.component.html',
+    styleUrls: ['./basic-information.component.scss']
 })
 export class BasicInformationComponent implements OnInit {
 
-  title: string;
-  basicInfoList: BasicInfo[] = [];
-  oldBasicInfoObj: BasicInfo;
-  basicInfoNewObj: BasicInfo;  
+    title: string;
+    basicInfoList: BasicInfo[] = [];
+    oldBasicInfoObj: BasicInfo;
+    basicInfoNewObj: BasicInfo;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit(): void {
-    this.title='Basic Information';
-    this.getBasicInfoList();
-  }
+    ngOnInit(): void {
+        this.title = 'Basic Information';
+        this.getBasicInfoList();
+    }
 
 
-  getBasicInfoList() {
-    let basicInfoObj = new BasicInfo();
-    basicInfoObj.item='Name'
-    this.basicInfoList.push(basicInfoObj);
-    basicInfoObj = new BasicInfo();
-    basicInfoObj.item='Established'
-    this.basicInfoList.push(basicInfoObj);
-    basicInfoObj = new BasicInfo();
-    basicInfoObj.item='Legal Address'
-    this.basicInfoList.push(basicInfoObj);
-    basicInfoObj = new BasicInfo();
-    basicInfoObj.item='Operation Address'
-    this.basicInfoList.push(basicInfoObj);
-}
+    getBasicInfoList() {
+        let basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Name:';
+        basicInfoObj.itemValue = 'Chiefway Katunayake (Private) Limited';  
+        this.basicInfoList.push(basicInfoObj);
 
-onEdit(basicInfoObj: BasicInfo) {
-    this.oldBasicInfoObj = basicInfoObj;
-    this.basicInfoList.forEach(obj => {
-        obj.isEdit = false;
-    });
-    basicInfoObj.isEdit = true;
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Established:';
+        basicInfoObj.itemValue = '2017:';
+        this.basicInfoList.push(basicInfoObj);
 
-}
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Legal Address:';
+        basicInfoObj.itemValue = 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
+        this.basicInfoList.push(basicInfoObj);
 
-onDelete(basicInfoObj: BasicInfo) {
-    this.basicInfoList.splice(this.basicInfoList.findIndex(e => e.item === basicInfoObj.item),1);
-}
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Operation Address:';
+        basicInfoObj.itemValue= 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
+        this.basicInfoList.push(basicInfoObj);
 
-onAdd() {
-    this.oldBasicInfoObj = null;
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'State:';
+        basicInfoObj.itemValue= '';
+        this.basicInfoList.push(basicInfoObj);
 
-    this.basicInfoNewObj = new BasicInfo();
-    this.basicInfoNewObj.item='';
-    this.basicInfoNewObj.description='';
-    this.basicInfoNewObj.isEdit=true;
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Main Activity:';
+        basicInfoObj.itemValue= 'Manufacture, Import and Export of apparel';
+        this.basicInfoList.push(basicInfoObj);
 
-    this.basicInfoList.push(this.basicInfoNewObj);
-}
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Legal Form:';
+        basicInfoObj.itemValue= 'Private Limited Liability Company';
+        this.basicInfoList.push(basicInfoObj);
 
-onUpdate(basicInfoObj: BasicInfo) {
-    console.log(basicInfoObj);
-    basicInfoObj.isEdit = false;
-}
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Business Scale:';
+        basicInfoObj.itemValue= 'Medium';
+        this.basicInfoList.push(basicInfoObj);
 
-onCancel(basicInfoObj: BasicInfo) {
-    if (this.oldBasicInfoObj == undefined || this.oldBasicInfoObj == null) {
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Status:';
+        basicInfoObj.itemValue= 'Active';
+        this.basicInfoList.push(basicInfoObj);
+
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Listed Status:';
+        basicInfoObj.itemValue= 'Not Listed';
+        this.basicInfoList.push(basicInfoObj);
+
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Payment Practices:';
+        basicInfoObj.itemValue= 'Payments Are Made Mostly According To Terms';
+        this.basicInfoList.push(basicInfoObj);
+    }
+
+    onEdit(basicInfoObj: BasicInfo) {
+        this.oldBasicInfoObj = basicInfoObj;
+        this.basicInfoList.forEach(obj => {
+            obj.isEdit = false;
+        });
         basicInfoObj.isEdit = true;
-        this.basicInfoList.splice(this.basicInfoList.findIndex(e => e.item === basicInfoObj.item),1);
-    } else {
-       
-        basicInfoObj.item = this.oldBasicInfoObj.item;
-        basicInfoObj.description = this.oldBasicInfoObj.description;
+
+    }
+
+    onDelete(basicInfoObj: BasicInfo) {
+        this.basicInfoList.splice(this.basicInfoList.findIndex(e => e.itemCode === basicInfoObj.itemCode), 1);
+    }
+
+    onAdd() {
+        this.oldBasicInfoObj = null;
+
+        this.basicInfoNewObj = new BasicInfo();
+        this.basicInfoNewObj.itemCode = '';
+        this.basicInfoNewObj.itemValue = '';
+        this.basicInfoNewObj.isEdit = true;
+
+        this.basicInfoList.push(this.basicInfoNewObj);
+    }
+
+    onUpdate(basicInfoObj: BasicInfo) {
+        console.log(basicInfoObj);
         basicInfoObj.isEdit = false;
     }
 
-}
+    onCancel(basicInfoObj: BasicInfo) {
+        if (this.oldBasicInfoObj == undefined || this.oldBasicInfoObj == null) {
+            basicInfoObj.isEdit = true;
+            this.basicInfoList.splice(this.basicInfoList.findIndex(e => e.itemCode === basicInfoObj.itemCode), 1);
+        } else {
 
-onSave(){
-    this.basicInfoList.forEach(obj => {
-        obj.isEdit = false;
-    });
-    console.log(this.basicInfoList);
-}
+            basicInfoObj.itemCode = this.oldBasicInfoObj.itemCode;
+            basicInfoObj.itemValue = this.oldBasicInfoObj.itemValue;
+            basicInfoObj.isEdit = false;
+        }
 
-validateField(item: any) {
-    if (item !== '') {
-        return false;
-    } else {
-        return true;
     }
 
-}
-
-validateForm(basicInfoObj: BasicInfo) {
-    if (basicInfoObj.item !== '' && basicInfoObj.description !== '') {
-        return false;
-    } else {
-        return true;
+    onSave() {
+        this.basicInfoList.forEach(obj => {
+            obj.isEdit = false;
+        });
+        console.log(this.basicInfoList);
     }
-}
+
+    validateField(item: any) {
+        if (item !== '') {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    validateForm(basicInfoObj: BasicInfo) {
+        if (basicInfoObj.itemCode !== '' && basicInfoObj.itemValue !== '') {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

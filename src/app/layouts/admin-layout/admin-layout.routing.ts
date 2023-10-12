@@ -10,6 +10,7 @@ import { RoleFeatureMappingComponent } from 'src/app/pages/permission/role-featu
 import { MenuComponent } from 'src/app/pages/permission/menu/menu.component';
 import { FinancialInfoComponent } from 'src/app/pages/financial-info/financial-info.component';
 import { CompanyListComponent } from 'src/app/pages/financial-info/company-list/company-list.component';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -22,7 +23,11 @@ export const AdminLayoutRoutes: Routes = [
             { path: 'feature', component: FeatureComponent },
             { path: 'feature-map', component: RoleFeatureMappingComponent },
             { path: 'organization', component: OrganizationComponent },
-            { path: 'financial-info', component: FinancialInfoComponent },
+            {
+                path: 'financial-info', component: FinancialInfoComponent,
+                children: [{ path: 'company-info', component: CompanyInfo }]
+            },
+            // { path: 'company-info', component: CompanyInfo },
             { path: 'company-list', component: CompanyListComponent }
         ]
     }

@@ -26,13 +26,13 @@
                                     <tr class="bg-secondary text-black">
                                         <th>Financial Item</th>
                                         <th>Currency</th>
-                                        <th>Amount</th>
+                                        <th style="text-align: center;">Amount</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let fSummary of financialSummaryList">
-                                        <td style="width: 40%;">
+                                        <td style="width: 50%;">
                                             <div *ngIf="fSummary.isEdit">
                                                 <input type="text" [(ngModel)]="fSummary.itemCode">
                                                 <div class="text-danger" *ngIf="validateField(fSummary.itemCode)">
@@ -59,7 +59,7 @@
                                                 {{fSummary.currency}}
                                             </div>
                                         </td>
-                                        <td style="width: 40%;">
+                                        <td style="width: 30%; text-align: center;">
                                             <div *ngIf="fSummary.isEdit">
                                                 <input type="text" [(ngModel)]="fSummary.amount">
                                                 <div class="text-danger" *ngIf="validateField(fSummary.amount)">
@@ -70,7 +70,7 @@
                                                 {{fSummary.amount}}
                                             </div>
                                         </td>
-                                        <td style="width: 10%;">
+                                        <td class="action-td">
                                             <div *ngIf="!fSummary.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill" (click)="onEdit(fSummary)"></i></a>
@@ -79,7 +79,7 @@
                                             </div>
                                             <div *ngIf="fSummary.isEdit">
                                                 <a class="add" [ngClass]="{'isDisabled':validateForm(fSummary)}"
-                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(fSummary)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                                                         class="fa fa-times-circle" (click)="onCancel(fSummary)"></i></a>
@@ -94,9 +94,9 @@
 
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <label class="form-control-label" for="assessmentRemarks"> Comments</label>
+                            <label class="form-control-label" for="comments"> Comments</label>
                             <textarea _ngcontent-c6="" class="form-control form-control-alternative"
-                                id="assessmentRemarks" name="assessmentRemarks"
+                                id="comments" [(ngModel)]="comments"
                                 placeholder="" rows="4"></textarea>
                         </div>
                     </div>

@@ -15,7 +15,7 @@ import { UtilService } from "src/app/services/util.service";
 import { UserService } from "src/app/services/user.service";
 import { Role } from "src/app/models/role.model";
 import { RoleService } from "src/app/services/role.service";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: "app-user-profile",
@@ -41,6 +41,7 @@ export class UserProfileComponent implements OnInit {
         private utilService: UtilService,
         private userService: UserService,
         private roleService: RoleService,
+        private route: ActivatedRoute,
     ) {
         this.user = new User();
         this.selectedRowIndex = -1;
@@ -60,6 +61,11 @@ export class UserProfileComponent implements OnInit {
 
         this.loadRoleList();
         this.loadListData();
+
+        this.route.queryParams.subscribe((params: any) => {
+            console.log(params);
+            console.log(params.data);
+        })
     }
 
     submit() {

@@ -1,104 +1,128 @@
-
 <div class="header pb-8 pt-0 pt-lg-0 d-flex align-items-center">
 
 </div>
 <div class="container-fluid mt--7">
     <div class="row">
         <div class="col-xl-12 order-xl-1">
-                <div class="card-body">
-                    <form>
-                        <div class="pl-lg-4">
+            <div class="card-body">
+                <form>
+                    <div class="pl-lg-4">
 
-                            <div class="row">
-                                <!-- Page content -->
-                                <div id="map-canvas" class="map-canvas" data-lat="23.754210678966395"
-                                                    data-lng="90.43841059832047" style="height: 300px;"></div>
-                            </div><br><br>
-                        </div>
+                        <div class="row">
+                            <!-- Page content -->
+                            <div id="map-canvas" class="map-canvas" data-lat="23.754210678966395"
+                                data-lng="90.43841059832047" style="height: 300px;"></div>
+                        </div><br><br>
+                    </div>
 
-                        <div class="pl-lg-4">
-                            <div class="row">
-                                <div class="col-lg-12 pb-2">
-                                    <div class="table-wrapper">
-                                        <div class="table-title">
-                                            <div class="row">
-                                                <div class="col-sm-8">
-                                                </div>
-                                                <div class="col-sm-4 pb-2">
-                                                    <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
-                                                            class="fa fa-plus"></i>
-                                                        Add New</button>
-                                                </div>
+                    <div class="pl-lg-4">
+                        <div class="row">
+                            <div class="col-lg-12 pb-2">
+                                <div class="table-wrapper">
+                                    <div class="table-title">
+                                        <div class="row">
+                                            <div class="col-sm-8">
+                                            </div>
+                                            <div class="col-sm-4 pb-2">
+                                                <button type="button" class="btn btn-primary add-new"
+                                                    (click)="onAdd()"><i class="fa fa-plus"></i>
+                                                    Add New</button>
                                             </div>
                                         </div>
-            
-                                        <table class="table table-bordered">
-                                            <tbody>
-                                                <tr *ngFor="let location of locationList; let i = index">
-            
-                                                    <td style="width: 30%; font-weight: bold;">
-                                                        <div *ngIf="location.isEdit">
-                                                            <input type="text" [(ngModel)]="location.itemCode">
-                                                            <div class="text-danger" *ngIf="validateField(location.itemCode)">
-                                                                <span>*Required</span>
-                                                            </div>
-                                                        </div>
-                                                        <div *ngIf="!location.isEdit">
-                                                            {{location.itemCode}}
-                                                        </div>
-                                                    </td>                                        
-                                                    <td style="width: 60%;white-space: normal;">
-                                                        <div *ngIf="location.isEdit">
-                                                            <input type="text" [(ngModel)]="location.itemValue">
-                                                            <div class="text-danger"
-                                                                *ngIf="validateField(location.itemValue)">
-                                                                <span>*Required</span>
-                                                            </div>
-                                                        </div>
-                                                        <div *ngIf="!location.isEdit">
-                                                            {{location.itemValue}}
-                                                        </div>
-                                                    </td>
-            
-                                                    <td style="width: 10%;">
-                                                        <div *ngIf="!location.isEdit">
-                                                            <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                                    class="bi bi-pencil-fill"
-                                                                    (click)="onEdit(location)"></i></a>
-                                                            <a class="delete" title="Delete" data-toggle="tooltip"><i
-                                                                    class="bi bi-trash-fill"
-                                                                    (click)="onDelete(location)"></i></a>
-                                                        </div>
-                                                        <div *ngIf="location.isEdit">
-                                                            <a class="add"
-                                                                [ngClass]="{'isDisabled':validateForm(location)}"
-                                                                title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
-                                                                    (click)="onUpdate(location)"></i></a>
-                                                            <a class="cancel" title="Cancel" data-toggle="tooltip"><i
-                                                                    class="fa fa-times-circle"
-                                                                    (click)="onCancel(location)"></i></a>
-                                                        </div>
-            
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
                                     </div>
+
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td style="width: 30%; font-weight: bold;">
+                                                    Registered Address:
+                                                </td>
+                                                <td style="width: 60%;white-space: normal;">
+                                                    {{companyInfo.legalAddress}}
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 30%; font-weight: bold;">
+                                                    Business Address:
+                                                </td>
+                                                <td style="width: 60%;white-space: normal;">
+                                                    {{companyInfo.operationAddress}}
+                                                </td>
+                                                <td></td>
+                                            </tr>
+
+                                            <tr *ngFor="let location of locationList; let i = index">
+
+                                                <td style="width: 30%; font-weight: bold;">
+                                                    <div *ngIf="location.isEdit">
+                                                        <input type="text" [(ngModel)]="location.itemCode">
+                                                        <!-- <div>{{location.itemCode}}</div> -->
+                                                        <div class="text-danger"
+                                                            *ngIf="validateField(location.itemCode)">
+                                                            <span>*Required</span>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="!location.isEdit">
+                                                        {{location.itemCode}}
+                                                    </div>
+                                                </td>
+                                                <td style="width: 60%;white-space: normal;">
+                                                    <div *ngIf="location.isEdit">
+                                                        <textarea [(ngModel)]="location.itemValue" rows="2"></textarea>
+                                                        <div class="text-danger"
+                                                            *ngIf="validateField(location.itemValue)">
+                                                            <span>*Required</span>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="!location.isEdit">
+                                                        {{location.itemValue}}
+                                                    </div>
+                                                </td>
+
+                                                <td class="action-td">
+                                                    <div *ngIf="!location.isEdit">
+                                                        <a class="edit" title="Edit" data-toggle="tooltip">
+                                                            <i class="bi bi-pencil-fill" (click)="onEdit(location)">
+                                                            </i>
+                                                        </a>
+                                                        <a class="delete" title="Delete" data-toggle="tooltip">
+                                                            <i class="bi bi-trash-fill" (click)="onDelete(location)">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                    <div *ngIf="location.isEdit">
+                                                        <a class="add" [ngClass]="{'isDisabled':validateForm(location)}"
+                                                            title="Update" data-toggle="tooltip">
+                                                            <i class="bi bi-floppy-fill" (click)=" onUpdate(location)">
+                                                            </i>
+                                                        </a>
+                                                        <a class="cancel" title="Cancel" data-toggle="tooltip">
+                                                            <i class="fa fa-times-circle" (click)="onCancel(location)">
+                                                            </i>
+                                                        </a>
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="pl-lg-4 pb-4">
-                            <button type="button" class="btn btn-primary">Save</button>
-                        </div>
+                    <div class="pl-lg-4 pb-4">
+                        <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+                    </div>
 
 
-                    </form>
-                </div>
+                </form>
+            </div>
         </div>
     </div>
 
 
 
-    
+
 </div>

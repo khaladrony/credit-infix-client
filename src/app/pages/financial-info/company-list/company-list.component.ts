@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { CompanyInfoService } from 'src/app/services/financial-info/company-info.service';
@@ -13,6 +14,7 @@ export class CompanyListComponent implements OnInit {
     companyInfoList: CompanyInfo[] = [];
 
     constructor(
+        private router: Router,
         private loader: NgxSpinnerService,
         private companyInfoService: CompanyInfoService
     ) { }
@@ -38,6 +40,11 @@ export class CompanyListComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    onSelectRow(companyInfo: CompanyInfo, index: number) {
+
+        this.router.navigate(['admin/financial-info/company-info'], { queryParams: { data: JSON.stringify(companyInfo), type: 1 } });
     }
 
 }

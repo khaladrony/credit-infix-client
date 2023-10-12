@@ -11,79 +11,136 @@
                     <div class="col-lg-12 pb-2">
                         <div class="table-wrapper">
 
+                            <div class="table-title">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                    </div>
+                                    <div class="col-sm-4 pb-2">
+                                        <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
+                                                class="fa fa-plus"></i>
+                                            Add New</button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bg-secondary text-black">
+                                        <th>Name</th>
+                                        <th style="text-align: center;">Percentage(%)</th>
+                                        <th style="text-align: center;">Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let riskProfile of riskProfileList; let i = index">
+
+                                        <td style="width: 40%; font-weight: bold;">
+                                            <div *ngIf="riskProfile.isEdit">
+                                                <input type="text" [(ngModel)]="riskProfile.itemCode">
+                                                <div class="text-danger" *ngIf="validateField(riskProfile.itemCode)">
+                                                    <span>*Required</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!riskProfile.isEdit">
+                                                {{riskProfile.itemCode}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 20%;white-space: normal;text-align: center;">
+                                            <div *ngIf="riskProfile.isEdit">
+                                                <input type="text" [(ngModel)]="riskProfile.percentage">
+                                            </div>
+                                            <div *ngIf="!riskProfile.isEdit">
+                                                {{riskProfile.percentage}}
+                                            </div>
+                                        </td>
+                                        <td style="width: 30%;white-space: normal;text-align: center;">
+                                            <div *ngIf="riskProfile.isEdit">
+                                                <input type="text" [(ngModel)]="riskProfile.status">
+                                            </div>
+                                            <div *ngIf="!riskProfile.isEdit">
+                                                {{riskProfile.status}}
+                                            </div>
+                                        </td>
+
+                                        <td style="width: 10%;">
+                                            <div *ngIf="!riskProfile.isEdit">
+                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
+                                                        class="bi bi-pencil-fill" (click)="onEdit(riskProfile)"></i></a>
+                                                <a class="delete" title="Delete" data-toggle="tooltip"><i
+                                                        class="bi bi-trash-fill"
+                                                        (click)="onDelete(riskProfile)"></i></a>
+                                            </div>
+                                            <div *ngIf="riskProfile.isEdit">
+                                                <a class="add" [ngClass]="{'isDisabled':validateForm(riskProfile)}"
+                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
+                                                        (click)="onUpdate(riskProfile)"></i></a>
+                                                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
+                                                        class="fa fa-times-circle"
+                                                        (click)="onCancel(riskProfile)"></i></a>
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="pb-4"></div>
+
+                            <table class="table table-bordered" id="t2">
                                 <tbody>
 
                                     <tr>
-                                        <td style="width: 30%;">
-                                            Age / Operation
-                                        </td>
+                                        <td style="width: 30%;"></td>
                                         <td style="width: 70%;">
                                             <div class="pb-4">
                                                 <span style="float: left;">1%</span>
                                                 <span style="float: right;">100%</span>
-                                            </div>                                            
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': getPercentage(1)}"
-                                                    aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                                    {{getPercentage(1)}}
-                                                </div>
                                             </div>
-                                            <span class="span-st">Moderate</span>
                                         </td>
                                     </tr>
 
-                                    <tr>
+                                    <tr *ngFor="let riskProfile of riskProfileList; let i = index">
                                         <td style="width: 30%;">
-                                            Management
+                                            {{riskProfile.itemCode}}
                                         </td>
                                         <td style="width: 70%;">
                                             <div class="progress">
-                                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': getPercentage(2)}"
-                                                    aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                                    {{getPercentage(2)}}
+                                                <div class="progress-bar" role="progressbar"
+                                                    [ngStyle]="{'width': getPercentage(riskProfile.percentage)}" aria-valuenow="35"
+                                                    aria-valuemin="0" aria-valuemax="100">
+                                                    {{riskProfile.percentage}}
                                                 </div>
                                             </div>
-                                            <span class="span-st">Good</span>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td style="width: 30%;">
-                                            Finance
-                                        </td>
-                                        <td style="width: 70%;">
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" [ngStyle]="{'width': getPercentage(3)}"
-                                                    aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                                    {{getPercentage(3)}}
-                                                </div>
-                                            </div>
-                                            <span class="span-st">Excellent</span>
+                                            <span class="span-st"> {{riskProfile.status}}</span>
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td colspan="2" style="white-space: normal;">
                                             The risk profile provides a snapshot of the current state of the
-                                                business.
-                                                Associated with each area you will find an individual assessment,
-                                                indicating how well the business is performing. These areas are all part
-                                                of the Rating model. The graphs show how high on each scale the
-                                                business is performing. If all boxes are filled, it indicates best
-                                                possible
-                                                performance within that area.
+                                            business.
+                                            Associated with each area you will find an individual assessment,
+                                            indicating how well the business is performing. These areas are all part
+                                            of the Rating model. The graphs show how high on each scale the
+                                            business is performing. If all boxes are filled, it indicates best
+                                            possible
+                                            performance within that area.
                                         </td>
                                     </tr>
-
                                 </tbody>
                             </table>
+
+
                         </div>
                     </div>
                 </div>
             </div>
 
-
+            <div class="pl-lg-4 pb-4">
+                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+            </div>
         </div>
     </div>
 

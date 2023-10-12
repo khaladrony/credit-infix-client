@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { NatureOfBusiness } from 'src/app/models/financial-info/nature-of-business.model';
+import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { NatureOfBusinessService } from 'src/app/services/financial-info/nature-of-business.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-nature-of-business',
@@ -12,48 +19,108 @@ export class NatureOfBusinessComponent implements OnInit {
     natureOfBusinessList: NatureOfBusiness[] = [];
     oldNatureOfBusinessObj: NatureOfBusiness;
     newNatureOfBusinessObj: NatureOfBusiness;
+    companyInfo: CompanyInfo;
 
-    constructor() { }
+    constructor(
+        private router: Router,
+        private excelUploadService: ExcelUploadService,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+        private sharedService: SharedService,
+        private natureOfBusinessService: NatureOfBusinessService
+    ) {
+        this.companyInfo = new CompanyInfo();
+    }
 
     ngOnInit(): void {
         this.title = 'Nature Of Business';
 
-        this.getNatureOfBusinessList();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.getList();
     }
 
-    getNatureOfBusinessList() {
-        let natureOfBusinessObj = new NatureOfBusiness();
-        natureOfBusinessObj.id = this.getId();
-        natureOfBusinessObj.itemCode = 'Business Activity:';
-        natureOfBusinessObj.itemValue = 'Manufacture, Import and Export of apparel Products.';
-        this.natureOfBusinessList.push(natureOfBusinessObj);
+    getList() {
+        // let natureOfBusinessObj = new NatureOfBusiness();
+        // natureOfBusinessObj.id = this.getId();
+        // natureOfBusinessObj.itemCode = 'Business Activity:';
+        // natureOfBusinessObj.itemValue = this.companyInfo.businessType;
+        // this.natureOfBusinessList.push(natureOfBusinessObj);
 
-        natureOfBusinessObj = new NatureOfBusiness();
-        natureOfBusinessObj.id = this.getId();
-        natureOfBusinessObj.itemCode = 'Range of Products:';
-        natureOfBusinessObj.itemValue = '● Blazers ●  Coats ● Jackets ● Pants ● Skirts';
-        this.natureOfBusinessList.push(natureOfBusinessObj);
+        // natureOfBusinessObj = new NatureOfBusiness();
+        // natureOfBusinessObj.id = this.getId();
+        // natureOfBusinessObj.itemCode = 'Range of Products:';
+        // natureOfBusinessObj.itemValue = '● Blazers ●  Coats ● Jackets ● Pants ● Skirts';
+        // this.natureOfBusinessList.push(natureOfBusinessObj);
 
-        natureOfBusinessObj = new NatureOfBusiness();
-        natureOfBusinessObj.id = this.getId();
-        natureOfBusinessObj.itemCode = 'Certifications:';
-        natureOfBusinessObj.itemValue = 'NA';
-        this.natureOfBusinessList.push(natureOfBusinessObj);
+        // natureOfBusinessObj = new NatureOfBusiness();
+        // natureOfBusinessObj.id = this.getId();
+        // natureOfBusinessObj.itemCode = 'Certifications:';
+        // natureOfBusinessObj.itemValue = 'NA';
+        // this.natureOfBusinessList.push(natureOfBusinessObj);
 
-        natureOfBusinessObj = new NatureOfBusiness();
-        natureOfBusinessObj.id = this.getId();
-        natureOfBusinessObj.itemCode = 'Brands :';
-        natureOfBusinessObj.itemValue = 'NA';
-        this.natureOfBusinessList.push(natureOfBusinessObj);
+        // natureOfBusinessObj = new NatureOfBusiness();
+        // natureOfBusinessObj.id = this.getId();
+        // natureOfBusinessObj.itemCode = 'Brands :';
+        // natureOfBusinessObj.itemValue = 'NA';
+        // this.natureOfBusinessList.push(natureOfBusinessObj);
 
-        natureOfBusinessObj = new NatureOfBusiness();
-        natureOfBusinessObj.id = this.getId();
-        natureOfBusinessObj.itemCode = 'Group Name::';
-        natureOfBusinessObj.itemValue = 'NA';
-        this.natureOfBusinessList.push(natureOfBusinessObj);
+        // natureOfBusinessObj = new NatureOfBusiness();
+        // natureOfBusinessObj.id = this.getId();
+        // natureOfBusinessObj.itemCode = 'Group Name::';
+        // natureOfBusinessObj.itemValue = 'NA';
+        // this.natureOfBusinessList.push(natureOfBusinessObj);
 
-        
+        this.loader.show();
+        this.natureOfBusinessService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.natureOfBusinessList = data.data;
+            },
+            complete: () => {
+                this.natureOfBusinessList.forEach(obj => {
+                    obj.isEdit = false;
+                    if(obj.itemCode === 'Business Activity:'){
+                        obj.itemValue = obj.companyInfo.businessType;
+                    }
+                    
+                });
 
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+
+    }
+
+    onSave() {
+        this.natureOfBusinessList.forEach(obj => {
+            obj.companyInfo = this.companyInfo;
+        });
+        console.log(this.natureOfBusinessList);
+
+        if (this.natureOfBusinessList.length > 0) {
+            this.loader.show();
+
+            this.natureOfBusinessService.save(this.natureOfBusinessList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     onEdit(natureOfBusinessObj: NatureOfBusiness) {
@@ -99,13 +166,6 @@ export class NatureOfBusinessComponent implements OnInit {
             natureOfBusinessObj.isEdit = false;
         }
 
-    }
-
-    onSave() {
-        this.natureOfBusinessList.forEach(obj => {
-            obj.isEdit = false;
-        });
-        console.log(this.natureOfBusinessList);
     }
 
     validateField(item: any) {

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { RegistrationDetail } from 'src/app/models/financial-info/registration-detail.model';
+import { RegistrationDetailService } from 'src/app/services/financial-info/registration-detail.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-registration-details',
@@ -12,105 +18,133 @@ export class RegistrationDetailsComponent implements OnInit {
     registrationDetailList: RegistrationDetail[] = [];
     oldRegistrationDetailObj: RegistrationDetail;
     newRegistrationDetailObj: RegistrationDetail;
+    companyInfo: CompanyInfo;
 
-    constructor() { }
+    constructor(
+        private router: Router,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+        private sharedService: SharedService,
+        private registrationDetailService: RegistrationDetailService
+    ) {
+        this.companyInfo = new CompanyInfo();
+     }
 
     ngOnInit(): void {
         this.title = 'Registration Details';
 
-        this.getRegistrationDetailList();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.getList();
     }
 
-    getRegistrationDetailList() {
-        let registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = 'Registration Information';
-        registrationDetailObj.subItem = 'Registration Date';
-        registrationDetailObj.itemValue = '31st March 2017';
-        registrationDetailObj.isRowSpan = false;
-        this.registrationDetailList.push(registrationDetailObj);
+    getList() {
+        // let registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Registration Information :';
+        // registrationDetailObj.subItem = 'Registration Date';
+        // registrationDetailObj.itemValue = '31st March 2017';
+        // registrationDetailObj.isRowSpan = false;
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = '';
-        registrationDetailObj.subItem = 'Company Registration No';
-        registrationDetailObj.itemValue = 'AAD44882';
-        registrationDetailObj.isRowSpan = true;
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Registration Information :';
+        // registrationDetailObj.subItem = 'Company Registration No';
+        // registrationDetailObj.itemValue = 'AAD44882';
+        // registrationDetailObj.isRowSpan = true;
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = '';
-        registrationDetailObj.subItem = 'Business Identification No(BIN)';
-        registrationDetailObj.itemValue = 'NA';
-        registrationDetailObj.isRowSpan = true;
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Registration Information :';
+        // registrationDetailObj.subItem = 'Business Identification No(BIN)';
+        // registrationDetailObj.itemValue = 'NA';
+        // registrationDetailObj.isRowSpan = true;
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = '';
-        registrationDetailObj.subItem = 'Import Registration Certificate No (IRC):';
-        registrationDetailObj.itemValue = 'NA';
-        registrationDetailObj.isRowSpan = true;
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Registration Information :';
+        // registrationDetailObj.subItem = 'Import Registration Certificate No (IRC):';
+        // registrationDetailObj.itemValue = 'NA';
+        // registrationDetailObj.isRowSpan = true;
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = '';
-        registrationDetailObj.subItem = 'Tax Identification No (TIN):';
-        registrationDetailObj.itemValue = 'NA';
-        registrationDetailObj.isRowSpan = true;
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Registration Information :';
+        // registrationDetailObj.subItem = 'Tax Identification No (TIN):';
+        // registrationDetailObj.itemValue = 'NA';
+        // registrationDetailObj.isRowSpan = true;
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = '';
-        registrationDetailObj.subItem = 'BGMEA Reg. No:';
-        registrationDetailObj.itemValue = 'NA';
-        registrationDetailObj.isRowSpan = true;
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Registration Information :';
+        // registrationDetailObj.subItem = 'BGMEA Reg. No:';
+        // registrationDetailObj.itemValue = 'NA';
+        // registrationDetailObj.isRowSpan = true;
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = 'Capital:';
-        registrationDetailObj.subItem = 'Share Capital:';
-        registrationDetailObj.itemValue = 'LKR 696,190,000.00';
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Capital:';
+        // registrationDetailObj.subItem = 'Share Capital:';
+        // registrationDetailObj.itemValue = 'LKR 696,190,000.00';
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = '';
-        registrationDetailObj.subItem = 'Number of Share:';
-        registrationDetailObj.itemValue = 'LKR 69,619,000.00';
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Capital:';
+        // registrationDetailObj.subItem = 'Number of Share:';
+        // registrationDetailObj.itemValue = 'LKR 69,619,000.00';
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = '';
-        registrationDetailObj.subItem = 'Per Share Value:';
-        registrationDetailObj.itemValue = 'NA';
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Capital:';
+        // registrationDetailObj.subItem = 'Per Share Value:';
+        // registrationDetailObj.itemValue = 'NA';
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = 'Legal Status:';
-        registrationDetailObj.subItem = '';
-        registrationDetailObj.itemValue = 'Private Limited Liability Company';
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Legal Status:';
+        // registrationDetailObj.subItem = '';
+        // registrationDetailObj.itemValue = 'Private Limited Liability Company';
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = 'Secretary';
-        registrationDetailObj.subItem = '';
-        registrationDetailObj.itemValue = 'Corporate Services (Private) Limited Address: No. 216, De Saram Place, Colombo–10, Sri Lanka';
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Secretary';
+        // registrationDetailObj.subItem = '';
+        // registrationDetailObj.itemValue = 'Corporate Services (Private) Limited Address: No. 216, De Saram Place, Colombo–10, Sri Lanka';
+        // this.registrationDetailList.push(registrationDetailObj);
 
-        registrationDetailObj = new RegistrationDetail();
-        registrationDetailObj.id = this.getId();
-        registrationDetailObj.item = 'Issuing Authority:';
-        registrationDetailObj.subItem = '';
-        registrationDetailObj.itemValue = 'The Department of the Registrar of Companies, Sri Lanka.';
-        this.registrationDetailList.push(registrationDetailObj);
+        // registrationDetailObj = new RegistrationDetail();
+        // registrationDetailObj.id = this.getId();
+        // registrationDetailObj.item = 'Issuing Authority:';
+        // registrationDetailObj.subItem = '';
+        // registrationDetailObj.itemValue = 'The Department of the Registrar of Companies, Sri Lanka.';
+        // this.registrationDetailList.push(registrationDetailObj);
+
+        this.loader.show();
+        this.registrationDetailService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.registrationDetailList = data.data;
+            },
+            complete: () => {
+                this.registrationDetailList.forEach(obj => {
+                    obj.isEdit = false;
+                });
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
     }
 
     onEdit(registrationDetailObj: RegistrationDetail) {
@@ -171,9 +205,31 @@ export class RegistrationDetailsComponent implements OnInit {
 
     onSave() {
         this.registrationDetailList.forEach(obj => {
-            obj.isEdit = false;
+            obj.companyInfo = this.companyInfo;
         });
         console.log(this.registrationDetailList);
+
+        if (this.registrationDetailList.length > 0) {
+            this.loader.show();
+
+            this.registrationDetailService.save(this.registrationDetailList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     validateField(item: any) {

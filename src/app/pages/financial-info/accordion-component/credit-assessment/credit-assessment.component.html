@@ -7,7 +7,7 @@
     <div class="row" style="border: solid #e9ecef 1px; ">
         <div class="col" style="border-right: solid #e9ecef 1px;">
             <div>Recommended Maximum Credit:</div>
-            <div style="font-size: 1.5rem; font-weight: bold;">USD 70,000.00</div>
+            <div style="font-size: 1.5rem; font-weight: bold;">{{creditAssessment.currency}} {{creditAssessment.maximumCredit}}</div>
             <div>
                 Main factors considered include net
                 assets, total assets, revenue, profit,
@@ -26,12 +26,12 @@
 
             <div class="row">
                 <div class="col-lg-4 pb-2">
-                    <div class="cr-color">C</div>
+                    <div class="cr-color" [ngStyle]="styleBackgroundColor()">{{creditAssessment.grade}}</div>
                 </div>
                 <div class="col-lg-8 pb-2" style="border-left: solid #e9ecef 1px; font-size: 13px;">
-                    <div style="font-weight: bold; margin-top: 10px;">Range 60-79</div>
-                    <div style="font-weight: bold;">65</div>
-                    <div style="font-weight: bold; margin-top: 30px;">Medium</div>
+                    <div style="font-weight: bold; margin-top: 10px;">Range {{creditAssessment.gradeRange}}</div>
+                    <div style="font-weight: bold;">{{creditAssessment.creditRating}}</div>
+                    <div style="font-weight: bold; margin-top: 30px;">{{creditAssessment.creditRatingStatus}}</div>
                 </div>
             </div>
             <div>
@@ -45,12 +45,12 @@
         </div>
         <div class="col">
             <div>Risk Assessment :</div>
-            <div style="font-size: 20px; font-weight: bold;">Moderate Risk</div>
-            <div style="text-align: center;padding-bottom: 15px;">
+            <div style="font-size: 20px; font-weight: bold;">{{creditAssessment.riskStatus}}</div>
+            <div [ngStyle]="styleRiskAssessmentArrowImg()">
                 <img style="width: 35px;" src="assets/img/icons/arrow-down.png" alt="">
             </div>
 
-            <div class="progress" style="max-width: 100%">
+            <div class="progress" style="max-width: 100%">                
                 <div class="progress-bar" style="width: 100%; background-color: #00af50">
 
                 </div>

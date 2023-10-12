@@ -1,4 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
+import { RiskProfile } from 'src/app/models/financial-info/risk-profile.model';
+import { ExcelUploadService } from 'src/app/services/excel-upload.service';
+import { RiskProfileService } from 'src/app/services/financial-info/risk-profile.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-risk-profile',
@@ -8,22 +16,173 @@ import { Component, OnInit } from '@angular/core';
 export class RiskProfileComponent implements OnInit {
 
     title: string;
+    riskProfileList: RiskProfile[] = [];
+    oldRiskProfileObj: RiskProfile;
+    newRiskProfileObj: RiskProfile;
+    trGroupMax: number;
+    companyInfo: CompanyInfo;
 
 
-    constructor() { }
+    constructor(
+        private router: Router,
+        private excelUploadService: ExcelUploadService,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+        private sharedService: SharedService,
+        private riskProfileService: RiskProfileService
+    ) {
+        this.companyInfo = new CompanyInfo();
+    }
 
     ngOnInit(): void {
         this.title = 'Risk Profile';
+
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.getList();
     }
 
     getPercentage(value: number) {
-        switch (value) {
-            case 1:
-                return '30%';
-            case 2:
-                return '70%';
-            case 3:
-                return '70%';
+        return value+'%';
+    }
+
+    getList() {
+        // let riskProfileObj = new RiskProfile();
+        // riskProfileObj.id = this.getId();
+        // riskProfileObj.itemCode = 'Age / Operation';
+        // riskProfileObj.percentage = 30;
+        // riskProfileObj.status = 'Moderate';
+        // this.riskProfileList.push(riskProfileObj);
+
+        // riskProfileObj = new RiskProfile();
+        // riskProfileObj.id = this.getId();
+        // riskProfileObj.itemCode = 'Management';
+        // riskProfileObj.percentage = 70;
+        // riskProfileObj.status = 'Good';
+        // this.riskProfileList.push(riskProfileObj);
+
+        // riskProfileObj = new RiskProfile();
+        // riskProfileObj.id = this.getId();
+        // riskProfileObj.itemCode = 'Finance';
+        // riskProfileObj.percentage = 70;
+        // riskProfileObj.status = 'Excellent';
+        // this.riskProfileList.push(riskProfileObj);
+
+
+        this.loader.show();
+        this.riskProfileService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.riskProfileList = data.data;
+            },
+            complete: () => {
+                this.riskProfileList.forEach(obj => {
+                    obj.isEdit = false;
+                });
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    onSave() {
+        this.riskProfileList.forEach(obj => {
+            obj.companyInfo = this.companyInfo;
+        });
+        console.log(this.riskProfileList);
+
+        if (this.riskProfileList.length > 0) {
+            this.loader.show();
+
+            this.riskProfileService.save(this.riskProfileList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
+    }
+
+    onEdit(riskProfileObj: RiskProfile) {
+        this.oldRiskProfileObj = riskProfileObj;
+        this.riskProfileList.forEach(obj => {
+            obj.isEdit = false;
+        });
+        riskProfileObj.isEdit = true;
+
+    }
+
+    onDelete(riskProfileObj: RiskProfile) {
+        this.riskProfileList.splice(this.riskProfileList.findIndex(e => e.id === riskProfileObj.id), 1);
+    }
+
+    onAdd() {
+        this.oldRiskProfileObj = null;
+
+        this.newRiskProfileObj = new RiskProfile();
+        this.newRiskProfileObj.id = this.getId();
+        this.newRiskProfileObj.itemCode = '';
+        this.newRiskProfileObj.percentage = 0;
+        this.newRiskProfileObj.status = '';
+        this.newRiskProfileObj.isEdit = true;
+        this.riskProfileList.push(this.newRiskProfileObj);
+    }
+
+    onUpdate(riskProfileObj: RiskProfile) {
+        console.log(riskProfileObj);
+        riskProfileObj.isEdit = false;
+    }
+
+    onCancel(riskProfileObj: RiskProfile) {
+        if (this.oldRiskProfileObj == undefined || this.oldRiskProfileObj == null) {
+            riskProfileObj.isEdit = true;
+            this.riskProfileList.splice(this.riskProfileList.findIndex(e => e.id === riskProfileObj.id), 1);
+        } else {
+
+            riskProfileObj.itemCode = this.oldRiskProfileObj.itemCode;
+            riskProfileObj.percentage = this.oldRiskProfileObj.percentage;
+            riskProfileObj.status = this.oldRiskProfileObj.status;
+            riskProfileObj.isEdit = false;
+        }
+
+    }
+
+    validateField(item: any) {
+        if (item !== '') {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    validateForm(riskProfileObj: RiskProfile) {
+        if (riskProfileObj.itemCode !== '' && riskProfileObj.percentage != 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    getId() {
+        if (this.riskProfileList.length == 0) {
+            return 1;
+        } else {
+            let lastRiskProfileObj: RiskProfile = this.riskProfileList[this.riskProfileList.length - 1];
+            return lastRiskProfileObj.id + 1;
         }
     }
 }

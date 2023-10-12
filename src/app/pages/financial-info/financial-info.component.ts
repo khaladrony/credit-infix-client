@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-financial-info',
@@ -8,12 +9,26 @@ import { Component, HostListener, OnInit } from '@angular/core';
 export class FinancialInfoComponent implements OnInit {
 
     public featureList: any[];
+    ariaExpanded01: boolean = false;
 
-    constructor() { }
+    constructor(
+        public route: ActivatedRoute
+    ) { }
 
     ngOnInit(): void {
+        const snapshot = this.route.snapshot;
+        console.log(snapshot.component);
+
+        this.route.queryParams.subscribe((params: any) => {
+            console.log(params);
+            console.log(params.data);
+            if (params.type == "1") {
+                this.ariaExpanded01 = true;
+            }
+        })
+
         this.featureList = [
-            { id: 0, name: 'Company Info', selector: '<app-company-info></app-company-info>', cardHeaderId: 'heading-1', href: '#collapse-1', ariaExpanded: false, ariaControls: 'collapse-1', collapseClass: '' },
+            { id: 0, name: 'Company Info', selector: '<app-company-info></app-company-info>', cardHeaderId: 'heading-1', href: '#collapse-1', ariaExpanded: this.ariaExpanded01 ? true : false, ariaControls: 'collapse-1', collapseClass: this.ariaExpanded01 ? 'show' : '' },
             { id: 1, name: 'Credit Assessment', selector: '<app-credit-assessment></app-credit-assessment>', cardHeaderId: 'heading-2', href: '#collapse-2', ariaExpanded: false, ariaControls: 'collapse-2', collapseClass: '' },
             { id: 2, name: 'Financial Summary', selector: '<app-financial-summary></app-financial-summary>', cardHeaderId: 'heading-3', href: '#collapse-3', ariaExpanded: false, ariaControls: 'collapse-3', collapseClass: '' },
             { id: 3, name: 'Risk Profile', selector: '<app-risk-profile></app-risk-profile>', cardHeaderId: 'heading-4', href: '#collapse-4', ariaExpanded: false, ariaControls: 'collapse-4', collapseClass: '' },
@@ -35,15 +50,18 @@ export class FinancialInfoComponent implements OnInit {
             { id: 19, name: 'Inline Table Editing', selector: '<app-inline-table></app-inline-table>', cardHeaderId: 'heading-20', href: '#collapse-20', ariaExpanded: false, ariaControls: 'collapse-20', collapseClass: '' }
 
         ]
+
+        
+
     }
 
-    clickedEvent(i: number) {        
+    clickedEvent(i: number) {
         this.featureList.forEach(element => {
             if (element.id == i && !element.ariaExpanded) {
                 element.ariaExpanded = true;
             } else if (element.id == i && element.ariaExpanded) {
                 element.ariaExpanded = false;
             }
-        });       
+        });
     }
 }

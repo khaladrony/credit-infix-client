@@ -1,9 +1,13 @@
+import { CompanyInfo } from "./company-info.model";
+
 export class Location {
     id: number;
     version: number;
 
+    companyInfo: CompanyInfo;
     itemCode: string;
     itemValue: string
+
     isEdit: boolean;
 
     createdBy: number;

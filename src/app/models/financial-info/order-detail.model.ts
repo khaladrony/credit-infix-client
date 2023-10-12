@@ -1,9 +1,12 @@
+import { CompanyInfo } from "./company-info.model";
+
 export class OrderDetail {
     id: number;
     version: number;
 
-    item: string;
-    description: string
+    companyInfo: CompanyInfo;
+    itemCode: string;
+    itemValue: string;
     isEdit: boolean;
 
     createdBy: number;

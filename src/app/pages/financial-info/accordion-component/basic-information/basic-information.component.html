@@ -27,24 +27,24 @@
                                         
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="basicInfo.isEdit">
-                                                <input type="text" [(ngModel)]="basicInfo.item">
-                                                <div class="text-danger" *ngIf="validateField(basicInfo.item)">
+                                                <input type="text" [(ngModel)]="basicInfo.itemCode">
+                                                <div class="text-danger" *ngIf="validateField(basicInfo.itemCode)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!basicInfo.isEdit">
-                                                {{basicInfo.item}}
+                                                {{basicInfo.itemCode}}
                                             </div>
                                         </td>
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="basicInfo.isEdit">
-                                                <input type="text" [(ngModel)]="basicInfo.description">
-                                                <div class="text-danger" *ngIf="validateField(basicInfo.description)">
+                                                <input type="text" [(ngModel)]="basicInfo.itemValue">
+                                                <div class="text-danger" *ngIf="validateField(basicInfo.itemValue)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!basicInfo.isEdit">
-                                                {{basicInfo.description}}
+                                                {{basicInfo.itemValue}}
                                             </div>
                                         </td>
                                         

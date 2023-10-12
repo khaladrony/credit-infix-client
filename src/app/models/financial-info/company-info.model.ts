@@ -7,14 +7,14 @@ export class CompanyInfo {
     operationAddress: string
     telephoneNumber: string
     website: string
-    faxNo: string
-    email: string
+    // faxNo: string
+    // email: string
     industryType: string
     yearEstablished: string
     ageOfBusiness: string
     businessType: string
     country: string
-    state: string
+    // state: string
     businessScale: string
     paymentPractices: string
     listedStatus: string
@@ -30,6 +30,9 @@ export class CompanyInfo {
     legalStatus: string
     noOfCharge: string
     noOfJudicialRecord: string
+
+    maximumCredit: string
+    creditRating: string
 
     isEdit: boolean;
 

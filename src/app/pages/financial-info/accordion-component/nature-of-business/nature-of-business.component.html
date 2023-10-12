@@ -38,7 +38,8 @@
                                         </td>                                        
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="natureOfBusiness.isEdit">
-                                                <input type="text" [(ngModel)]="natureOfBusiness.itemValue">
+                                                <!-- <input type="text" [(ngModel)]="natureOfBusiness.itemValue"> -->
+                                                <textarea [(ngModel)]="natureOfBusiness.itemValue" rows="2"></textarea>
                                                 <div class="text-danger"
                                                     *ngIf="validateField(natureOfBusiness.itemValue)">
                                                     <span>*Required</span>
@@ -49,7 +50,7 @@
                                             </div>
                                         </td>
 
-                                        <td style="width: 10%;">
+                                        <td class="action-td">
                                             <div *ngIf="!natureOfBusiness.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill"
@@ -61,7 +62,7 @@
                                             <div *ngIf="natureOfBusiness.isEdit">
                                                 <a class="add"
                                                     [ngClass]="{'isDisabled':validateForm(natureOfBusiness)}"
-                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(natureOfBusiness)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                                                         class="fa fa-times-circle"

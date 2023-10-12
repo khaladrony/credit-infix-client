@@ -29,7 +29,7 @@
                         </thead>
                         <tbody *ngIf="companyInfoList?.length != 0">
                             <tr *ngFor="let companyInfo of companyInfoList; let i = index" style="cursor:pointer"
-                                [ngClass]="{'selectedRow' : i == selectedRowIndex}">
+                            (click)="onSelectRow(companyInfo, i)" [ngClass]="{'selectedRow' : i == selectedRowIndex}">
                                 <td>{{i+1}}</td>
                                 <td>{{companyInfo.name}}</td>
                                 <td>{{companyInfo.legalAddress}}</td>

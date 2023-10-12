@@ -27,28 +27,28 @@
                                         
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="orderDetail.isEdit">
-                                                <input type="text" [(ngModel)]="orderDetail.item">
-                                                <div class="text-danger" *ngIf="validateField(orderDetail.item)">
+                                                <input type="text" [(ngModel)]="orderDetail.itemCode">
+                                                <div class="text-danger" *ngIf="validateField(orderDetail.itemCode)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!orderDetail.isEdit">
-                                                {{orderDetail.item}}
+                                                {{orderDetail.itemCode}}
                                             </div>
                                         </td>
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="orderDetail.isEdit">
-                                                <input type="text" [(ngModel)]="orderDetail.description">
-                                                <div class="text-danger" *ngIf="validateField(orderDetail.description)">
+                                                <textarea [(ngModel)]="orderDetail.itemValue" rows="2"></textarea>
+                                                <div class="text-danger" *ngIf="validateField(orderDetail.itemValue)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!orderDetail.isEdit">
-                                                {{orderDetail.description}}
+                                                {{orderDetail.itemValue}}
                                             </div>
                                         </td>
                                         
-                                        <td style="width: 10%;">
+                                        <td class="action-td">
                                             <div *ngIf="!orderDetail.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill" (click)="onEdit(orderDetail)"></i></a>
@@ -57,7 +57,7 @@
                                             </div>
                                             <div *ngIf="orderDetail.isEdit">
                                                 <a class="add" [ngClass]="{'isDisabled':validateForm(orderDetail)}"
-                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(orderDetail)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                                                         class="fa fa-times-circle" (click)="onCancel(orderDetail)"></i></a>

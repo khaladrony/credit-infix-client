@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { FinancialSummary } from 'src/app/models/financial-info/financial-summary.model';
+import { FinancialSummaryService } from 'src/app/services/financial-info/financial-summary.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-financial-summary',
@@ -16,42 +22,73 @@ export class FinancialSummaryComponent implements OnInit {
     currencyList: any;
     selectedCurrency: any;
     // fSummaryForm: UntypedFormGroup;
-    currencyCode:string;
+    currencyCode: string;
+    comments: string;
+    companyInfo: CompanyInfo;
 
-    constructor() { }
+    constructor(
+        private router: Router,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+        private sharedService: SharedService,
+        private financialSummaryService: FinancialSummaryService
+    ) {
+        this.companyInfo = new CompanyInfo();
+    }
 
-    ngOnInit(): void {        
+    ngOnInit(): void {
         this.title = 'Financial Summary';
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
         this.getFinancialSummaryList();
         this.getCurrencyList();
     }
 
     getFinancialSummaryList() {
-        let financialSummaryObj = new FinancialSummary();
-        financialSummaryObj.id = this.getId();
-        financialSummaryObj.itemCode = 'Authorized Capital';
-        financialSummaryObj.currency = '';
-        financialSummaryObj.amount = 0;
-        financialSummaryObj.isEdit = true;
-        this.financialSummaryList.push(financialSummaryObj);
+        // let financialSummaryObj = new FinancialSummary();
+        // financialSummaryObj.id = this.getId();
+        // financialSummaryObj.itemCode = 'Authorized Capital';
+        // financialSummaryObj.currency = '';
+        // financialSummaryObj.amount = 0;
+        // financialSummaryObj.isEdit = true;
+        // this.financialSummaryList.push(financialSummaryObj);
 
-        financialSummaryObj = new FinancialSummary();
-        financialSummaryObj.id = this.getId();
-        financialSummaryObj.itemCode = 'Paid Up Capital';
-        financialSummaryObj.currency = '';
-        financialSummaryObj.amount = 0;
-        financialSummaryObj.isEdit = true;
-        this.financialSummaryList.push(financialSummaryObj);
+        // financialSummaryObj = new FinancialSummary();
+        // financialSummaryObj.id = this.getId();
+        // financialSummaryObj.itemCode = 'Paid Up Capital';
+        // financialSummaryObj.currency = '';
+        // financialSummaryObj.amount = 0;
+        // financialSummaryObj.isEdit = true;
+        // this.financialSummaryList.push(financialSummaryObj);
 
-        financialSummaryObj = new FinancialSummary();
-        financialSummaryObj.id = this.getId();
-        financialSummaryObj.itemCode = 'Each Share Value';
-        financialSummaryObj.currency = '';
-        financialSummaryObj.amount = 0;
-        financialSummaryObj.isEdit = true;
-        this.financialSummaryList.push(financialSummaryObj);
+        // financialSummaryObj = new FinancialSummary();
+        // financialSummaryObj.id = this.getId();
+        // financialSummaryObj.itemCode = 'Each Share Value';
+        // financialSummaryObj.currency = '';
+        // financialSummaryObj.amount = 0;
+        // financialSummaryObj.isEdit = true;
+        // this.financialSummaryList.push(financialSummaryObj);
 
-        this.financialSummaryList;
+        // this.financialSummaryList;
+
+
+        this.loader.show();
+        this.financialSummaryService.getList(this.companyInfo.id).subscribe({
+            next: (data) => {
+                this.financialSummaryList = data.data;
+            },
+            complete: () => {
+                this.financialSummaryList.forEach(obj => {
+                    obj.isEdit = false;
+                    this.comments = obj.comments;
+                });
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
     }
 
     getCurrencyList() {
@@ -84,7 +121,7 @@ export class FinancialSummaryComponent implements OnInit {
             obj.isEdit = false;
         });
         financialSummaryObj.isEdit = true;
-        
+
         if (financialSummaryObj?.currency != "") {
             console.log(financialSummaryObj.currency);
             // this.currencyCode=financialSummaryObj.currency
@@ -94,7 +131,7 @@ export class FinancialSummaryComponent implements OnInit {
     }
 
     onDelete(financialSummary: FinancialSummary) {
-        this.financialSummaryList.splice(this.financialSummaryList.findIndex(e => e.itemCode === financialSummary.itemCode),1);
+        this.financialSummaryList.splice(this.financialSummaryList.findIndex(e => e.itemCode === financialSummary.itemCode), 1);
     }
 
     onAdd() {
@@ -117,7 +154,7 @@ export class FinancialSummaryComponent implements OnInit {
     onCancel(financialSummary: FinancialSummary) {
         if (this.oldFinancialSummaryObj == undefined || this.oldFinancialSummaryObj == null) {
             financialSummary.isEdit = true;
-            this.financialSummaryList.splice(this.financialSummaryList.findIndex(e => e.itemCode === financialSummary.itemCode),1);
+            this.financialSummaryList.splice(this.financialSummaryList.findIndex(e => e.itemCode === financialSummary.itemCode), 1);
         } else {
 
             financialSummary.itemCode = this.oldFinancialSummaryObj.itemCode;
@@ -130,9 +167,32 @@ export class FinancialSummaryComponent implements OnInit {
 
     onSave() {
         this.financialSummaryList.forEach(obj => {
-            obj.isEdit = false;
+            obj.comments = this.comments;
+            obj.companyInfo = this.companyInfo;
         });
         console.log(this.financialSummaryList);
+
+        if (this.financialSummaryList.length > 0) {
+            this.loader.show();
+
+            this.financialSummaryService.save(this.financialSummaryList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getFinancialSummaryList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     validateField(item: any) {

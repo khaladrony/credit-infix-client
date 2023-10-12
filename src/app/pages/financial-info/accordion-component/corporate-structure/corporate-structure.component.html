@@ -35,8 +35,8 @@
                                         </td>
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="corporateStructure.isEdit">
-                                                <textarea [(ngModel)]="corporateStructure.itemValue"
-                                                    rows="2"></textarea>
+                                                <textarea [(ngModel)]="corporateStructure.itemValue" rows="2">
+                                                </textarea>
                                             </div>
                                             <div *ngIf="!corporateStructure.isEdit">
                                                 {{corporateStructure.itemValue}}
