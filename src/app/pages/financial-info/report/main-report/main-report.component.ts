@@ -104,6 +104,8 @@ export class MainReportComponent implements OnInit {
     countryRiskAssessment: string
     //-----------------
     ratingList: Rating[] = [];
+    //-----------------
+    firstPageData: any[];
 
 
     @ViewChild('content', { static: false }) el!: ElementRef;
@@ -181,14 +183,14 @@ export class MainReportComponent implements OnInit {
         const input = document.getElementById('contentToConvert');
 
         html2canvas(input, { useCORS: true, allowTaint: true, scrollY: 0 }).then((canvas) => {
-            const image = { type: 'jpeg', quality: 0.98 };
+            const image = { type: 'jpeg', quality: 1.0 };
             const margin = [0.5, 0.5];
             const filename = 'myfile.pdf';
 
             var imgWidth = 8.5;
-            var pageHeight = 11;
+            var pageHeight = 10;
 
-            var innerPageWidth = imgWidth - margin[0] * 2;
+            var innerPageWidth = imgWidth - margin[0] * 1;
             var innerPageHeight = pageHeight - margin[1] * 2;
 
             // Calculate the number of pages.
@@ -207,11 +209,9 @@ export class MainReportComponent implements OnInit {
 
             // Initialize the PDF.
             var pdf = new jsPDF('p', 'in', [8.5, 11]);
-           
+
             for (var page = 0; page < nPages; page++) {
-                pdf.setPage(page);
-                pdf.text('Page ' + page + ' of ' + nPages, (pdf.internal.pageSize.getWidth() - 100), (pdf.internal.pageSize.getHeight() - 20));
-                
+
                 // Trim the final page to reduce file size.
                 if (page === nPages - 1 && pxFullHeight % pxPageHeight !== 0) {
                     pageCanvas.height = pxFullHeight % pxPageHeight;
@@ -227,296 +227,347 @@ export class MainReportComponent implements OnInit {
 
                 // Add the page to the PDF.
                 if (page > 0) pdf.addPage();
-                debugger;
-                var imgData = pageCanvas.toDataURL('image/' + image.type, image.quality);
-                pdf.addImage(imgData, image.type, margin[1], margin[0], innerPageWidth, pageHeight);
 
-                
+                var imgData = pageCanvas.toDataURL('image/' + image.type, image.quality);
+                pdf.addImage(imgData, image.type, margin[1], 1, innerPageWidth, pageHeight);
+
+                if (page > 0){
+                    this.getPdfHeader(pdf, page, nPages);
+                    this.getPdfFooter(pdf, page, nPages);
+                }                
             }
 
             pdf.save('Financial-info.pdf');
         });
     }
 
-    loadCompanyInfo() {
-            let data = {};
-            this.loader.show();
-            this.companyInfoService.getList(data).subscribe({
-                next: (data) => {
-                    this.companyInfo = data.data[0];
-                },
-                complete: () => {
-                    this.getCreditAssessment(this.companyInfo.id);
-                    this.getBasicInfoList(this.companyInfo)
-                    this.getRegistrationDetail(this.companyInfo.id);
-                    this.getManagement(this.companyInfo.id);
-                    this.getShareholder(this.companyInfo.id);
-                    this.getOperationInfo(this.companyInfo.id);
-                    this.getNatureOfBusiness(this.companyInfo.id);
-                    this.getCorporateStructure(this.companyInfo.id);
-                    this.getFinancialInformationList(this.companyInfo.id);
-                    this.getFinancialNoteList(this.companyInfo.id);
-                    this.getRecommendedCreditStaticData();
-                    this.getRiskLevelList();
-                    this.getSummaryOpinionList(this.companyInfo.id);
-                    this.getCountryRiskAssessmentList(this.companyInfo.country);
-                    this.getRatingList();
+    getPdfHeader(pdf: jsPDF, page: number, nPages: number) {
+        pdf.setFontSize(8);
+        pdf.setTextColor('#1f1f6f');
+        pdf.text(this.companyInfo.name, 5.5, 0.7);
 
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+        var img = new Image()
+        img.src = 'assets/img/logo/infix-logo.png'
+        pdf.addImage(img, 'png', 1, 0.4, 1.4, 0.5)
+
+        // pdf.setDrawColor('#1f1f6f');
+        // pdf.line(0, 0.2, 2, 0.2);
+    }
+
+    getPdfFooter(pdf: jsPDF, page: number, nPages: number) {
+        pdf.setFontSize(8);
+        // pdf.setDrawColor('#1f1f6f');
+        // pdf.line(0, 10.8, 2, 10.8);
+        // pdf.setLineHeightFactor(1.15);
+
+        pdf.setTextColor('#1f1f6f');
+        pdf.setFont('Open Sans, sans-serif', 'bold');
+        pdf.text('Infix Credit | International Credit Information Report | 2023', 0.8, 10.6);
+        pdf.text('www.infixcredit.com', 0.8, 10.7);
+        pdf.text('Page ' + (page + 1) + ' of ' + nPages, 7.6, 10.5);
+        // pdf.addImage('Page ' + (page + 1) + ' of ' + nPages, 7, 10.7);
+
+        var img = new Image()
+        img.src = 'assets/img/logo/footer-logo-right.png'
+        pdf.addImage(img, 'png', 6.5, 10.3, 1.8, 0.4)
+    }
+
+    loadCompanyInfo() {
+        let data = {};
+        this.loader.show();
+        this.companyInfoService.getList(data).subscribe({
+            next: (data) => {
+                this.companyInfo = data.data[0];
+            },
+            complete: () => {
+                this.getCreditAssessment(this.companyInfo.id);
+                this.getBasicInfoList(this.companyInfo)
+                this.getRegistrationDetail(this.companyInfo.id);
+                this.getManagement(this.companyInfo.id);
+                this.getShareholder(this.companyInfo.id);
+                this.getOperationInfo(this.companyInfo.id);
+                this.getNatureOfBusiness(this.companyInfo.id);
+                this.getCorporateStructure(this.companyInfo.id);
+                this.getFinancialInformationList(this.companyInfo.id);
+                this.getFinancialNoteList(this.companyInfo.id);
+                this.getRecommendedCreditStaticData();
+                this.getRiskLevelList();
+                this.getSummaryOpinionList(this.companyInfo.id);
+                this.getCountryRiskAssessmentList(this.companyInfo.country);
+                this.getRatingList();
+                this.firstPageDataList();
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    //First page data START
+
+    firstPageDataList() {
+        this.firstPageData = [
+            { key: 'Client Name', value: 'Accolade Search Ltd' },
+            { key: `Client's Ref No`, value: 'NA' },
+            { key: `Infix Ref No`, value: '16241094ASL' },
+            { key: `Service Type`, value: 'Normal 5-6 Working Days' },
+            { key: `Inquiry Date`, value: '02-05-2023' },
+            { key: `Due Date`, value: '11-05-2023' },
+            { key: `Delivery Date`, value: '11-05-2023' }
+        ]
+    }
+
+    //First page data END
 
     // Credit Assessment Start
     getCreditAssessment(id: number) {
-            let data = {};
-            this.loader.show();
-            this.CAService.getInfo(id).subscribe({
-                next: (data) => {
-                    this.creditAssessment = data.data;
-                },
-                complete: () => {
-                    this.getFinancialSummaryList(id);
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+        let data = {};
+        this.loader.show();
+        this.CAService.getInfo(id).subscribe({
+            next: (data) => {
+                this.creditAssessment = data.data;
+            },
+            complete: () => {
+                this.getFinancialSummaryList(id);
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
 
     styleBackgroundColor() {
-            let colorCode = "#" + this.creditAssessment.colorCode; //'#ffc107'
-            return { 'background-color': colorCode };
-        }
+        let colorCode = "#" + this.creditAssessment.colorCode; //'#ffc107'
+        return { 'background-color': colorCode };
+    }
 
     styleRiskAssessmentArrowImg() {
-            let paddingPercent = this.creditAssessment.paddingPercent + "%";
-            return { 'padding-bottom': '15px', 'padding-left': paddingPercent }
-        }
+        let paddingPercent = this.creditAssessment.paddingPercent + "%";
+        return { 'padding-bottom': '15px', 'padding-left': paddingPercent }
+    }
     //End
 
     //FinancialSummary
     getFinancialSummaryList(companyInfoId: number) {
-            this.loader.show();
-            this.financialSummaryService.getList(companyInfoId).subscribe({
-                next: (data) => {
-                    this.financialSummaryList = data.data;
-                },
-                complete: () => {
-                    this.comments = this.financialSummaryList[0].comments;
-                    this.getRiskProfileList(companyInfoId);
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+        this.loader.show();
+        this.financialSummaryService.getList(companyInfoId).subscribe({
+            next: (data) => {
+                this.financialSummaryList = data.data;
+            },
+            complete: () => {
+                this.comments = this.financialSummaryList[0].comments;
+                this.getRiskProfileList(companyInfoId);
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
     //End
 
     //RiskProfile
     getRiskProfileList(companyInfoId: number) {
-            this.loader.show();
-            this.riskProfileService.getList(companyInfoId).subscribe({
-                next: (data) => {
-                    this.riskProfileList = data.data;
-                },
-                complete: () => {
-                    this.getOrderDetailList(companyInfoId);
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+        this.loader.show();
+        this.riskProfileService.getList(companyInfoId).subscribe({
+            next: (data) => {
+                this.riskProfileList = data.data;
+            },
+            complete: () => {
+                this.getOrderDetailList(companyInfoId);
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
 
     getPercentage(value: number) {
-            return value + '%';
-        }
+        return value + '%';
+    }
     //END
 
     //OrderDetail
     getOrderDetailList(companyInfoId: number) {
-            this.loader.show();
-            this.orderDetailService.getList(companyInfoId).subscribe({
-                next: (data) => {
-                    this.orderDetailList = data.data;
-                },
-                complete: () => {
-                    this.getContactList(companyInfoId);
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+        this.loader.show();
+        this.orderDetailService.getList(companyInfoId).subscribe({
+            next: (data) => {
+                this.orderDetailList = data.data;
+            },
+            complete: () => {
+                this.getContactList(companyInfoId);
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
     //END
 
     //Contact
     getContactList(companyInfoId: number) {
-            this.loader.show();
-            this.contactService.getList(companyInfoId).subscribe({
-                next: (data) => {
-                    if (data.data.length > 0) {
-                        this.contact = data.data[0];
-                    }
-                },
-                complete: () => {
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+        this.loader.show();
+        this.contactService.getList(companyInfoId).subscribe({
+            next: (data) => {
+                if (data.data.length > 0) {
+                    this.contact = data.data[0];
+                }
+            },
+            complete: () => {
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
     //END
 
     //BasicInfo
     getBasicInfoList(companyInfo: CompanyInfo) {
-            let basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Name:';
-            basicInfoObj.itemValue = companyInfo.name;
-            this.basicInfoList.push(basicInfoObj);
+        let basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Name:';
+        basicInfoObj.itemValue = companyInfo.name;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Established:';
-            basicInfoObj.itemValue = companyInfo.yearEstablished;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Established:';
+        basicInfoObj.itemValue = companyInfo.yearEstablished;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Legal Address:';
-            basicInfoObj.itemValue = companyInfo.legalAddress;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Legal Address:';
+        basicInfoObj.itemValue = companyInfo.legalAddress;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Operation Address:';
-            basicInfoObj.itemValue = companyInfo.operationAddress;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Operation Address:';
+        basicInfoObj.itemValue = companyInfo.operationAddress;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Country:';
-            basicInfoObj.itemValue = companyInfo.country;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Country:';
+        basicInfoObj.itemValue = companyInfo.country;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Main Activity:';
-            basicInfoObj.itemValue = companyInfo.businessType;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Main Activity:';
+        basicInfoObj.itemValue = companyInfo.businessType;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Legal Form:';
-            basicInfoObj.itemValue = companyInfo.legalStatus;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Legal Form:';
+        basicInfoObj.itemValue = companyInfo.legalStatus;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Business Scale:';
-            basicInfoObj.itemValue = companyInfo.businessScale;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Business Scale:';
+        basicInfoObj.itemValue = companyInfo.businessScale;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Status:';
-            basicInfoObj.itemValue = companyInfo.status;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Status:';
+        basicInfoObj.itemValue = companyInfo.status;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Listed Status:';
-            basicInfoObj.itemValue = companyInfo.listedStatus;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Listed Status:';
+        basicInfoObj.itemValue = companyInfo.listedStatus;
+        this.basicInfoList.push(basicInfoObj);
 
-            basicInfoObj = new BasicInfo();
-            basicInfoObj.itemCode = 'Payment Practices:';
-            basicInfoObj.itemValue = companyInfo.paymentPractices;
-            this.basicInfoList.push(basicInfoObj);
+        basicInfoObj = new BasicInfo();
+        basicInfoObj.itemCode = 'Payment Practices:';
+        basicInfoObj.itemValue = companyInfo.paymentPractices;
+        this.basicInfoList.push(basicInfoObj);
 
-            this.getLocation(companyInfo.id);
-        }
+        this.getLocation(companyInfo.id);
+    }
     //END
 
     //Location
     getLocation(companyInfoId: number) {
-            this.loader.show();
-            this.locationService.getList(companyInfoId).subscribe({
-                next: (data) => {
-                    this.locationList = data.data;
-                },
-                complete: () => {
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+        this.loader.show();
+        this.locationService.getList(companyInfoId).subscribe({
+            next: (data) => {
+                this.locationList = data.data;
+            },
+            complete: () => {
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
     //END
 
     //Registration Detail
     getRegistrationDetail(companyInfoId: number) {
-            this.loader.show();
-            this.registrationDetailService.getListForReport(companyInfoId).subscribe({
-                next: (data) => {
+        this.loader.show();
+        this.registrationDetailService.getListForReport(companyInfoId).subscribe({
+            next: (data) => {
 
-                    this.regReportData = data.data;
+                this.regReportData = data.data;
 
-                    this.regReportData.forEach(obj => {
+                this.regReportData.forEach(obj => {
 
-                        obj.forEach(val => {
-                            console.log(val);
-                            if (val.rowspan == 0) {
-                                delete val.rowspan;
-                            }
-                            if (val.colspan == 0) {
-                                delete val.colspan;
-                            }
-                        })
+                    obj.forEach(val => {
+                        console.log(val);
+                        if (val.rowspan == 0) {
+                            delete val.rowspan;
+                        }
+                        if (val.colspan == 0) {
+                            delete val.colspan;
+                        }
+                    })
 
-                    });
-                },
-                complete: () => {
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+                });
+            },
+            complete: () => {
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
     //END
 
     //Management
     getManagement(companyInfoId: number) {
-            this.loader.show();
-            this.managementService.getList(companyInfoId).subscribe({
-                next: (data) => {
-                    this.managementList = data.data;
-                },
-                complete: () => {
-                    this.trGroupMax = Math.max.apply(null, this.managementList.map(function (o) { return o.sequence; }));
+        this.loader.show();
+        this.managementService.getList(companyInfoId).subscribe({
+            next: (data) => {
+                this.managementList = data.data;
+            },
+            complete: () => {
+                this.trGroupMax = Math.max.apply(null, this.managementList.map(function (o) { return o.sequence; }));
 
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.loader.hide();
-                },
-            });
-        }
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
 
     styleObjectManagement(index: number): Object {
 
-            if(index == 1) {
+        if (index == 1) {
             return { 'border-top': '2px solid  #e9ecef' };
         } else if (index % this.trGroupMax == 0) {
             return { 'border-bottom': '2px solid  #e9ecef' };
@@ -800,5 +851,15 @@ export class MainReportComponent implements OnInit {
 
     }
     //END
+
+    //Common 
+    makeNewLine() {
+        return "<br /><br /><br /><br /><br /><br />";
+    }
+
+    makeMargin() {
+        return { 'margin-bottom': '0%' };
+    }
+    //
 
 }

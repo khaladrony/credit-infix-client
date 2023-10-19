@@ -20,7 +20,7 @@ table.table {
 .table td {
     padding: 0.5rem 1rem 0.5rem 1rem;
     border: 2px solid #e9ecef;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 table.table th {
@@ -81,13 +81,23 @@ table.table {
     color: black;
 }
 
+.font-size-default {
+    font-size: 1rem;
+}
+
+.font-color-size-default {
+    color: black;
+    font-size: 1rem;
+}
+
+
 .font-color-weight {
     color: black;
     font-weight: bold;
 }
 
 .div-font-size {
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
 }
 
@@ -95,6 +105,7 @@ table.table {
     text-align: justify;
     text-justify: inter-word;
 }
+
 
 //-------------CreditAssessment START
 .cr-color {
@@ -140,7 +151,7 @@ div.row {
 //table border set
 table#risk-profile-table.table tr td {
     border: none;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 //Progress bar
@@ -158,7 +169,7 @@ table#risk-profile-table.table td .progress-bar {
 table#risk-profile-table.table td .span-st {
     font-weight: bold;
     color: black;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 //-------------Risk-profile END
@@ -189,6 +200,10 @@ table#shareholderTbl.table tbody tr td {
     border: none;
 }
 
+table#first-page.table tbody tr td {
+    border: none;
+}
+
 table#report-end.table thead tr th {
     border-top: 4px solid #1f1f6f;
     border-right: 0px solid #1f1f6f;
@@ -205,38 +220,40 @@ table#report-end.table thead tr th {
     font-size: 400%;
 }
 
-//A4 size page
-body {
-    margin: 0
+.right-border {
+    border-top: 0px solid #e9ecef;
+    border-right: 3.5px solid #e9ecef;
+    border-bottom: 0px solid #e9ecef;
+    border-left: 0px solid #e9ecef;
+    padding-right: 10px;
 }
 
-.sheet-outer {
-    margin: 0;
-}
+//A4 page
 
-.sheet {
-    margin: 0;
-    overflow: hidden;
-    position: relative;
-    box-sizing: border-box;
-    page-break-after: always;
-}
+// @page {
+//     size: A4 portrait;
+//     margin: 20mm;
+// }
 
-.sheet-outer.A4 .sheet {
-    width: 210mm;
-    height: 296mm
-}
+// @page {
+//     size: 8.5in 11in;
+//     /* width height */
+// }
 
-.sheet.padding-5mm {
-    padding: 5mm
-}
+// @media print {
+//     .page-break {
+//         page-break-after: always;
+//     }
+// }
 
-.page {
-    background-color: #ffffff;
-    padding: 50px;
-    margin-bottom: 50px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    // border: 4px solid #000;
-    margin: 10px;
-  }
-  
+// div#contentToConvert {
+//     width:   210mm;
+//     height:  297mm;
+//   }
+
+// #contentToConvert {
+//     width: 200px;
+//     height: 290px;
+//     overflow: hidden;
+//     border: 1px solid #414141;
+// }

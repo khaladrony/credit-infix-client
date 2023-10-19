@@ -12,6 +12,48 @@
         <div class="card-body bg-white">
 
             <div class="table-wrapper">
+                <!-- Index page START-->
+                <div class="row">
+                    <div class="col-sm-12" style="margin-bottom: 300px;">
+                        <img src="assets/img/logo/1st-page-logo.png" style="width:200px;height:100px;" align="right">
+                    </div>
+
+                    <div class="col-sm-12" style="text-align: right;margin-top: 300px;">
+
+                        <div class="pb-3 right-border" style=" font-weight: bold;font-size: 2rem;">
+                            {{companyInfo.name}}
+                        </div>
+                        <div class="pb-3 right-border" style=" font-weight: bold;font-size: 1.7rem;">
+                            INTERNATIONAL CREDIT INFORMATION REPORT
+                        </div>
+                        <div class="right-border" style=" font-weight: bold;font-size: 1.3rem;">
+                            Report Generated on: May 2023
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-6 pb-8" style="text-align: right; padding-right:15px">
+                    <table class="table" id="first-page">
+                        <tbody>
+                            <tr *ngFor="let data of firstPageData" class="right-border">
+                                <td style="font-size: 0.8rem;width:85%;margin: 0rem; padding:0px; padding-right:10px">
+                                    {{data.value}}
+                                </td>
+                                <td style="color: #1f1f6f;font-size: 0.8rem;margin: 0rem; padding:0px;padding-right:10px">
+                                    {{data.key}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pt-8" style="border-top: 3.5px solid #e9ecef;">
+
+                </div>
+
+                <!-- Index page END-->
+
+
                 <!-- Company Info -->
                 <div class="row">
                     <div class="col-sm-12">
@@ -131,7 +173,7 @@
                                     <div style="font-size: 1.5rem; font-weight: bold; color: black;">
                                         {{creditAssessment.currency}} {{creditAssessment.maximumCredit}}
                                     </div>
-                                    <div class="text-justify" style="color: black; font-size: 0.9rem;">
+                                    <div class="text-justify font-color-size-default">
                                         Main factors considered include net
                                         assets, total assets, revenue, profit,
                                         credit rating etc. No consideration is
@@ -161,7 +203,7 @@
                                                 {{creditAssessment.creditRatingStatus}}</div>
                                         </div>
                                     </div>
-                                    <div class="text-justify" style="color: black; font-size: 0.9rem;">
+                                    <div class="text-justify font-color-size-default">
                                         In assessing the credit reports of a company,
                                         INFIX CREDIT’S takes into comprehensive
                                         consideration of five dimensions including
@@ -222,7 +264,7 @@
                                     </div>
 
 
-                                    <div class="text-justify" style="color: black;font-size: 0.9rem;">
+                                    <div class="text-justify font-color-size-default">
                                         The risk assessment is used in conjunction with
                                         the Financial Strength Indicator. The Risk
                                         Indicator reflects INFIX CREDIT's opinion of a
@@ -276,7 +318,7 @@
                         <table class="table table-bordered" id="risk-profile-table">
                             <tbody>
 
-                                <tr style="color: black;font-size: 0.9rem;">
+                                <tr class="font-color-size-default">
                                     <td style="width: 30%;"></td>
                                     <td style="width: 70%;">
                                         <div class="pb-4">
@@ -303,8 +345,8 @@
                                 </tr>
 
                                 <tr>
-                                    <td class="text-justify" colspan="2"
-                                        style="white-space: normal;color: black;font-size: 0.9rem;">
+                                    <td class="text-justify font-color-size-default" colspan="2"
+                                        style="white-space: normal;">
                                         The risk profile provides a snapshot of the current state of the
                                         business.
                                         Associated with each area you will find an individual assessment,
@@ -703,6 +745,9 @@
                     </div>
                 </div>
                 <!-- FINANCIAL INFORMATION-->
+
+                <!-- <div [innerHtml]="makeNewLine()"></div> -->
+                <div [ngStyle]="makeMargin()"></div>
 
                 <!-- INFIX CREDIT INFORMATION START-->
                 <div class="row">
