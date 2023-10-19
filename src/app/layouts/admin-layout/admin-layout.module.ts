@@ -37,6 +37,7 @@ import { CountryRiskComponent } from 'src/app/pages/financial-info/accordion-com
 import { InfixRatingGlossaryComponent } from 'src/app/pages/financial-info/accordion-component/infix-rating-glossary/infix-rating-glossary.component';
 import { InlineTableComponent } from 'src/app/pages/financial-info/accordion-component/inline-table/inline-table.component';
 import { CompanyListComponent } from 'src/app/pages/financial-info/company-list/company-list.component';
+import { MainReportComponent } from 'src/app/pages/financial-info/report/main-report/main-report.component';
 
 @NgModule({
   imports: [
@@ -78,7 +79,8 @@ import { CompanyListComponent } from 'src/app/pages/financial-info/company-list/
     CountryRiskComponent,
     InfixRatingGlossaryComponent,
     InlineTableComponent,
-    CompanyListComponent
+    CompanyListComponent,
+    MainReportComponent
     
   ]
 })

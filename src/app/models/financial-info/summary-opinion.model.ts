@@ -1,7 +1,10 @@
+import { CompanyInfo } from "./company-info.model";
+
 export class SummaryOpinion {
     id: number;
     version: number;
 
+    companyInfo: CompanyInfo;
     itemCode: string;
     itemValue: string
     isEdit: boolean;

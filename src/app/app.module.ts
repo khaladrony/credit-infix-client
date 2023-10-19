@@ -57,7 +57,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    NotFoundComponent
+    NotFoundComponent 
   ],
   providers: [
     {

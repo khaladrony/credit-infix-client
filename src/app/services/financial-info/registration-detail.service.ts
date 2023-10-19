@@ -43,4 +43,16 @@ export class RegistrationDetailService {
 
         return this.httpClient.get(`${this.environment.apiURL}${this.API_FEATURE_NAME}/list`, { headers: headers, params: params });
     }
+
+    getListForReport(companyInfoId: any): Observable<any> {
+        const token = sessionStorage.getItem('token');
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
+
+        let params = new HttpParams();
+        params = params.append('companyInfoId', companyInfoId);
+
+        return this.httpClient.get(`${this.environment.apiURL}${this.API_FEATURE_NAME}/report-data`, { headers: headers, params: params });
+    }
 }

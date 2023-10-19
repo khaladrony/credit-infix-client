@@ -30,8 +30,10 @@
                      <table class="table table-bordered">
                         <tbody>
 
-                           <tr *ngFor="let row of data">
+                           <tr *ngFor="let row of data3">
+                              <!-- {{row[0].rowspan}} -  {{row[0].text}} - {{row[1].text}} - {{row[1].colspan}} -->
                               <td [attr.rowspan]='row[0].rowspan' style="font-weight: bold;">{{row[0].text}}</td>
+                              
                               <td *ngIf='row.length > 1' [attr.rowspan]='row[1].rowspan' [attr.colspan]='row[1].colspan'
                                  [ngStyle]="{'font-weight': row[0].rowspan==1 ? 'normal' : 'bold'}">
                                  {{row[1].text}}
@@ -86,9 +88,15 @@
 
                      </div> -->
 
-                     <div [innerHtml]="setWordBold('Asset: I have no asset')">                      
+                     <div [innerHtml]="setWordBold('Asset: I have no asset. Note: my name IS: Rony')">                      
                        
                      </div>
+
+                     
+                     <!-- <div [innerHtml]="setBold()">
+
+                     </div> -->
+
 
 
                   </div>

@@ -38,12 +38,7 @@
                                         </td>                                        
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="operationInfo.isEdit">
-                                                <!-- <input type="text" [(ngModel)]="operationInfo.itemValue"> -->
-                                                <textarea [(ngModel)]="operationInfo.itemValue" rows="2"></textarea>
-                                                <div class="text-danger"
-                                                    *ngIf="validateField(operationInfo.itemValue)">
-                                                    <span>*Required</span>
-                                                </div>
+                                                <textarea [(ngModel)]="operationInfo.itemValue" rows="2"></textarea>                                                
                                             </div>
                                             <div *ngIf="!operationInfo.isEdit">
                                                 {{operationInfo.itemValue}}

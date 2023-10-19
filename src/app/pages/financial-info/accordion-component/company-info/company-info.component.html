@@ -96,10 +96,19 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="country">Country</label>
+                                    <!-- <label class="form-control-label" for="country">Country</label>
                                     <input type="text" [(ngModel)]="companyInfo.country" name="country" id="country"
                                         formControlName="country" class="form-control form-control-alternative"
-                                        placeholder="">
+                                        placeholder=""> -->
+
+                                        <label class="form-control-label" for="country">Country</label>
+                                        <ng-select id="country" formControlName="country" placeholder="-Select Country-"
+                                            (change)="onCountryChange($event)" (search)="loadCountryList()"
+                                            (scrollToEnd)="onScrollToEnd()">
+                                            <ng-option *ngFor="let country of countryList" [value]="country.name">
+                                                {{country.name}}
+                                            </ng-option>
+                                        </ng-select>
                                 </div>
                             </div>
                             <div class="col-lg-4">

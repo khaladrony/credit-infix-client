@@ -28,7 +28,7 @@ export class RegistrationDetailsComponent implements OnInit {
         private registrationDetailService: RegistrationDetailService
     ) {
         this.companyInfo = new CompanyInfo();
-     }
+    }
 
     ngOnInit(): void {
         this.title = 'Registration Details';
@@ -207,7 +207,8 @@ export class RegistrationDetailsComponent implements OnInit {
         this.registrationDetailList.forEach(obj => {
             obj.companyInfo = this.companyInfo;
         });
-        console.log(this.registrationDetailList);
+
+        this.setSequence();
 
         if (this.registrationDetailList.length > 0) {
             this.loader.show();
@@ -230,6 +231,27 @@ export class RegistrationDetailsComponent implements OnInit {
                 },
             });
         }
+    }
+
+    setSequence() {
+        let previousObj = new RegistrationDetail();
+        let i = 0;
+        let sequence = 1;
+        this.registrationDetailList.forEach(obj => {
+
+            if (i == 0) {
+                obj.sequence = sequence;
+                previousObj = obj;
+            } else if (previousObj.item === obj.item) {
+                obj.sequence = sequence;
+                previousObj = obj;
+            } else {
+                sequence++;
+                obj.sequence = sequence;
+                previousObj = obj;
+            }
+            i++;
+        });
     }
 
     validateField(item: any) {

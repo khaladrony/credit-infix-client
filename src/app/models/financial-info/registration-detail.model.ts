@@ -10,6 +10,7 @@ export class RegistrationDetail {
     itemValue: string    
     isRowSpan: boolean;
     isColSpan: boolean;
+    sequence: number;
 
     isEdit: boolean;
 

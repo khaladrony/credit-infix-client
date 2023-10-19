@@ -165,7 +165,8 @@ export class CorporateStructureComponent implements OnInit {
         this.corporateStructureList.forEach(obj => {
             obj.companyInfo = this.companyInfo;
         });
-        console.log(this.corporateStructureList);
+        
+        this.setSequence()
 
         if (this.corporateStructureList.length > 0) {
             this.loader.show();
@@ -188,6 +189,27 @@ export class CorporateStructureComponent implements OnInit {
                 },
             });
         }
+    }
+
+    setSequence() {
+        let previousObj = new CorporateStructure();
+        let i = 0;
+        let sequence = 1;
+        this.corporateStructureList.forEach(obj => {
+
+            if (i == 0) {
+                obj.sequence = sequence;
+                previousObj = obj;
+            } else if (previousObj.itemCode === obj.itemCode) {
+                obj.sequence = sequence;
+                previousObj = obj;
+            } else {
+                sequence++;
+                obj.sequence = sequence;
+                previousObj = obj;
+            }
+            i++;
+        });
     }
 
     onEdit(corporateStructureObj: CorporateStructure) {

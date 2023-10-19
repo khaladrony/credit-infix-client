@@ -7,6 +7,7 @@ export class OperationInfo {
     companyInfo: CompanyInfo;
     itemCode: string;
     itemValue: string
+    sequence: number;
     
     isEdit: boolean;
 

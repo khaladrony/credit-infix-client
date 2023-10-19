@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { OperationInfo } from 'src/app/models/financial-info/operation-info.model';
 import { RegistrationDetail } from 'src/app/models/financial-info/registration-detail.model';
+import { RegistrationDetailService } from 'src/app/services/financial-info/registration-detail.service';
+import { NotificationService } from 'src/app/services/notification/notification.service';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-inline-table',
@@ -15,6 +21,8 @@ export class InlineTableComponent implements OnInit {
     registrationDetailList: RegistrationDetail[] = [];
     rows: any[] = [];
     data: any[] = [];
+    data2: any[] = [];
+    data3: any;
     oldRegistrationDetailObj: RegistrationDetail;
     newRegistrationDetailObj: RegistrationDetail;
 
@@ -26,17 +34,31 @@ export class InlineTableComponent implements OnInit {
     countryList: any[] = [];
     content: SafeHtml;
 
+    companyInfo: CompanyInfo;
 
-    constructor(private sanitizer: DomSanitizer) {
+
+    constructor(
+        private sanitizer: DomSanitizer,
+        private router: Router,
+        private loader: NgxSpinnerService,
+        private notifyService: NotificationService,
+        private sharedService: SharedService,
+        private registrationDetailService: RegistrationDetailService
+    ) {
         this.getInnerHtml();
+        this.companyInfo = new CompanyInfo();
     }
 
     ngOnInit(): void {
         this.title = 'Registration Details';
 
-        this.getRegistrationDetailList();
         this.getOperationInfoList();
         // this.getInnerHtml();
+
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.getRegDList();
+        this.getRegistrationDetailList();
+
     }
 
     getRegistrationDetailList() {
@@ -181,6 +203,44 @@ export class InlineTableComponent implements OnInit {
         this.rows.push({ 'colspan': 2, 'text': registrationDetailObj.itemValue })
         this.data.push(this.rows);
         this.rows = []
+
+        console.log(this.data);
+
+    }
+
+    getRegDList() {
+        this.loader.show();
+        this.registrationDetailService.getListForReport(this.companyInfo.id).subscribe({
+            next: (data) => {
+                // this.registrationDetailList = data.data;
+
+                this.data3 = data.data;
+                console.log(this.data3);
+                this.data3.forEach(obj => {
+
+                    obj.forEach(val => {
+                        console.log(val);
+                        if (val.rowspan == 0) {
+                            delete val.rowspan;
+                        }
+                        if (val.colspan == 0) {
+                            delete val.colspan;
+                        }
+                    })
+
+                });
+                console.log(this.data3);
+            },
+            complete: () => {
+
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
     }
 
     onEdit(registrationDetailObj: RegistrationDetail) {
@@ -403,7 +463,25 @@ export class InlineTableComponent implements OnInit {
     setWordBold(str: string) {
         let splitString: any[] = [];
         splitString = str.split(':');
-        return `<b>` + splitString[0] + ` :</b>` + splitString[1];
+        let strr;
+        splitString.forEach(element => {
+            strr = strr + `<b>` + element + ` :</b>`
+        });
+        // return `<b>` + splitString[0] + ` :</b>` + splitString[1];
+        return strr;
+    }
+
+    setBold() {
+        // const str = "aaaaa: lorem ipsum bb: do lor sit amet ccc: no pro movet";
+
+        // const boldArr = str.replace(/(\b[^\s]+)(:)/g, `\n${'$1'.bold()}$2`).split('\n').filter(x => x).map(x => x.trim());
+        // console.log(boldArr);
+
+        const str = "aaaaa: lorem ipsum bb: do lor sit amet ccc: no pro movet";
+
+        const boldArr = str.replace(/(\b[^\s]+)(:)/g, `\n<b>${'$1'}$2</b>`).split('\n').filter(x => x).map(x => x.trim());
+        console.log(boldArr);
+        return boldArr;
     }
 }
 

@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
 import { CompanyInfoService } from 'src/app/services/financial-info/company-info.service';
+import { CountryService } from 'src/app/services/financial-info/country.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -21,6 +22,8 @@ export class CompanyInfoComponent implements OnInit {
     companyInfo: CompanyInfo;
     companyInfoForm: UntypedFormGroup;
     companyId: number;
+    countryList: any[] = [];
+    selectedCountry: any;
 
     constructor(
         private router: Router,
@@ -31,7 +34,8 @@ export class CompanyInfoComponent implements OnInit {
         private notifyService: NotificationService,
         private utilService: UtilService,
         private companyInfoService: CompanyInfoService,
-        private sharedService:SharedService
+        private sharedService: SharedService,
+        private countryService: CountryService
     ) {
         this.companyInfo = new CompanyInfo();
     }
@@ -69,12 +73,14 @@ export class CompanyInfoComponent implements OnInit {
 
         this.route.queryParams.subscribe((params: any) => {
             this.companyInfo = JSON.parse(params.data);
-            if(this.companyInfo!=null){
+            if (this.companyInfo != null) {
                 this.isUpdateMode = true;
             }
         })
 
         this.sharedService.setCompanyInfoObject(this.companyInfo);
+
+        this.loadCountryList();
     }
 
     submit() {
@@ -140,6 +146,27 @@ export class CompanyInfoComponent implements OnInit {
     resetForm() {
         this.companyInfoForm.reset();
         this.isUpdateMode = false;
+    }
+
+    loadCountryList() {
+        let data = {};
+        this.countryService.getList().subscribe({
+            next: (data) => {
+                this.countryList = data.data;
+            },
+            complete: () => { },
+            error: (err) => {
+                console.log(err);
+            },
+        });
+    }
+
+    onCountryChange(name: string) {
+        this.selectedCountry = this.countryList.find((country) => country.name === name) || null;
+    }
+
+    onScrollToEnd() {
+        this.loadCountryList();
     }
 
 }

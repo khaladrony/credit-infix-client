@@ -178,10 +178,10 @@ export class NatureOfBusinessComponent implements OnInit {
     }
 
     validateForm(natureOfBusinessObj: NatureOfBusiness) {
-        if (natureOfBusinessObj.itemCode !== '' && natureOfBusinessObj.itemValue !== '') {
-            return false;
-        } else {
+        if (natureOfBusinessObj.itemCode == '' && natureOfBusinessObj.itemValue == '') {
             return true;
+        } else {
+            return false;
         }
     }
 

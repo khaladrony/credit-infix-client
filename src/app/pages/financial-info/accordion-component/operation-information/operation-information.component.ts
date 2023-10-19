@@ -102,9 +102,9 @@ export class OperationInformationComponent implements OnInit {
             complete: () => {
                 this.operationInfoList.forEach(obj => {
                     obj.isEdit = false;
-                    if(obj.itemCode === 'Activities:'){
-                        obj.itemValue = obj.companyInfo.businessType;
-                    }
+                    // if(obj.itemCode === 'Activities:'){
+                    //     obj.itemValue = obj.companyInfo.businessType;
+                    // }
                     
                 });
 
@@ -122,7 +122,8 @@ export class OperationInformationComponent implements OnInit {
         this.operationInfoList.forEach(obj => {
             obj.companyInfo = this.companyInfo;
         });
-        console.log(this.operationInfoList);
+        
+        this.setSequence();
 
         if (this.operationInfoList.length > 0) {
             this.loader.show();
@@ -145,6 +146,27 @@ export class OperationInformationComponent implements OnInit {
                 },
             });
         }
+    }
+
+    setSequence() {
+        let previousObj = new OperationInfo();
+        let i = 0;
+        let sequence = 1;
+        this.operationInfoList.forEach(obj => {
+
+            if (i == 0) {
+                obj.sequence = sequence;
+                previousObj = obj;
+            } else if (previousObj.itemCode === obj.itemCode) {
+                obj.sequence = sequence;
+                previousObj = obj;
+            } else {
+                sequence++;
+                obj.sequence = sequence;
+                previousObj = obj;
+            }
+            i++;
+        });
     }
 
     onEdit(operationInfoObj: OperationInfo) {
@@ -202,10 +224,10 @@ export class OperationInformationComponent implements OnInit {
     }
 
     validateForm(operationInfoObj: OperationInfo) {
-        if (operationInfoObj.itemCode !== '' && operationInfoObj.itemValue !== '') {
-            return false;
-        } else {
+        if (operationInfoObj.itemCode === '' && operationInfoObj.itemValue === '') {
             return true;
+        } else {
+            return false;
         }
     }
 

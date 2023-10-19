@@ -257,15 +257,15 @@ export class FinancialInformationComponent implements OnInit {
         this.financialInformationList.push(this.newFinancialInformationObj);
     }
 
-    addRow() {
+    addRow(index: number) {
         this.oldFinancialNoteObj = null;
 
         this.newFinancialNoteObj = new FinancialNote();
-        this.newFinancialNoteObj.id = this.getId('');
         this.newFinancialNoteObj.itemCode = '';
         this.newFinancialNoteObj.itemValue = '';
         this.newFinancialNoteObj.isEdit = true;
-        this.financialNoteList.push(this.newFinancialNoteObj);
+
+        this.financialNoteList.splice(index + 1, 0, this.newFinancialNoteObj);
     }
 
     onUpdate(object: any) {

@@ -11,6 +11,7 @@ import { MenuComponent } from 'src/app/pages/permission/menu/menu.component';
 import { FinancialInfoComponent } from 'src/app/pages/financial-info/financial-info.component';
 import { CompanyListComponent } from 'src/app/pages/financial-info/company-list/company-list.component';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
+import { MainReportComponent } from 'src/app/pages/financial-info/report/main-report/main-report.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -27,8 +28,8 @@ export const AdminLayoutRoutes: Routes = [
                 path: 'financial-info', component: FinancialInfoComponent,
                 children: [{ path: 'company-info', component: CompanyInfo }]
             },
-            // { path: 'company-info', component: CompanyInfo },
-            { path: 'company-list', component: CompanyListComponent }
+            { path: 'company-list', component: CompanyListComponent },
+            { path: 'main-report', component: MainReportComponent }
         ]
     }
 ];

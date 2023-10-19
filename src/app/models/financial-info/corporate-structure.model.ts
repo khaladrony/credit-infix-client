@@ -7,6 +7,7 @@ export class CorporateStructure {
     companyInfo: CompanyInfo;
     itemCode: string;
     itemValue: string
+    sequence: number;
     
     isEdit: boolean;
 
