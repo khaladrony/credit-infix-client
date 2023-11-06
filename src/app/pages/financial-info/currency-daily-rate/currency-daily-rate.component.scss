@@ -1,21 +1,7 @@
 .pt-lg-8,
 .py-lg-8 {
-    padding-top: 0rem !important;
+    padding-top: 4rem !important;
 }
-
-.pl-lg-4,
-.px-lg-4 {
-    padding-left: 0rem !important;
-}
-
-.card-body {
-    flex: 1 1 auto;
-    min-height: 1px;
-    padding: 0rem;
-}
-
-
-
 
 // table css start
 .table-title .add-new {
@@ -33,13 +19,14 @@
     margin-right: 4px;
 }
 
-table.table {
-    table-layout: fixed;
-}
+// table.table {
+//     table-layout: fixed;
+// }
 
 .table th,
 .table td {
-    padding: 0.3rem;
+    padding: 0.8rem;
+    font-size: 0.8rem;
 }
 
 table.table th {
@@ -57,7 +44,7 @@ table.table td a {
     min-width: 24px;
 }
 
-table.table td a.update {
+table.table td a.add {
     color: #27C46B;
 }
 
@@ -90,7 +77,7 @@ select {
 
 .bi.bi-pencil-fill,
 .bi-trash-fill,
-.fa-cloud,
+.bi-floppy-fill,
 .fa-times-circle {
     font-size: 1rem;
 }
@@ -105,28 +92,4 @@ table.table td.action-td {
     text-align: center;
 }
 
-table.table td {
-    white-space: normal;
-}
-
 // table css end
-
-
-// .pageWrapper {
-//     margin-top: 50px;
-// }
-
-// button {
-//     padding: 15px;
-// }
-
-// kendo-pdf-export {
-//     font-family: "DejaVu Sans", "Arial", sans-serif;
-//     font-size: 10px;
-// }
-
-// .content {
-//     width: 800px;
-//     margin: 0 auto;
-//     line-height: 20px;
-// }

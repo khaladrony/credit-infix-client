@@ -12,6 +12,7 @@ import { FinancialInfoComponent } from 'src/app/pages/financial-info/financial-i
 import { CompanyListComponent } from 'src/app/pages/financial-info/company-list/company-list.component';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { MainReportComponent } from 'src/app/pages/financial-info/report/main-report/main-report.component';
+import { CurrencyDailyRateComponent } from 'src/app/pages/financial-info/currency-daily-rate/currency-daily-rate.component';
 
 export const AdminLayoutRoutes: Routes = [
     {
@@ -29,7 +30,8 @@ export const AdminLayoutRoutes: Routes = [
                 children: [{ path: 'company-info', component: CompanyInfo }]
             },
             { path: 'company-list', component: CompanyListComponent },
-            { path: 'main-report', component: MainReportComponent }
+            { path: 'main-report', component: MainReportComponent },
+            { path: 'currency-daily-rate', component: CurrencyDailyRateComponent }
         ]
     }
 ];

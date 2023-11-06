@@ -3,18 +3,16 @@ export class CompanyInfo {
     version: number;
 
     name: string;
+    transactionDate: Date
     legalAddress: string
     operationAddress: string
     telephoneNumber: string
     website: string
-    // faxNo: string
-    // email: string
     industryType: string
     yearEstablished: string
     ageOfBusiness: string
     businessType: string
     country: string
-    // state: string
     businessScale: string
     paymentPractices: string
     listedStatus: string

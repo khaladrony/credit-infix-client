@@ -43,6 +43,9 @@ import { RatingService } from 'src/app/services/financial-info/rating.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import domtoimage from 'dom-to-image';
+import { CurrencyDailyRate } from 'src/app/models/financial-info/currency-daily-rate.model';
+import { CurrencyDailyRateService } from 'src/app/services/financial-info/currency-daily-rate.service';
+import { UtilService } from 'src/app/services/util.service';
 
 @Component({
     selector: 'app-main-report',
@@ -50,6 +53,10 @@ import domtoimage from 'dom-to-image';
     styleUrls: ['./main-report.component.scss']
 })
 export class MainReportComponent implements OnInit {
+
+    currentDate: Date = new Date();
+
+    pdfFileName: string;
 
     companyInfo: CompanyInfo;
     //-----------------
@@ -96,6 +103,7 @@ export class MainReportComponent implements OnInit {
     financialNoteList: FinancialNote[] = [];
     //-----------------
     recommendedreditInfoList: any[] = [];
+    crAssessmentFactorsList: any[] = [];
     //-----------------
     riskLevelList: RiskLevel[] = [];
     //-----------------
@@ -106,6 +114,10 @@ export class MainReportComponent implements OnInit {
     ratingList: Rating[] = [];
     //-----------------
     firstPageData: any[];
+    reportName: string;
+    reportDate: string;
+    //-----------------
+    currencyDailyRateList: CurrencyDailyRate[] = [];
 
 
     @ViewChild('content', { static: false }) el!: ElementRef;
@@ -134,14 +146,16 @@ export class MainReportComponent implements OnInit {
         private summaryOpinionService: SummaryOpinionService,
         private countryService: CountryService,
         private ratingService: RatingService,
+        private currencyDailyRateService: CurrencyDailyRateService,
+        private utilService: UtilService,
+
     ) {
         this.companyInfo = new CompanyInfo();
     }
 
     ngOnInit(): void {
-        // this.companyInfo = this.sharedService.getCompanyInfoObject();
 
-        this.loadCompanyInfo()
+        this.loadCompanyInfo();
     }
 
     async convetToPDF_1() {
@@ -178,7 +192,7 @@ export class MainReportComponent implements OnInit {
 
     }
 
-    convetToPDF() {
+    convetToPDF_2() {
 
         const input = document.getElementById('contentToConvert');
 
@@ -231,17 +245,35 @@ export class MainReportComponent implements OnInit {
                 var imgData = pageCanvas.toDataURL('image/' + image.type, image.quality);
                 pdf.addImage(imgData, image.type, margin[1], 1, innerPageWidth, pageHeight);
 
-                if (page > 0){
-                    this.getPdfHeader(pdf, page, nPages);
+                if (page > 0) {
+                    this.getPdfHeader(pdf);
                     this.getPdfFooter(pdf, page, nPages);
-                }                
+
+                    // pdf.setDrawColor('#1f1f6f');
+                    // pdf.line(0.8, 10.4, 6.4, 10.4); // horizontal line    
+                    // pdf.setLineWidth(0.02);
+
+                    // pdf.setFontSize(8);
+                    // pdf.setTextColor('#1f1f6f');
+                    // pdf.setFont('Open Sans, sans-serif', 'bold');
+                    // pdf.text('Infix Credit | International Credit Information Report | 2023', 0.8, 10.6);
+                    // pdf.text('www.infixcredit.com', 0.8, 10.7);
+                    // pdf.text('Page ' + (page + 1) + ' of ' + nPages, 7.6, 10.5);
+                    // // pdf.addImage('Page ' + (page + 1) + ' of ' + nPages, 7, 10.7);
+
+                    // var img = new Image()
+                    // img.src = 'assets/img/logo/footer-logo-right.png'
+                    // pdf.addImage(img, 'png', 6.5, 10.3, 1.8, 0.4)
+                }
+
+
             }
 
             pdf.save('Financial-info.pdf');
         });
     }
 
-    getPdfHeader(pdf: jsPDF, page: number, nPages: number) {
+    getPdfHeader(pdf: jsPDF) {
         pdf.setFontSize(8);
         pdf.setTextColor('#1f1f6f');
         pdf.text(this.companyInfo.name, 5.5, 0.7);
@@ -250,16 +282,15 @@ export class MainReportComponent implements OnInit {
         img.src = 'assets/img/logo/infix-logo.png'
         pdf.addImage(img, 'png', 1, 0.4, 1.4, 0.5)
 
-        // pdf.setDrawColor('#1f1f6f');
-        // pdf.line(0, 0.2, 2, 0.2);
     }
 
     getPdfFooter(pdf: jsPDF, page: number, nPages: number) {
-        pdf.setFontSize(8);
-        // pdf.setDrawColor('#1f1f6f');
-        // pdf.line(0, 10.8, 2, 10.8);
-        // pdf.setLineHeightFactor(1.15);
+        console.log(page);
+        pdf.setDrawColor('#1f1f6f');
+        pdf.line(0.8, 10.4, 6.4, 10.4); // horizontal line    
+        pdf.setLineWidth(0.02);
 
+        pdf.setFontSize(8);
         pdf.setTextColor('#1f1f6f');
         pdf.setFont('Open Sans, sans-serif', 'bold');
         pdf.text('Infix Credit | International Credit Information Report | 2023', 0.8, 10.6);
@@ -270,6 +301,32 @@ export class MainReportComponent implements OnInit {
         var img = new Image()
         img.src = 'assets/img/logo/footer-logo-right.png'
         pdf.addImage(img, 'png', 6.5, 10.3, 1.8, 0.4)
+
+
+        // if (page == 0) {
+        //     pdf.setDrawColor(255, 255, 255);
+        //     pdf.line(0.8, 10.4, 7, 10.4); // horizontal line    
+        //     pdf.setLineWidth(2);
+        // }
+    }
+
+
+    convetToPDF() {
+        var jspdf = new jsPDF();
+
+        var elementHTML = document.querySelector("#contentToConvert");
+
+        // jspdf.html(elementHTML, {
+        //     callback: function (jspdf) {
+        //         jspdf.save('test.pdf');
+        //     },
+        //     margin: [10, 10, 10, 10],
+        //     autoPaging: 'text',
+        //     x: 0,
+        //     y: 0,
+        //     width: 190,
+        //     windowWidth: 675
+        // });
     }
 
     loadCompanyInfo() {
@@ -282,6 +339,7 @@ export class MainReportComponent implements OnInit {
             complete: () => {
                 this.getCreditAssessment(this.companyInfo.id);
                 this.getBasicInfoList(this.companyInfo)
+                this.getContactList(this.companyInfo.id);
                 this.getRegistrationDetail(this.companyInfo.id);
                 this.getManagement(this.companyInfo.id);
                 this.getShareholder(this.companyInfo.id);
@@ -296,6 +354,7 @@ export class MainReportComponent implements OnInit {
                 this.getCountryRiskAssessmentList(this.companyInfo.country);
                 this.getRatingList();
                 this.firstPageDataList();
+                this.getCurrencyDailyRateList(this.utilService.dateFormat(this.companyInfo.transactionDate, 'yyyy-MM-dd'));
 
                 this.loader.hide();
             },
@@ -309,6 +368,9 @@ export class MainReportComponent implements OnInit {
     //First page data START
 
     firstPageDataList() {
+        this.pdfFileName = this.companyInfo.name + '.pdf';
+        this.reportName = 'INTERNATIONAL CREDIT INFORMATION REPORT';
+        this.reportDate = 'Report Generated on: May 2023';
         this.firstPageData = [
             { key: 'Client Name', value: 'Accolade Search Ltd' },
             { key: `Client's Ref No`, value: 'NA' },
@@ -348,7 +410,7 @@ export class MainReportComponent implements OnInit {
 
     styleRiskAssessmentArrowImg() {
         let paddingPercent = this.creditAssessment.paddingPercent + "%";
-        return { 'padding-bottom': '15px', 'padding-left': paddingPercent }
+        return { 'padding-bottom': '5px', 'padding-left': paddingPercent }
     }
     //End
 
@@ -393,6 +455,10 @@ export class MainReportComponent implements OnInit {
     getPercentage(value: number) {
         return value + '%';
     }
+
+    makeMarginOrderDetail() {
+        return { 'margin-bottom': '10%' };
+    }
     //END
 
     //OrderDetail
@@ -403,7 +469,9 @@ export class MainReportComponent implements OnInit {
                 this.orderDetailList = data.data;
             },
             complete: () => {
-                this.getContactList(companyInfoId);
+                if (this.orderDetailList.length > 0) {
+                    this.setCompanyName(this.orderDetailList[0]);
+                }               
                 this.loader.hide();
             },
             error: (err) => {
@@ -411,6 +479,10 @@ export class MainReportComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    setCompanyName(orderDetail: OrderDetail) {
+        orderDetail.itemValue = this.getCapitalize(this.companyInfo.name);
     }
     //END
 
@@ -438,7 +510,7 @@ export class MainReportComponent implements OnInit {
     getBasicInfoList(companyInfo: CompanyInfo) {
         let basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Name:';
-        basicInfoObj.itemValue = companyInfo.name;
+        basicInfoObj.itemValue = this.getCapitalize(companyInfo.name);
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
@@ -568,9 +640,9 @@ export class MainReportComponent implements OnInit {
     styleObjectManagement(index: number): Object {
 
         if (index == 1) {
-            return { 'border-top': '2px solid  #e9ecef' };
+            return { 'border-top': '1.4px solid  #cdcbcb' };
         } else if (index % this.trGroupMax == 0) {
-            return { 'border-bottom': '2px solid  #e9ecef' };
+            return { 'border-bottom': '1.4px solid  #cdcbcb' };
         }
 
     }
@@ -598,9 +670,9 @@ export class MainReportComponent implements OnInit {
     styleObjectShareholder(index: number): Object {
 
         if (index == 1) {
-            return { 'border-top': '2px solid  #e9ecef' };
+            return { 'border-top': '1.4px solid  #cdcbcb' };
         } else if (index % this.trGroupMaxShareholder == 0) {
-            return { 'border-bottom': '2px solid  #e9ecef' };
+            return { 'border-bottom': '1.4px solid  #cdcbcb' };
         }
     }
     //END
@@ -696,7 +768,7 @@ export class MainReportComponent implements OnInit {
         let splitString: any[] = [];
         splitString = str.split(':');
 
-        return splitString.length > 1 ? `<b>` + splitString[0] + ` : </b>` + splitString[1] : str;
+        return splitString.length > 1 ? `<b style="font-weight: bold;">` + splitString[0] + ` : </b>` + splitString[1] : str;
     }
     //END
 
@@ -749,16 +821,73 @@ export class MainReportComponent implements OnInit {
     }
     //END
 
+    //CURRENCY EXCHANGE RATE START
+
+    getCurrencyDailyRateList(date: string) {
+        this.loader.show();
+        let currencyDate: Date = new Date(this.utilService.dateFormat(date, 'yyyy-MM-dd'))
+        this.currencyDailyRateService.getListByDate(currencyDate).subscribe({
+            next: (data) => {
+                this.currencyDailyRateList = data.data;
+            },
+            complete: () => {
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    //END
+
     //Static Data
     getRecommendedCreditStaticData() {
         this.recommendedreditInfoList = [
             { range: 'Above 40%', description: 'Above 4 times of base credit limit' },
-            { range: '30%～40%', description: '3 to 4 times of base credit limit' },
-            { range: '20%～30%', description: '2 to 3 times of base credit limit' },
-            { range: '10%～20%', description: '1 to 2 times of base credit limit' },
+            { range: `30%～40%`, description: '3 to 4 times of base credit limit' },
+            { range: `20%～30%`, description: '2 to 3 times of base credit limit' },
+            { range: `10%～20%`, description: '1 to 2 times of base credit limit' },
             { range: 'Below 10%', description: 'within base credit limit' }
         ];
+
+        this.crAssessmentFactorsList = [
+            {
+                type: 'Financial Strength',
+                description: `Including the solvency, profitability, operation
+            capacity, development capacity etc.; comparison
+            between subject and the industry average financial index.
+            Weight 10%-30% in the comprehensive analysis.` },
+            {
+                type: 'Company Character',
+                description: `Referring to subject’s character that can be
+            affected by the transaction records, judicial
+            records, administrative supervision information,
+            tax records, operation status etc. Weight 20%-25%
+            in th7e comprehensive analysis.` },
+            {
+                type: 'Management Competence',
+                description: `Including subject’s shareholder background and
+            strength, related company background and
+            strength, management experience etc. Weight
+            20%-25% in the comprehensive analysis.` },
+            {
+                type: 'Operation Capacity',
+                description: `Analysis on subject’s current operation condition
+            including the products, history, staff scale,
+            intellectual property, business size etc. Weight
+            20%-25% in the comprehensive analysis.` },
+            {
+                type: 'External Background',
+                description: `Analysis on the external factors that may have
+            effect on subject, including the industry
+            background, location background, competitors etc.
+            Weight 10%-15% in the comprehensive analysis.` }
+        ];
     }
+
+
     //END
 
     //RiskLevel
@@ -799,6 +928,10 @@ export class MainReportComponent implements OnInit {
             },
         });
     }
+
+    makeMarginSummaryOpinion() {
+        return { 'margin-bottom': '5%' };
+    }
     //END
 
     //CountryRiskAssessment
@@ -817,9 +950,13 @@ export class MainReportComponent implements OnInit {
             },
         });
     }
+
+    makeMarginCountryRiskAssessment() {
+        return { 'margin-bottom': '0%' };
+    }
     //END
 
-    //CountryRiskAssessment
+    //Rating
     getRatingList() {
         this.loader.show();
         this.ratingService.getList().subscribe({
@@ -858,8 +995,13 @@ export class MainReportComponent implements OnInit {
     }
 
     makeMargin() {
-        return { 'margin-bottom': '0%' };
+        return { 'margin-bottom': '15%' };
     }
-    //
+
+    getCapitalize(sentence: string) {
+        return sentence.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
+    }
+
+    //END
 
 }

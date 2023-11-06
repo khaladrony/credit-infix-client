@@ -38,6 +38,10 @@ import { InfixRatingGlossaryComponent } from 'src/app/pages/financial-info/accor
 import { InlineTableComponent } from 'src/app/pages/financial-info/accordion-component/inline-table/inline-table.component';
 import { CompanyListComponent } from 'src/app/pages/financial-info/company-list/company-list.component';
 import { MainReportComponent } from 'src/app/pages/financial-info/report/main-report/main-report.component';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { CurrencyDailyRateComponent } from 'src/app/pages/financial-info/currency-daily-rate/currency-daily-rate.component';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -48,7 +52,10 @@ import { MainReportComponent } from 'src/app/pages/financial-info/report/main-re
     NgbModule,
     ClipboardModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    PDFExportModule,
+    BsDatepickerModule.forRoot(),
+    NgbDatepickerModule
   ],
   declarations: [
     DashboardComponent,
@@ -80,7 +87,8 @@ import { MainReportComponent } from 'src/app/pages/financial-info/report/main-re
     InfixRatingGlossaryComponent,
     InlineTableComponent,
     CompanyListComponent,
-    MainReportComponent
+    MainReportComponent,
+    CurrencyDailyRateComponent
     
   ]
 })

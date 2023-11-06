@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -6,7 +7,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class UtilService {
 
-    constructor() { }
+    constructor(
+        public datePipe: DatePipe,
+    ) { }
 
 
     validateAllFormFields(formGroup: FormGroup) {
@@ -26,5 +29,34 @@ export class UtilService {
         });
 
         return invalidFieldCount;
+    }
+
+    dateFormat(dateObj: any, format: string): string {
+        let newDate;
+        let date: Date;
+        if (typeof dateObj === 'string') {
+            if (dateObj == '') {
+                return '';
+            }
+            var parts = (dateObj.split('T')[0]).split('-');
+            var dmy;
+            if (parts[0].length == 4) {
+                dmy = parts[0] + '-' + parts[1] + '-' + parts[2];
+            }
+            else {
+                dmy = parts[2] + '-' + parts[1] + '-' + parts[0];
+            }
+            if (dateObj.includes('T')) {
+                newDate = this.datePipe.transform(new Date(dateObj), format) || '';
+            } else {
+                date = new Date(dmy);
+                newDate = this.datePipe.transform(new Date(date), format) || '';
+            }
+        } else if (typeof dateObj === 'object') {
+            newDate = this.datePipe.transform(dateObj, format) || '';
+        } else {
+            newDate = ''
+        }
+        return newDate
     }
 }

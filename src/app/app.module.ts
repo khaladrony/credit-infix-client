@@ -19,6 +19,12 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { NotifierModule } from 'angular-notifier';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
+import { EnvServiceProvider } from './services/env.service.provider';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { DatePipe } from '@angular/common';
+
 
 
 @NgModule({
@@ -51,15 +57,20 @@ import { NgSelectModule } from '@ng-select/ng-select';
       behaviour: {
         autoHide: 10000
       }
-    })
+    }),
+    PDFExportModule,
+    BsDatepickerModule.forRoot(),
+    NgbDatepickerModule
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     AuthLayoutComponent,
-    NotFoundComponent 
+    NotFoundComponent
   ],
   providers: [
+    EnvServiceProvider,
+    DatePipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

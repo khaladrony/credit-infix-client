@@ -2,1092 +2,1413 @@
 
 </div>
 
-<div>
-    <input type="button" value="Convert" (click)="convetToPDF()" />
-</div>
 
-<div class="container" id="contentToConvert">
-    <div class="row">
-        <!-- <div class="col-xl-12 order-xl-1"> -->
+
+<div class="pageWrapper">
+    <!-- <div class="container" id="contentToConvert"> -->
+    <div class="container wrapper-container" style="max-width: 900px; margin-top: 10px;">
+
+        <div class="card-body bg-white" style="margin-bottom: 10px;text-align: center; padding: 5px;">
+            <div>
+                <button class="btn" (click)="pdf.saveAs(pdfFileName)">
+                    <i class="fa fa-download"></i> Download
+                </button>
+            </div>
+        </div>
+
         <div class="card-body bg-white">
-
             <div class="table-wrapper">
-                <!-- Index page START-->
-                <div class="row">
-                    <div class="col-sm-12" style="margin-bottom: 300px;">
-                        <img src="assets/img/logo/1st-page-logo.png" style="width:200px;height:100px;" align="right">
-                    </div>
+                <kendo-pdf-export #pdf paperSize="A4" margin="0cm">
+                    <kendo-pdf-export-margin top="2cm" bottom="2.5cm" left="0.7cm"
+                        right="0.7cm"></kendo-pdf-export-margin>
+                    <div class="size-a4">
 
-                    <div class="col-sm-12" style="text-align: right;margin-top: 300px;">
-
-                        <div class="pb-3 right-border" style=" font-weight: bold;font-size: 2rem;">
-                            {{companyInfo.name}}
-                        </div>
-                        <div class="pb-3 right-border" style=" font-weight: bold;font-size: 1.7rem;">
-                            INTERNATIONAL CREDIT INFORMATION REPORT
-                        </div>
-                        <div class="right-border" style=" font-weight: bold;font-size: 1.3rem;">
-                            Report Generated on: May 2023
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row pt-6 pb-8" style="text-align: right; padding-right:15px">
-                    <table class="table" id="first-page">
-                        <tbody>
-                            <tr *ngFor="let data of firstPageData" class="right-border">
-                                <td style="font-size: 0.8rem;width:85%;margin: 0rem; padding:0px; padding-right:10px">
-                                    {{data.value}}
-                                </td>
-                                <td style="color: #1f1f6f;font-size: 0.8rem;margin: 0rem; padding:0px;padding-right:10px">
-                                    {{data.key}}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="pt-8" style="border-top: 3.5px solid #e9ecef;">
-
-                </div>
-
-                <!-- Index page END-->
-
-
-                <!-- Company Info -->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <tbody>
-                                <tr>
-                                    <td colspan="3">
-                                        <div>Legal Address:</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.legalAddress}}</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>Telephone Number :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.telephoneNumber}}</div>
-                                    </td>
-                                    <td>
-                                        <div>Website :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.website}}</div>
-                                    </td>
-                                    <td>
-                                        <div>Industry Type :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.industryType}}</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>Year Established:</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.yearEstablished}}</div>
-                                    </td>
-                                    <td>
-                                        <div>Age of Business:</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.ageOfBusiness}}</div>
-                                    </td>
-                                    <td>
-                                        <div>Business Type:</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.businessType}}</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-
-                <!-- Corporate Structure -->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="label-style">Corporate Structure:</div>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr>
-                                    <td>
-                                        <div>Number Of Director :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.numberOfDirector}}</div>
-                                    </td>
-                                    <td>
-                                        <div>Holding Company :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.holdingCompany}}</div>
-                                    </td>
-                                    <td>
-                                        <div>Legal Status :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.legalStatus}}</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>Number Of Shareholders :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.numberOfShareholders}}</div>
-                                    </td>
-                                    <td>
-                                        <div>No. of Subsidiaries :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.numberOfSubsidiaries}}</div>
-                                    </td>
-                                    <td>
-                                        <div>No. of Charge:</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.noOfCharge}}</div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div>Number of Employee :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.numberOfEmployee}}</div>
-                                    </td>
-                                    <td>
-                                        <div>Affiliated Companies :</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.affiliatedCompanies}}</div>
-                                    </td>
-                                    <td>
-                                        <div>No. of Judicial Record (s):</div>
-                                        <div style=" font-weight: bold;">{{companyInfo.noOfJudicialRecord}}</div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Credit Assessment START -->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table" id="creditAssessment">
-                            <tr>
-                                <div class="cr-ass-label-style">Credit Assessment:</div>
-                            </tr>
-
-                            <div class="row" style="border: solid #e9ecef 2px; ">
-                                <div class="col" style="border-right: solid #e9ecef 2px;">
-                                    <div class="label-color">Recommended Maximum Credit:</div>
-                                    <div style="font-size: 1.5rem; font-weight: bold; color: black;">
-                                        {{creditAssessment.currency}} {{creditAssessment.maximumCredit}}
-                                    </div>
-                                    <div class="text-justify font-color-size-default">
-                                        Main factors considered include net
-                                        assets, total assets, revenue, profit,
-                                        credit rating etc. No consideration is
-                                        given to the specific situation of your
-                                        transaction with subject. You may refer
-                                        to the following suggestions when
-                                        making credit decisions, but it is
-                                        advisable that proper adjustments
-                                        should be made in accordance with your
-                                        marketing strategies and credit policies.
-                                    </div>
-                                </div>
-                                <div class="col" style="border-right: solid #e9ecef 2px;">
-                                    <div class="label-color">Credit Rating:</div>
-
-                                    <div class="row" style="color: black;">
-                                        <div class="col-lg-4 pb-2">
-                                            <div class="cr-color" [ngStyle]="styleBackgroundColor()">
-                                                {{creditAssessment.grade}}</div>
-                                        </div>
-                                        <div class="col-lg-8 pb-2"
-                                            style="border-left: solid #e9ecef 2px; font-size: 13px;">
-                                            <div style="font-weight: bold; margin-top: 10px;">Range
-                                                {{creditAssessment.gradeRange}}</div>
-                                            <div style="font-weight: bold;">{{creditAssessment.creditRating}}</div>
-                                            <div style="font-weight: bold; margin-top: 30px;">
-                                                {{creditAssessment.creditRatingStatus}}</div>
-                                        </div>
-                                    </div>
-                                    <div class="text-justify font-color-size-default">
-                                        In assessing the credit reports of a company,
-                                        INFIX CREDIT’S takes into comprehensive
-                                        consideration of five dimensions including
-                                        subject’s financial strength, company
-                                        character, management competence and other
-                                        parameter.
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="label-color">Risk Assessment :</div>
-                                    <div style="font-size: 20px; font-weight: bold;color: black;">
-                                        {{creditAssessment.riskStatus}}</div>
-                                    <div [ngStyle]="styleRiskAssessmentArrowImg()">
-                                        <img style="width: 35px;" src="assets/img/icons/arrow-down.png" alt="">
-                                    </div>
-
-                                    <div class="progress" style="max-width: 100%">
-                                        <div class="progress-bar" style="width: 100%; background-color: #00af50">
-
-                                        </div>
-
-                                        <div class="progress-bar" style="width: 100%; background-color: #92d051">
-
-                                        </div>
-                                        <div class="progress-bar" style="width: 100%; background-color: #fecf07">
-
-                                        </div>
-                                        <div class="progress-bar" style="width: 100%; background-color: #ef9a3f">
-
-                                        </div>
-                                        <div class="progress-bar" style="width: 100%; background-color: #f35b43">
-
-                                        </div>
-                                        <div class="progress-bar" style="width: 100%; background-color: #ff2d2e">
-
-                                        </div>
-                                        <div class="progress-bar" style="width: 100%; background-color: #7f7f7f">
-
-                                        </div>
-                                    </div>
-
-                                    <div class="progress rate-alph"
-                                        style="max-width: 100%; height: 10px;font-weight: bold;margin-bottom: 0.3rem;">
-                                        <div class="progress-bar" style="width: 100%;">A</div>
-                                        <div class="progress-bar" style="width: 100%;">B</div>
-                                        <div class="progress-bar" style="width: 100%;">C</div>
-                                        <div class="progress-bar" style="width: 100%;">D</div>
-                                        <div class="progress-bar" style="width: 100%;">E</div>
-                                        <div class="progress-bar" style="width: 100%;">H</div>
-                                        <div class="progress-bar" style="width: 100%;">Other</div>
-                                    </div>
-
-                                    <div class="progress rate-alph" style="max-width: 100%; height: 14px;">
-                                        <div class="progress-bar" style="width: 100%;text-align: left;">Low Risk</div>
-                                        <div class="progress-bar" style="width: 100%;text-align: center;">Moderate Risk
-                                        </div>
-                                        <div class="progress-bar" style="width: 100%;text-align: right;">High Risk</div>
-                                    </div>
-
-
-                                    <div class="text-justify font-color-size-default">
-                                        The risk assessment is used in conjunction with
-                                        the Financial Strength Indicator. The Risk
-                                        Indicator reflects INFIX CREDIT's opinion of a
-                                        company's health, stability and overall
-                                        condition. It takes into consideration all
-                                        significant elements of credit.
-                                    </div>
-                                </div>
+                        <!-- Index page START-->
+                        <div class="row">
+                            <div class="col-sm-12" style="margin-bottom: 15px;">
+                                <img src="assets/img/logo/1st-page-logo.png" style="width:180px;height:70px;"
+                                    align="right">
                             </div>
 
-                        </table>
-                    </div>
-                </div>
-                <!-- Credit Assessment END -->
+                            <div class="col-sm-12" style="margin-top: 200px;">
+                                <table class="table" id="first-page0">
+                                    <tbody>
+                                        <tr>
+                                            <td class="label-style " style="font-size: 1rem;padding-right:40px; 
+                                                padding-bottom:10px;
+                                                border-right: 2px solid #e9ecef; text-align: right;">
+                                                {{companyInfo.name}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label-style " style="font-size: 1rem;padding-right:35px; 
+                                                padding-bottom:10px;
+                                                border-right: 2px solid #e9ecef; text-align: right;">
+                                                {{reportName}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="label-style " style="font-size: 1rem; padding-right:10px; 
+                                                padding-bottom:10px;
+                                                border-right: 2px solid #e9ecef; text-align: right;">
+                                                {{reportDate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
 
-
-                <div class="row">
-                    <!-- FinancialSummary START-->
-                    <div class="col-sm-6">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr class="label-style">
-                                    <th style="width: 40%;">Financial Item</th>
-                                    <th style="text-align: center;width: 20%;">Currency</th>
-                                    <th style="text-align: center;width: 40%;">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let fSummary of financialSummaryList">
-                                    <td class="label-color" style="width: 50%;">
-                                        {{fSummary.itemCode}}
-                                    </td>
-                                    <td style="text-align: center;width: 10%;font-weight: bold;color: black;">
-                                        {{fSummary.currency}}
-                                    </td>
-                                    <td style="width: 30%; text-align: center;color: black;">
-                                        {{fSummary.amount}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="table-bordered div-font-size">
-                            <div class="label-style">Comment :</div>
-                            <div class="font-basic-color text-justify">{{comments}}</div>
+                            </div>
                         </div>
-                    </div>
-                    <!-- FinancialSummary END-->
-
-                    <!-- RiskProfile START-->
-                    <div class="col-sm-6">
-                        <table class="table table-bordered" id="risk-profile-table">
-                            <tbody>
-
-                                <tr class="font-color-size-default">
-                                    <td style="width: 30%;"></td>
-                                    <td style="width: 70%;">
-                                        <div class="pb-4">
-                                            <span style="float: left;">1%</span>
-                                            <span style="float: right;">100%</span>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr *ngFor="let riskProfile of riskProfileList; let i = index">
-                                    <td class="label-color" style="width: 30%;">
-                                        {{riskProfile.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;">
-                                        <div class="progress">
-                                            <div class="progress-bar" role="progressbar"
-                                                [ngStyle]="{'width': getPercentage(riskProfile.percentage), 'color':'white'}"
-                                                aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
-                                                {{riskProfile.percentage}}
-                                            </div>
-                                        </div>
-                                        <span class="span-st"> {{riskProfile.status}}</span>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-justify font-color-size-default" colspan="2"
-                                        style="white-space: normal;">
-                                        The risk profile provides a snapshot of the current state of the
-                                        business.
-                                        Associated with each area you will find an individual assessment,
-                                        indicating how well the business is performing. These areas are all part
-                                        of the Rating model. The graphs show how high on each scale the
-                                        business is performing. If all boxes are filled, it indicates best
-                                        possible
-                                        performance within that area.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- RiskProfile START-->
-                </div>
 
 
-                <!-- Order Details START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">ORDER DETAILS</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
+                        <div class="row pt-6 pb-8" style="text-align: right; padding-right:15px">
+                            <table class="table" id="first-page">
+                                <tbody>
+                                    <tr *ngFor="let data of firstPageData">
+                                        <td
+                                            style="font-size: 0.5rem;width:85%;margin: 0rem; padding:0px; padding-right:10px;border-right: 2px solid #e9ecef;">
+                                            {{data.value}}
+                                        </td>
+                                        <td
+                                            style="color: #1f1f6f;font-size: 0.5rem;margin: 0rem; padding:0px;padding-right:10px;border-right: 2px solid #e9ecef;">
+                                            {{data.key}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                            <tbody>
-                                <tr *ngFor="let orderDetail of orderDetailList; let i = index">
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{orderDetail.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;white-space: pre-line;">
-                                        {{orderDetail.itemValue}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
 
-                    </div>
-                </div>
-                <!-- Order Details END-->
+                        <!-- Index page END-->
 
-                <!-- Contacts START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">CONTACTS</th>
-                                    <th id="th70" colspan="3"></th>
-                                </tr>
-                            </thead>
-                            <thead>
-                                <tr>
-                                    <th colspan="4">Registration Address</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="4">{{companyInfo.legalAddress}}</td>
-                                </tr>
-                            </tbody>
 
-                            <thead>
-                                <tr>
-                                    <th>Telephone No</th>
-                                    <th>Fex No</th>
-                                    <th>Email</th>
-                                    <th>Website</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="width: 25%;white-space: pre-line;">{{contact.telephoneNo}}</td>
-                                    <td style="width: 25%;white-space: pre-line;">{{contact.faxNo}}</td>
-                                    <td style="width: 25%;white-space: pre-line;">{{contact.email}}</td>
-                                    <td style="width: 25%;white-space: pre-line;">{{contact.website}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <!-- Company Info -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style=" font-weight: bold;font-size: 0.9rem; color: #003474; padding-left: 5px;">
+                                    {{companyInfo.name}}
+                                </div>
+                                <table class="table" id="company-info-tbl">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="3">
+                                                <div>Legal Address:</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.legalAddress}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>Telephone Number :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.telephoneNumber}}</div>
+                                            </td>
+                                            <td>
+                                                <div>Website :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.website}}</div>
+                                            </td>
+                                            <td>
+                                                <div>Industry Type :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.industryType}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>Year Established:</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.yearEstablished}}</div>
+                                            </td>
+                                            <td>
+                                                <div>Age of Business:</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.ageOfBusiness}}</div>
+                                            </td>
+                                            <td>
+                                                <div>Business Type:</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.businessType}}</div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-                    </div>
-                </div>
-                <!-- Contacts END-->
 
-                <!-- BASIC INFORMATION START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">BASIC INFORMATION</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
+                        <!-- Corporate Structure -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="div-font-size label-style">Corporate Structure:</div>
+                                <table class="table table-bordered" id="corporate-structure-tbl">
 
-                            <tbody>
-                                <tr *ngFor="let basicInfo of basicInfoList; let i = index">
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{basicInfo.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;white-space: normal;">
-                                        {{basicInfo.itemValue}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- BASIC INFORMATION END-->
-
-                <!-- LOCATION START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">LOCATION</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="width: 30%; font-weight: bold;">
-                                        Registered Address:
-                                    </td>
-                                    <td style="width: 70%;white-space: normal;">
-                                        {{companyInfo.legalAddress}}
-                                    </td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 30%; font-weight: bold;">
-                                        Business Address:
-                                    </td>
-                                    <td style="width: 70%;white-space: normal;">
-                                        {{companyInfo.operationAddress}}
-                                    </td>
-                                </tr>
-
-                                <tr *ngFor="let location of locationList; let i = index">
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{location.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;white-space: normal;">
-                                        {{location.itemValue}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- LOCATION END-->
-
-                <!-- REGISTRATION DETAILS START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">REGISTRATION DETAILS</th>
-                                    <th id="th35"></th>
-                                    <th id="th35"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr *ngFor="let data of regReportData">
-                                    <td [attr.rowspan]='data[0].rowspan'
-                                        style="font-weight: bold;white-space: pre-line;">{{data[0].text}}
-                                    </td>
-
-                                    <td *ngIf='data.length > 1' [attr.rowspan]='data[1].rowspan'
-                                        [attr.colspan]='data[1].colspan'
-                                        [ngStyle]="{'font-weight': data[0].rowspan==1 ? 'normal' : 'bold','white-space':'pre-line'}">
-                                        {{data[1].text}}
-                                    </td>
-
-                                    <td *ngIf='data.length > 2' [attr.rowspan]='data[2].rowspan'
-                                        [attr.colspan]='data[2].colspan' [ngStyle]="{'white-space':'pre-line'}">
-                                        {{data[2].text}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- REGISTRATION DETAILS END-->
-
-                <!-- MANAGEMENT START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered" id="managementTbl">
-                            <thead>
-                                <tr>
-                                    <th id="th30">MANAGEMENT</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr *ngFor="let management of managementList; let i = index"
-                                    [ngStyle]="styleObjectManagement(i+1)">
-
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{management.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;white-space: normal;">
-                                        {{management.itemValue}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- MANAGEMENT END-->
-
-                <!-- SHAREHOLDER START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered" id="shareholderTbl">
-                            <thead>
-                                <tr>
-                                    <th id="th30">SHAREHOLDER</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr *ngFor="let shareholder of shareholderList; let i = index"
-                                    [ngStyle]="styleObjectShareholder(i+1)">
-
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{shareholder.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;white-space: normal;">
-                                        {{shareholder.itemValue}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- SHAREHOLDER END-->
-
-                <!-- OPERATION INFORMATION START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">OPERATION INFORMATION</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr *ngFor="let data of operationInfoReportData">
-                                    <td [attr.rowspan]='data[0].rowspan'
-                                        [ngStyle]="{'font-weight': data.length == 1 ? 'normal' : 'bold', 'white-space':'pre-line'}"
-                                        [innerHtml]="setWordBold(data[0].text)">
-                                        <!-- {{data[0].text}} -->
-                                    </td>
-
-                                    <td *ngIf='data.length > 1' [attr.rowspan]='data[1].rowspan'
-                                        [attr.colspan]='data[1].colspan' [ngStyle]="{'white-space':'pre-line'}"
-                                        [innerHtml]="setWordBold(data[1].text)">
-                                        <!-- {{data[1].text}} -->
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- OPERATION INFORMATION END-->
-
-                <!-- NATURE OF BUSINESS START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">NATURE OF BUSINESS</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr *ngFor="let natureOfBusiness of natureOfBusinessList; let i = index">
-
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{natureOfBusiness.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;white-space: pre-line;">
-                                        {{natureOfBusiness.itemValue}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- NATURE OF BUSINESS END-->
-
-                <!-- CORPORATE STRUCTURE START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">CORPORATE STRUCTURE</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr *ngFor="let data of corporateStructureReportData">
-                                    <td [attr.rowspan]='data[0].rowspan'
-                                        [ngStyle]="{'font-weight': data.length == 1 ? 'normal' : 'bold', 'white-space':'pre-line'}"
-                                        [innerHtml]="setWordBold(data[0].text)">
-                                        <!-- {{data[0].text}} -->
-                                    </td>
-
-                                    <td *ngIf='data.length > 1' [attr.rowspan]='data[1].rowspan'
-                                        [ngStyle]="{'white-space':'pre-line'}" [attr.colspan]='data[1].colspan'
-                                        [innerHtml]="setWordBold(data[1].text)">
-                                        <!-- {{data[1].text}} -->
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- CORPORATE STRUCTURE END-->
-
-                <!-- FINANCIAL INFORMATION START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">FINANCIAL INFORMATION</th>
-                                    <th id="th70" colspan="3"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td style="width: 30%;"></td>
-                                    <td colspan="3" align="right" style="width: 60%; font-weight: bold;">
-                                        {{firstRowData}}
-                                    </td>
-                                </tr>
-                                <tr *ngFor="let financialInformation of financialInformationList; let i = index">
-
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{financialInformation.itemCode}}
-                                    </td>
-                                    <td style="width: 20%; text-align: center;">
-                                        {{financialInformation.thirdYear}}
-                                    </td>
-                                    <td style="width: 20%; text-align: center;">
-                                        {{financialInformation.secondYear}}
-                                    </td>
-                                    <td style="width: 20%; text-align: center;">
-                                        {{financialInformation.firstYear}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <table class="table table-bordered">
-                            <tbody>
-                                <tr *ngFor="let financialNote of financialNoteList; let i = index">
-
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{financialNote.itemCode}}
-                                    </td>
-                                    <td style="width: 70%;" [innerHtml]="setBold(financialNote.itemValue)">
-                                        <!-- {{financialNote.itemValue}} -->
-                                    </td>
-
-                                </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- FINANCIAL INFORMATION-->
-
-                <!-- <div [innerHtml]="makeNewLine()"></div> -->
-                <div [ngStyle]="makeMargin()"></div>
-
-                <!-- INFIX CREDIT INFORMATION START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">INFIX CREDIT INFORMATION</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td style="font-weight: bold;" rowspan="2">
-                                        Infix Credit Rating & Scoring
-                                    </td>
-                                    <td>
-                                        <div class="row" id="cr-info">
-                                            <div class="col-lg-2 pb-2">
-                                                <div class="cr-color" [ngStyle]="styleBackgroundColor()"
-                                                    style="color: white;">
-                                                    {{creditAssessment.grade}}
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div>Number Of Director :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.numberOfDirector}}</div>
+                                            </td>
+                                            <td>
+                                                <div>Holding Company :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.holdingCompany}}</div>
+                                            </td>
+                                            <td>
+                                                <div>Legal Status :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.legalStatus}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>Number Of Shareholders :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.numberOfShareholders}}
                                                 </div>
+                                            </td>
+                                            <td>
+                                                <div>No. of Subsidiaries :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.numberOfSubsidiaries}}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>No. of Charge:</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.noOfCharge}}</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div>Number of Employee :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.numberOfEmployee}}</div>
+                                            </td>
+                                            <td>
+                                                <div>Affiliated Companies :</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.affiliatedCompanies}}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>No. of Judicial Record (s):</div>
+                                                <div style=" font-weight: bold;">{{companyInfo.noOfJudicialRecord}}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
+
+                        <!-- Credit Assessment START -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="creditAssessment">
+                                    <tr>
+                                        <div class="div-font-size label-style">Credit Assessment:</div>
+                                    </tr>
+
+                                    <div class="row" style="border: solid #cdcbcb 1.4px; ">
+                                        <div class="col div-font-size" style="border-right: solid #cdcbcb 1.4px;">
+                                            <div class="label-color font-size-default">Recommended Maximum Credit:</div>
+                                            <div style="font-size: 0.8rem; font-weight: bold; color: black;">
+                                                {{creditAssessment.currency}} {{creditAssessment.maximumCredit}}
                                             </div>
-                                            <div class="col-lg-2 pb-2">
-                                                <div class="cr-color" style="background-color: #b7b2b2;color: white;">
-                                                    {{creditAssessment.creditRating}}
+                                            <div class="text-justify font-color-size-default">
+                                                Main factors considered include net
+                                                assets, total assets, revenue, profit,
+                                                credit rating etc. No consideration is
+                                                given to the specific situation of your
+                                                transaction with subject. You may refer
+                                                to the following suggestions when
+                                                making credit decisions, but it is
+                                                advisable that proper adjustments
+                                                should be made in accordance with your
+                                                marketing strategies and credit policies.
+                                            </div>
+                                        </div>
+                                        <div class="col div-font-size" style="border-right: solid #cdcbcb 1.4px;">
+                                            <div class="label-color font-size-default">Credit Rating:</div>
+
+                                            <div class="row" style="color: black;">
+                                                <div class="col-lg-4 pb-2"
+                                                    style="padding-right: 10px; padding-left: 0px;margin-top: 10px;">
+                                                    <div class="cr-color" [ngStyle]="styleBackgroundColor()">
+                                                        {{creditAssessment.grade}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8"
+                                                    style="border-left: solid #cdcbcb 1.4px; font-size: 0.6rem;">
+                                                    <div style="font-weight: bold; margin-top: 10px;">Range
+                                                        {{creditAssessment.gradeRange}}
+                                                    </div>
+                                                    <div style="font-weight: bold;">
+                                                        {{creditAssessment.creditRating}}
+                                                    </div>
+                                                    <div style="font-weight: bold; margin-top: 10px;">
+                                                        {{creditAssessment.creditRatingStatus}}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="width: 70%;white-space: pre-line; background-color: #eeebeb;">
-                                        <div style="font-weight: bold;color: black;">
-                                            Satisfactory Credit Worthiness
-                                        </div>
-                                        <div class="text-justify">
-                                            Subject company is operating at reasonably satisfactory level with
-                                            moderate financial standing and other parameters; therefore business
-                                            dealings subject to taking normal precautions are recommended.
-                                        </div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="pt-4" style="width: 30%; font-weight: bold;" rowspan="2">
-                                        Credit Assessment Factors
-                                    </td>
-                                </tr>
-                                <tr class="div-font-size pb-4">
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-12">
-                                            INFIX CREDIT Credit risk assessment is gauged on 5 key business factors.
-                                            Each
-                                            factor is assigned a rating and the total is aggregated and weighed in
-                                            consideration of any other influencing factors relevant to the final
-                                            assessment.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-4 font-color-weight">
-                                            Financial Strength
-                                        </div>
-                                        <div class="col-lg-8">
-                                            Including the solvency, profitability, operation
-                                            capacity, development capacity etc.; comparison
-                                            between subject and the industry average
-                                            financial index. Weight 10%-30% in the comprehensive analysis.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-4 font-color-weight">
-                                            Company Character
-                                        </div>
-                                        <div class="col-lg-8">
-                                            Referring to subject’s character that can be
-                                            affected by the transaction records, judicial
-                                            records, administrative supervision information,
-                                            tax records, operation status etc. Weight 20%-25%
-                                            in th7e comprehensive analysis.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-4 font-color-weight">
-                                            Management Competence
-                                        </div>
-                                        <div class="col-lg-8">
-                                            Including subject’s shareholder background and
-                                            strength, related company background and
-                                            strength, management experience etc. Weight
-                                            20%-25% in the comprehensive analysis.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-4 font-color-weight">
-                                            Operation Capacity
-                                        </div>
-                                        <div class="col-lg-8">
-                                            Analysis on subject’s current operation condition
-                                            including the products, history, staff scale,
-                                            intellectual property, business size etc. Weight
-                                            20%-25% in the comprehensive analysis.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-4 font-color-weight">
-                                            External Background
-                                        </div>
-                                        <div class="col-lg-8 pb-4">
-                                            Analysis on the external factors that may have
-                                            effect on subject, including the industry
-                                            background, location background, competitors etc.
-                                            Weight 10%-15% in the comprehensive analysis.
-                                        </div>
-                                    </div>
-                                </tr>
-
-                                <tr>
-                                    <td class="pt-4" style="width: 30%; font-weight: bold;">
-                                        Previous Rating:
-                                    </td>
-                                    <td class="pt-4 pb-4">
-                                        NA
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td class="pt-4" style="width: 30%; font-weight: bold;" rowspan="2">
-                                        Recommended Maximum Credit:
-                                    </td>
-                                </tr>
-                                <tr class="div-font-size">
-                                    <div class="col text-justify pt-4"
-                                        style="white-space: pre-line; background-color: #eeebeb;">
-                                        <div class="row" style="font-size: 1.2rem; font-weight: bold; color: black;">
-                                            {{creditAssessment.currency}} {{creditAssessment.maximumCredit}}
-                                        </div>
-                                        <div class="row pb-4">
-                                            Suggested validity of 30 days, whichever is later change.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-12">
-                                            Maximum Credit is to be understood as the highest possible engagement for a
-                                            supplier delivering goods or rendering services on open terms with an
-                                            average
-                                            of 30 days. The calculation is based on the assumption that on the average
-                                            transition.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4">
-                                        <div class="col-lg-12">
-                                            When calculating base credit limit, INFIX CREDIT presupposes that Subject
-                                            purchases main commodities/services equally from many suppliers. Main
-                                            factors considered include Net Assets, Total Assets, Revenue, Profit, Credit
-                                            Rating etc. No consideration is given to the specific situation of your
-                                            transaction with Subject. You may refer to the following suggestions when
-                                            making credit decisions, but it is advisable that proper adjustments should
-                                            be
-                                            made in accordance with your marketing strategies and credit policies.
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-justify pt-4 pb-2" style="font-weight: bold;">
-                                        <div class="col-lg-6">
-                                            Annual Supply / Subject's Turnover
-                                        </div>
-                                        <div class="col-lg-6">
-                                            Suggested Credit Limit
-                                        </div>
-                                    </div>
-                                    <div class="row text-justify" *ngFor="let list of recommendedreditInfoList;">
-                                        <div class="col-lg-6"> {{list.range}} </div>
-                                        <div class="col-lg-6"> {{list.description}} </div>
-                                    </div>
-                                </tr>
-
-                                <tr>
-                                    <td class="pt-4" style="width: 30%; font-weight: bold;" rowspan="2">
-                                        Risk Assessment:
-                                    </td>
-                                </tr>
-                                <tr class="div-font-size">
-                                    <div class="col text-justify pt-4"
-                                        style="white-space: pre-line; background-color: #eeebeb;">
-                                        <div class="row" style="font-size: 1.2rem; font-weight: bold; color: black;">
-                                            {{creditAssessment.riskStatus}}
-                                        </div>
-                                        <div class="row pb-4">
-                                            Risk of dealing is relatively of Moderate Level
-                                        </div>
-                                    </div>
-                                </tr>
-
-                                <tr>
-                                    <td class="pt-4" style="width: 30%; font-weight: bold;" rowspan="3">
-                                        Risk Level:
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <div class="row text-justify pt-0" *ngFor="let riskLevel of riskLevelList;">
-                                        <div class="col-lg-3 div-font-size" style="font-weight: bold;">
-                                            {{riskLevel.category}}
-                                        </div>
-                                        <div class="col-lg-2 div-font-size" style="text-align: center;">
-                                            {{riskLevel.startRange}}-{{riskLevel.endRange}}
-                                        </div>
-                                        <div class="col-lg-7 div-font-size">
-                                            {{riskLevel.remarks}}
-                                        </div>
-                                    </div>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
-                <!-- INFIX CREDIT INFORMATION END-->
-
-                <!-- SUMMARY & OPINION START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">SUMMARY & OPINION</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr *ngFor="let summaryOpinion of summaryOpinionList; let i = index">
-                                    <td style="width: 30%; font-weight: bold;">
-                                        {{summaryOpinion.itemCode}}
-                                    </td>
-                                    <td class="text-justify" style="width: 70%;white-space: pre-line;">
-                                        {{summaryOpinion.itemValue}}
-                                    </td>
-                                </tr>
-                            </tbody>
-
-
-                        </table>
-                    </div>
-                </div>
-                <!-- SUMMARY & OPINION END-->
-
-                <!-- END OF REPORT START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table" id="report-end">
-                            <thead>
-                                <tr>
-                                    <th style="width: 35%;"></th>
-                                    <th id="th30" style="text-align: center;">END OF REPORT</th>
-                                    <th style="width: 35%;"></th>
-
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-                <!-- END OF REPORT END-->
-
-                <!-- COUNTRY RISK START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">COUNTRY RISK</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                <tr>
-                                    <td colspan="2">
-                                        <div class="row">
-                                            <div class="pt-4" style="font-weight: bold; color: black;">
-                                                SUMMARY OF COUNTRY RISK FOR INTERNATIONAL TRADE:
-                                            </div>
-                                            <br>
-                                            <div class="text-justify pt-2" style="white-space: pre-line;">
-                                                {{this.countryRiskAssessment}}
+                                            <div class="text-justify font-color-size-default">
+                                                In assessing the credit reports of a company,
+                                                INFIX CREDIT’S takes into comprehensive
+                                                consideration of five dimensions including
+                                                subject’s financial strength, company
+                                                character, management competence and other
+                                                parameter.
                                             </div>
                                         </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- COUNTRY RISK END-->
+                                        <div class="col div-font-size">
+                                            <div class="label-color font-size-default">Risk Assessment :</div>
+                                            <div style="font-size: 0.6rem; font-weight: bold;color: black;">
+                                                {{creditAssessment.riskStatus}}</div>
+                                            <div [ngStyle]="styleRiskAssessmentArrowImg()">
+                                                <img style="width: 20px;" src="assets/img/icons/arrow-down.png" alt="">
+                                            </div>
 
-                <!-- INFIX RATING GLOSSARY START-->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th id="th30">INFIX RATING GLOSSARY</th>
-                                    <th id="th70"></th>
-                                </tr>
-                            </thead>
-                        </table>
+                                            <div class="progress"
+                                                style="max-width: 100%; height: 4px; margin-bottom: 0rem;">
+                                                <div class="progress-bar"
+                                                    style="width: 100%; background-color: #00af50">
 
-                        <table class="table table-bordered">
-                            <tbody>
-                                <tr *ngFor="let rating of ratingList;">
-                                    <td style="width: 10%; text-align: center;">
-                                        {{getRateRange(rating.startRange,rating.endRange)}}
-                                    </td>
-                                    <td [ngStyle]="setColorCode(rating.colorCode)" style="width: 10%; text-align: center;color: white;font-weight: bold;
-                                        padding: 30px;">
-                                        {{rating.grade}}
-                                    </td>
-                                    <td style="width: 10%; text-align: left;">
-                                        {{rating.remarks}}
-                                    </td>
-                                    <td>
-                                        {{rating.description}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                                </div>
+
+                                                <div class="progress-bar"
+                                                    style="width: 100%; background-color: #92d051">
+
+                                                </div>
+                                                <div class="progress-bar"
+                                                    style="width: 100%; background-color: #fecf07">
+
+                                                </div>
+                                                <div class="progress-bar"
+                                                    style="width: 100%; background-color: #ef9a3f">
+
+                                                </div>
+                                                <div class="progress-bar"
+                                                    style="width: 100%; background-color: #f35b43">
+
+                                                </div>
+                                                <div class="progress-bar"
+                                                    style="width: 100%; background-color: #ff2d2e">
+
+                                                </div>
+                                                <div class="progress-bar"
+                                                    style="width: 100%; background-color: #7f7f7f">
+
+                                                </div>
+                                            </div>
+
+                                            <div class="progress rate-alph"
+                                                style="max-width: 100%; height: 10px;font-weight: bold;margin-bottom: 0.2rem;font-size: 0.4rem;">
+                                                <div class="progress-bar" style="width: 100%;">A</div>
+                                                <div class="progress-bar" style="width: 100%;">B</div>
+                                                <div class="progress-bar" style="width: 100%;">C</div>
+                                                <div class="progress-bar" style="width: 100%;">D</div>
+                                                <div class="progress-bar" style="width: 100%;">E</div>
+                                                <div class="progress-bar" style="width: 100%;">H</div>
+                                                <div class="progress-bar" style="width: 100%;">Other</div>
+                                            </div>
+
+                                            <div class="progress rate-alph"
+                                                style="max-width: 100%; height: 10px; font-size: 0.4rem; margin-bottom: 0rem;">
+                                                <div class="progress-bar" style="width: 100%;text-align: left;">
+                                                    Low Risk
+                                                </div>
+                                                <div class="progress-bar" style="width: 100%;text-align: center;">
+                                                    Moderate Risk
+                                                </div>
+                                                <div class="progress-bar" style="width: 100%;text-align: right;">
+                                                    High Risk
+                                                </div>
+                                            </div>
+
+
+                                            <div class="text-justify font-color-size-default">
+                                                The risk assessment is used in conjunction with
+                                                the Financial Strength Indicator. The Risk
+                                                Indicator reflects INFIX CREDIT's opinion of a
+                                                company's health, stability and overall
+                                                condition. It takes into consideration all
+                                                significant elements of credit.
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </table>
+                            </div>
+                        </div>
+                        <!-- Credit Assessment END -->
+
+
+                        <div class="row">
+                            <!-- FinancialSummary START-->
+                            <div class="col-sm-6">
+                                <div class="div-font-size label-style">Financial Summary :</div>
+                                <table class="table" id="fin-summ-id">
+                                    <thead>
+                                        <tr class="label-style">
+                                            <th style="width: 50%; padding-right: 0px;">Financial Item</th>
+                                            <th style="text-align: center;width: 20%; padding-right: 0px;">Currency</th>
+                                            <th style="text-align: center;width: 30%; padding-right: 0px;">Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let fSummary of financialSummaryList">
+                                            <td class="label-color" style="width: 50%; padding-right: 0px;">
+                                                {{fSummary.itemCode}}
+                                            </td>
+                                            <td
+                                                style="text-align: center;width: 20%;font-weight: bold;color: black; padding-right: 0px;">
+                                                {{fSummary.currency}}
+                                            </td>
+                                            <td
+                                                style="width: 30%; text-align: center;color: black; padding-right: 0px;">
+                                                {{fSummary.amount}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="div-font-size" style="border: 1.4px solid #cdcbcb; padding-bottom: 40px;">
+                                    <div class="label-style">Comment :</div>
+                                    <div class="font-basic-color text-justify">{{comments}}</div>
+                                </div>
+                            </div>
+                            <!-- FinancialSummary END-->
+
+                            <!-- RiskProfile START-->
+                            <div class="col-sm-6" style="padding-left: 0;">
+                                <div class="div-font-size label-style">Risk Profile :</div>
+                                <table class="table table-bordered" id="risk-profile-table">
+                                    <tbody>
+
+                                        <tr class="font-color-size-default">
+                                            <td style="width: 30%;"></td>
+                                            <td style="width: 70%;">
+                                                <div>
+                                                    <span style="float: left;">1%</span>
+                                                    <span style="float: right;">100%</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr *ngFor="let riskProfile of riskProfileList; let i = index">
+                                            <td class="label-color" style="width: 40%; padding-right: 0;">
+                                                {{riskProfile.itemCode}}
+                                            </td>
+                                            <td style="width: 60%; padding-right: 10px;">
+                                                <div class="progress" style="height: 10px;">
+                                                    <div class="progress-bar" role="progressbar"
+                                                        [ngStyle]="{'width': getPercentage(riskProfile.percentage), 'color':'white','font-size': '0.6rem'}"
+                                                        aria-valuenow="35" aria-valuemin="0" aria-valuemax="100">
+                                                        <!-- {{riskProfile.percentage}} -->
+                                                    </div>
+                                                </div>
+                                                <span class="span-st"> {{riskProfile.status}}</span>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="text-justify font-color-size-default" colspan="2"
+                                                style="padding-right: 10px;">
+                                                The risk profile provides a snapshot of the current state of the
+                                                business.
+                                                Associated with each area you will find an individual assessment,
+                                                indicating how well the business is performing. These areas are all part
+                                                of the Rating model. The graphs show how high on each scale the
+                                                business is performing. If all boxes are filled, it indicates best
+                                                possible
+                                                performance within that area.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- RiskProfile START-->
+                        </div>
+
+
+                        <!-- Order Details START-->
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-sm-12">
+                                <table class="table" id="order-detail-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">ORDER DETAILS</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <div class="div-line" style="margin-top: 10px;"></div>
+
+                                <table class="table" id="order-detail-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let orderDetail of orderDetailList; let i = index">
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{orderDetail.itemCode}}
+                                            </td>
+                                            <td style="width: 70%;white-space: pre-line;">
+                                                {{orderDetail.itemValue}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="div-line" style="margin-top: 5px; margin-bottom: 10px;"></div>
+
+                            </div>
+                        </div>
+                        <!-- Order Details END-->
+
+                        <!-- Contacts START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="contact-tbl0" style="margin: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">CONTACTS</th>
+                                            <th id="th70" colspan="3"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <div class="div-line" style="margin-top: 10px;"></div>
+
+                                <table class="table" id="contact-tbl1" style="margin-bottom: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="4">Registration Address:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4">{{companyInfo.legalAddress}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table" id="contact-tbl1">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 20%;">Telephone No:</th>
+                                            <th style="width: 20%;">Fax No:</th>
+                                            <th style="width: 30%;">Email:</th>
+                                            <th style="width: 30%;">Website:</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td style="white-space: pre-line; padding-right: 0;">{{contact.telephoneNo}}
+                                            </td>
+                                            <td style="white-space: pre-line; padding-right: 0;">{{contact.faxNo}}</td>
+                                            <td style="white-space: pre-line; padding-right: 0;">{{contact.email}}</td>
+                                            <td style="white-space: pre-line; padding-right: 0;">{{contact.website}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="div-line" style="margin-top: 5px; margin-bottom: 10px;"></div>
+
+                            </div>
+                        </div>
+                        <!-- Contacts END-->
+
+
+                        <!-- BASIC INFORMATION START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="basic-info-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">BASIC INFORMATION</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="basic-info-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let basicInfo of basicInfoList; let i = index">
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{basicInfo.itemCode}}
+                                            </td>
+                                            <td style="width: 70%;white-space: normal;">
+                                                {{basicInfo.itemValue}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- BASIC INFORMATION END-->
+
+                        <!-- LOCATION START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="location-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">LOCATION</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="location-tbl1">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 30%;">
+                                                <img src="assets/img/logo/google-location-add.png"
+                                                    style="height: 100px; width: 100px;" />
+                                            </td>
+                                            <td style="width: 70%;">
+                                                <img src="assets/img/logo/google-location.png"
+                                                    style="height: 100px; width: 400px;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 30%; font-weight: bold;">
+                                                Registered Address:
+                                            </td>
+                                            <td style="width: 70%;white-space: normal;">
+                                                {{companyInfo.legalAddress}}
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 30%; font-weight: bold;">
+                                                Business Address:
+                                            </td>
+                                            <td style="width: 70%;white-space: normal;">
+                                                {{companyInfo.operationAddress}}
+                                            </td>
+                                        </tr>
+
+                                        <tr *ngFor="let location of locationList; let i = index">
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{location.itemCode}}
+                                            </td>
+                                            <td style="width: 70%;white-space: normal;">
+                                                {{location.itemValue}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- LOCATION END-->
+
+                        <!-- REGISTRATION DETAILS START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="registration-detail-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">REGISTRATION DETAILS</th>
+                                            <th id="th35"></th>
+                                            <th id="th35"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="registration-detail-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let data of regReportData">
+                                            <td [attr.rowspan]='data[0].rowspan' style="font-weight: bold; width: 30%;">
+                                                {{data[0].text}}
+                                            </td>
+
+                                            <td *ngIf='data.length > 1' [attr.rowspan]='data[1].rowspan'
+                                                [attr.colspan]='data[1].colspan'
+                                                [ngStyle]="{'font-weight': data[0].rowspan==1 ? 'normal' : 'bold','white-space':'pre-line'}">
+                                                {{data[1].text}}
+                                            </td>
+
+                                            <td *ngIf='data.length > 2' [attr.rowspan]='data[2].rowspan'
+                                                [attr.colspan]='data[2].colspan' [ngStyle]="{'white-space':'pre-line'}">
+                                                {{data[2].text}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- REGISTRATION DETAILS END-->
+
+                        <!-- MANAGEMENT START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="management-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">MANAGEMENT</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="management-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let management of managementList; let i = index"
+                                            [ngStyle]="styleObjectManagement(i+1)">
+
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{management.itemCode}}
+                                            </td>
+                                            <td style="width: 70%;white-space: normal;">
+                                                {{management.itemValue}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- MANAGEMENT END-->
+
+                        <!-- SHAREHOLDER START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="shareholder-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">SHAREHOLDER</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="shareholder-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let shareholder of shareholderList; let i = index"
+                                            [ngStyle]="styleObjectShareholder(i+1)">
+
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{shareholder.itemCode}}
+                                            </td>
+                                            <td style="width: 70%;white-space: normal;">
+                                                {{shareholder.itemValue}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- SHAREHOLDER END-->
+
+                        <!-- OPERATION INFORMATION START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="operation-info-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">OPERATION INFORMATION</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="operation-info-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let data of operationInfoReportData">
+                                            <td [attr.rowspan]='data[0].rowspan'
+                                                [ngStyle]="{'font-weight': data.length == 1 ? 'normal' : 'bold', 'white-space':'pre-line', 'width': '30%'}">
+                                                {{data[0].text}}
+                                            </td>
+
+                                            <td *ngIf='data.length > 1' [attr.rowspan]='data[1].rowspan'
+                                                [attr.colspan]='data[1].colspan' [ngStyle]="{'white-space':'pre-line'}">
+                                                {{data[1].text}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- OPERATION INFORMATION END-->
+
+                        <!-- NATURE OF BUSINESS START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="nature-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">NATURE OF BUSINESS</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="nature-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let natureOfBusiness of natureOfBusinessList; let i = index">
+
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{natureOfBusiness.itemCode}}
+                                            </td>
+                                            <td style="width: 70%;white-space: pre-line;">
+                                                {{natureOfBusiness.itemValue}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- NATURE OF BUSINESS END-->
+
+                        <!-- CORPORATE STRUCTURE START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="corporate-str-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">CORPORATE STRUCTURE</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="corporate-str-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let data of corporateStructureReportData">
+                                            <td [attr.rowspan]='data[0].rowspan'
+                                                [ngStyle]="{'font-weight': data.length == 1 ? 'normal' : 'bold', 'white-space':'pre-line', 'width':'30%'}">
+                                                {{data[0].text}}
+                                            </td>
+
+                                            <td *ngIf='data.length > 1' [attr.rowspan]='data[1].rowspan'
+                                                [ngStyle]="{'white-space':'pre-line'}" [attr.colspan]='data[1].colspan'>
+                                                {{data[1].text}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- CORPORATE STRUCTURE END-->
+
+                        <!-- FINANCIAL INFORMATION START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="fin-info-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">FINANCIAL INFORMATION</th>
+                                            <th id="th70" colspan="3"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table table-bordered" id="financial-info-tbl">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 30%;"></td>
+                                            <td colspan="3" align="right" style="width: 70%; font-weight: bold;">
+                                                {{firstRowData}}
+                                            </td>
+                                        </tr>
+                                        <tr
+                                            *ngFor="let financialInformation of financialInformationList; let i = index">
+
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{financialInformation.itemCode}}
+                                            </td>
+                                            <td style="width: 23%; text-align: center;"
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}">
+                                                {{financialInformation.thirdYear}}
+                                            </td>
+                                            <td style="width: 24%; text-align: center;"
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}">
+                                                {{financialInformation.secondYear}}
+                                            </td>
+                                            <td style="width: 23%; text-align: center;"
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}">
+                                                {{financialInformation.firstYear}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr *ngFor="let financialNote of financialNoteList; let i = index">
+
+                                            <td style="width: 30%; font-weight: bold;">
+                                                {{financialNote.itemCode}}
+                                            </td>
+                                            <td class="text-justify" style="width: 70%;"
+                                                [innerHtml]="setBold(financialNote.itemValue)">
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                        <!-- FINANCIAL INFORMATION-->
+                        <br>
+                        <br>
+                        <br>
+
+                        <!-- CURRENCY EXCHANGE RATE START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="currency-rate-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">CURRENCY EXCHANGE RATE</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <div class="div-line" style="margin-top: 10px;"></div>
+                                <div class="row">
+                                    <div class="div-font-size font-color-weight" style="width: 30%;">
+                                        Exchange Rate
+                                    </div>
+
+                                    <div style="width: 70%">
+                                        <table class="table" id="currency-rate-tbl1" style="margin-bottom: 0;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Currency</th>
+                                                    <th style="width: 10%; text-align: center;">Unit</th>
+                                                    <th style="width: 30%; text-align: right;">Bangladeshi Taka (BDT)
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="margin-top: 20px;">
+                                                <tr
+                                                    *ngFor="let currencyDailyRate of currencyDailyRateList; let i = index">
+                                                    <td style="padding-top: 0; padding-bottom: 0;">
+                                                        {{currencyDailyRate.currency}}
+                                                    </td>
+                                                    <td style="text-align: center; padding-top: 0; padding-bottom: 0;">
+                                                        {{currencyDailyRate.unit}}
+                                                    </td>
+                                                    <td style="text-align: right; padding-top: 0; padding-bottom: 0;">
+                                                        {{currencyDailyRate.currencyRate}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="div-line" style="margin-top: 5px;"></div>
+                                <div class="row">
+                                    <div style="width: 30%;"></div>
+                                    <div class="font-color-size-default" style="width: 70%;">
+                                        <b>Source:</b> <i> Bangladesh Bank as of</i> <b>{{companyInfo.transactionDate | date:'longDate'}}</b>
+                                    </div>
+                                </div>
+                                
+                                <div class="div-line" style="margin-bottom: 10px;"></div>
+
+                            </div>
+                        </div>
+                        <!-- CURRENCY EXCHANGE RATE END-->
+
+                        <!-- INFIX CREDIT INFORMATION START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="infix-credit-info-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">INFIX CREDIT INFORMATION</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="infix-credit-info-tbl1">
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-weight: bold; width: 30%;" rowspan="2">
+                                                Infix Credit Rating & Scoring
+                                            </td>
+                                            <td>
+                                                <div class="row" id="cr-info">
+                                                    <div class="col-lg-2 pb-2"
+                                                        style="padding-right: 10px; padding-left: 0px;margin-top: 10px;">
+                                                        <div class="cr-color" [ngStyle]="styleBackgroundColor()"
+                                                            style="color: white;">
+                                                            {{creditAssessment.grade}}
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-lg-2 pb-2"
+                                                        style="padding-right: 10px; padding-left: 0px;margin-top: 10px;">
+                                                        <div class="cr-color"
+                                                            style="background-color: #b7b2b2;color: white;">
+                                                            {{creditAssessment.creditRating}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="width: 70%;white-space: pre-line; border: 0;">
+                                                <div
+                                                    style="background-color: #eeebeb; margin-bottom: 10px; padding: 5px;">
+                                                    <div style="font-weight: bold;color: black;">
+                                                        Satisfactory Credit Worthiness
+                                                    </div>
+                                                    <div class="text-justify">
+                                                        Subject company is operating at reasonably satisfactory level
+                                                        with
+                                                        moderate financial standing and other parameters; therefore
+                                                        business
+                                                        dealings subject to taking normal precautions are recommended.
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table" id="infix-credit-info-tbl2" style="margin-bottom: 0;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 30%; font-weight: bold; padding-right: 0;" rowspan="2">
+                                                Credit Assessment Factors
+                                            </td>
+                                        </tr>
+                                        <tr class="div-font-size pb-2" style="width: 70%;">
+                                            <div class="row text-justify pt-2">
+                                                <p class="text-justify"
+                                                    style="font-size: 0.6rem; padding-left: 10px; padding-right: 10px;">
+                                                    <b style="color:#003474; font-weight: bold;"> INFIX</b> <b
+                                                        style="color:red; font-weight: bold;"> CREDIT</b>
+                                                    Credit risk assessment is gauged on 5 key business
+                                                    factors. Each factor is assigned a rating and the total is
+                                                    aggregated and weighed
+                                                    in consideration of any other influencing factors relevant to the
+                                                    final assessment.
+                                                </p>
+                                            </div>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table" id="infix-credit-info-tbl22">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 30%; border: 0;" rowspan="2">
+                                            </td>
+                                        </tr>
+                                        <tr class="div-font-size pb-2" style="width: 70%;">
+                                            <div class="row text-justify pt-2"
+                                                *ngFor="let list of crAssessmentFactorsList;">
+                                                <div class="col-lg-4 font-color-weight"
+                                                    style="padding-left: 10px; padding-right: 0; border: 0;">
+                                                    {{list.type}}
+                                                </div>
+                                                <div class="col-lg-8" style=" padding-right: 10px; border: 0;">
+                                                    {{list.description}}
+                                                </div>
+                                            </div>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="infix-credit-info-tbl3">
+
+                                    <tbody>
+                                        <tr>
+                                            <td class="pt-2" style="width: 30%; font-weight: bold;">
+                                                Previous Rating:
+                                            </td>
+                                            <td class="pt-2 pb-2" style="width: 70%;">
+                                                NA
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <table class="table" id="infix-credit-info-tbl4">
+                                    <tbody>
+                                        <tr>
+                                            <td class="pt-2" style="width: 30%; font-weight: bold; padding-right: 0;">
+                                                Recommended Maximum Credit:
+                                            </td>
+                                            <td class="div-font-size" style="width: 70%; padding: 0;">
+                                                <div class="col text-justify pt-2"
+                                                    style="white-space: pre-line; background-color: #eeebeb; padding-left: 10px;">
+                                                    <div class="row"
+                                                        style="font-size: 0.6rem; font-weight: bold; color: black; margin-bottom: 20px;">
+                                                        {{creditAssessment.currency}} {{creditAssessment.maximumCredit}}
+                                                    </div>
+                                                    <div class="row pb-2">
+                                                        Suggested validity of 30 days, whichever is later change.
+                                                    </div>
+                                                </div>
+
+                                                <div class="row text-justify pt-2">
+                                                    <div class="col-lg-12"
+                                                        style="padding-left: 10px; padding-right: 10px;">
+                                                        Maximum Credit is to be understood as the highest possible
+                                                        engagement for a supplier delivering goods or rendering services
+                                                        on
+                                                        open terms with an average of 30 days. The calculation is based
+                                                        on
+                                                        the assumption that on the average transition.
+                                                    </div>
+                                                </div>
+
+                                                <div class="row text-justify pt-2">
+                                                    <div class="col-lg-12"
+                                                        style="padding-left: 10px; padding-right: 10px;">
+                                                        When calculating base credit limit,
+                                                        <b style="color:#003474"> INFIX </b><b
+                                                            style="color:red">CREDIT</b>
+                                                        presupposes that
+                                                        Subject purchases main commodities/services equally from many
+                                                        suppliers.
+                                                        Main factors considered include Net Assets, Total Assets,
+                                                        Revenue,
+                                                        Profit, Credit Rating etc. No consideration is given to the
+                                                        specific
+                                                        situation of
+                                                        your transaction with Subject. You may refer to the following
+                                                        suggestions
+                                                        when making credit decisions, but it is advisable that proper
+                                                        adjustments
+                                                        should be made in accordance with your marketing strategies and
+                                                        credit policies.
+                                                    </div>
+                                                </div>
+
+                                                <div class="row pt-4 pb-2" style="font-weight: bold;">
+                                                    <div class="col-lg-6"
+                                                        style="color: black; padding-left: 10px; padding-right: 0;">
+                                                        Annual Supply / Subject's Turnover
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        Suggested Credit Limit
+                                                    </div>
+                                                </div>
+                                                <div class="row text-justify" style="padding-bottom: 3px;"
+                                                    *ngFor="let list of recommendedreditInfoList;">
+                                                    <div class="col-lg-6" style="color: black; padding-left: 10px;">
+                                                        {{list.range}} </div>
+                                                    <div class="col-lg-6"> {{list.description}} </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+
+                                <table class="table" id="infix-credit-info-tbl5">
+                                    <tbody>
+                                        <tr>
+                                            <td class="pt-2" style="width: 30%; font-weight: bold;">
+                                                Risk Assessment:
+                                            </td>
+                                            <td class="div-font-size" style="width: 70%; padding: 0;">
+                                                <div class="col text-justify pt-2"
+                                                    style="white-space: pre-line; background-color: #eeebeb; padding-left: 10px;">
+                                                    <div class="row"
+                                                        style="font-size: 0.6rem; font-weight: bold; color: black; margin-bottom: 20px;">
+                                                        {{creditAssessment.riskStatus}}
+                                                    </div>
+                                                    <div class="row pb-2">
+                                                        Risk of dealing is relatively of Moderate Level
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="pt-2" style="width: 30%; font-weight: bold;">
+                                                Risk Level:
+                                            </td>
+                                            <td class="div-font-size pt-2" style="width: 70%; padding: 0;">
+                                                <div class="row text-justify pt-0"
+                                                    *ngFor="let riskLevel of riskLevelList;">
+                                                    <div class="col-lg-3 div-font-size"
+                                                        style="font-weight: bold; color: black;">
+                                                        {{riskLevel.category}}
+                                                    </div>
+                                                    <div class="col-lg-2 div-font-size font-basic-color "
+                                                        style="text-align: center;">
+                                                        {{riskLevel.startRange}}-{{riskLevel.endRange}}
+                                                    </div>
+                                                    <div class="col-lg-7 div-font-size">
+                                                        {{riskLevel.remarks}}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <!-- INFIX CREDIT INFORMATION END-->
+
+
+                        <!-- SUMMARY & OPINION START-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table" id="summary-tbl">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">SUMMARY & OPINION</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody style="margin-top: 20px;">
+                                        <tr *ngFor="let summaryOpinion of summaryOpinionList; let i = index">
+                                            <td style="width: 30%; font-weight: bold; padding-top: 10px;">
+                                                {{summaryOpinion.itemCode}}
+                                            </td>
+                                            <td class="text-justify"
+                                                style="width: 70%;white-space: pre-line; padding-top: 10px;">
+                                                {{summaryOpinion.itemValue}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+
+                                </table>
+                            </div>
+                        </div>
+                        <!-- SUMMARY & OPINION END-->
+
+
+
+                        <!-- END OF REPORT START-->
+                        <div class="row" style="margin-bottom: 200px;">
+                            <div class="col-sm-12">
+                                <table class="table" id="report-end">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 35%;"></th>
+                                            <th id="th30" style="text-align: center;">END OF REPORT</th>
+                                            <th style="width: 35%;"></th>
+
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- END OF REPORT END-->
+
+
+
+                        <!-- <div [ngStyle]=" makeMarginSummaryOpinion()"></div> -->
+
+                        <!-- COUNTRY RISK START-->
+                        <div class="row" style="margin-bottom: 340px;">
+                            <div class="col-sm-12">
+                                <table class="table" id="country-risk-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">COUNTRY RISK</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="country-risk-tbl1">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="row">
+                                                    <div style="font-weight: bold; color: black;">
+                                                        Country: {{companyInfo.country}}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding-right: 10px;">
+                                                <div class="row">
+                                                    <div class="pt-2" style="font-weight: bold; color: black;">
+                                                        SUMMARY OF COUNTRY RISK FOR INTERNATIONAL TRADE:
+                                                    </div>
+
+                                                    <div class="text-justify pt-2 pb-2" style="white-space: pre-line;">
+                                                        {{this.countryRiskAssessment}}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!-- COUNTRY RISK END-->
+
+                        <!-- INFIX RATING GLOSSARY START-->
+                        <div class="row" style="margin-top: 100px;">
+                            <div class="col-sm-12">
+                                <table class="table" id="infix-rating-glossary-tbl0">
+                                    <thead>
+                                        <tr>
+                                            <th id="th30">INFIX RATING GLOSSARY</th>
+                                            <th id="th70"></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+
+                                <table class="table" id="infix-rating-glossary-tbl1">
+                                    <tbody>
+                                        <tr *ngFor="let rating of ratingList;">
+                                            <td style="width: 9%; text-align: center; padding-right: 0;">
+                                                {{getRateRange(rating.startRange,rating.endRange)}}
+                                            </td>
+                                            <td [ngStyle]="setColorCode(rating.colorCode)" style="width: 6%; text-align: center;color: white;font-weight: bold;
+                                        padding: 10px;">
+                                                {{rating.grade}}
+                                            </td>
+                                            <td style="width: 15%; text-align: left; padding-right: 0;">
+                                                {{rating.remarks}}
+                                            </td>
+                                            <td class="text-justify">
+                                                {{rating.description}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <p class="font-color-weight text-justify"
+                                    style="font-size: 0.4rem; padding: 10px;text-align: center;">
+                                    NOTE: The credit rating status depends upon all parameters disclosed above, thereby
+                                    explanation varies from case to case basis. Any query related to this
+                                    report can be made on support@infixcredit.com quoting the report number, name and
+                                    date.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- INFIX RATING GLOSSARY END-->
+
+                        <!-- Last page START-->
+                        <div class="row pt-4">
+
+                            <div class="col-sm-12">
+                                <p class="font-color-weight text-justify" style="font-size: 0.4rem; margin: 0;">
+                                    This report must not be communicated to the person/s or firm/s reported on, nor to
+                                    any other party. This report, based on reliable information (both reported
+                                    and collected from various sources) it is furnished by INFIX BUSINESS INFO LTD in
+                                    strict confidence at your request and for your exclusive use as a basis for
+                                    credit, marketing and other business decisions. Infix Credit does not at all accept
+                                    any direct/consequential loss arising from this report. It is understood that
+                                    this report is based upon information obtained from sources deemed reliable, the
+                                    accuracy of which is in no manner guaranteed by Infix Credit. Infix Credit
+                                    shall not be liable for any loss or injury caused by the neglect or other act of
+                                    failure to act on the part of the company and/or its agents in procuring,
+                                    collecting or communicating any information.
+                                </p>
+
+                                <p class="font-color-weight" style="font-size: 0.4rem; text-align: center;">
+                                    BIS, Business Information Services, Department of Infix Business Info Limited.
+                                </p>
+
+                                <p class="font-color-weight"
+                                    style="font-size: 0.4rem; padding: 5px;text-align: center;">
+                                    &copy; Infix Business Info Ltd | {{ currentDate | date: "yyyy" }}
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <!-- Last page END-->
+
+
+                        <!-- footer -->
+                        <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
+
+                            <div class="row" *ngIf="pageNum == 1" class="footer-first-page">
+                                <div
+                                    style="border-top: 2px solid #e9ecef; margin-right: 10px; margin-left: 15px; margin-bottom: 10px;">
+                                </div>
+
+                                <table class="table" id="footer-tbl">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 8%;">
+                                                <div class="row" style="padding-left: 10px;">
+                                                    <img src="assets/img/logo/1st-page-footer-logo.png" alt="logo"
+                                                        style="height: 50px; width: 30px;" />
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="row label-style"
+                                                    style="margin-bottom: 0%;line-height: 10px;">
+                                                    Infix Business Info Limited
+                                                </div>
+                                                <div class="row" style="margin-bottom: 0%;line-height: 10px;">
+                                                    L- 6 | H - 38 | R – 2 | Sector -13 | Uttara | Dhaka - 1230 |
+                                                    Bangladesh
+                                                </div>
+                                                <div class="row" style="margin-bottom: 0%;line-height: 10px;">
+                                                    <span class="font-color-weight">P: </span>+880-96-11677246 | <span
+                                                        class="font-color-weight">E: </span>support@infixcredit.com
+                                                </div>
+                                                <div class="row" style="margin-bottom: 10px;line-height: 10px;">
+                                                    www.infixcredit.com
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row" *ngIf="pageNum !== 1" class="footer">
+                                <div style="border-top: 2px solid #003474; margin-right: 30px; margin-left: 10px;">
+                                </div>
+                                <table class="table" id="footer-tbl">
+                                    <tbody>
+                                        <tr>
+                                            <td style="width: 60%;">
+                                                <div class="row"
+                                                    style="color: #003474;font-weight: bold; margin-left: 5px; margin-right: 10px;">
+                                                    Infix Credit | International Credit Information Report | 2023
+                                                </div>
+                                                <div class="row"
+                                                    style="color: #003474;font-weight: bold; margin-left: 5px; margin-right: 10px;">
+                                                    www.infixcredit.com
+                                                </div>
+                                            </td>
+
+                                            <td>
+                                                <div class="row"
+                                                    style="padding-left: 130px; color: #003474;font-weight: bold;">
+                                                    Page {{ pageNum }} of {{ totalPages }}
+                                                </div>
+                                                <div class="row" style="padding-left: 60px;">
+                                                    <img src="assets/img/logo/footer-logo-right.png" alt="logo"
+                                                        style="height: 25px;" />
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </ng-template>
                     </div>
-                </div>
-                <!-- INFIX RATING GLOSSARY END-->
+                </kendo-pdf-export>
 
             </div>
         </div>

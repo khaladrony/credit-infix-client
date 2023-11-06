@@ -9,10 +9,55 @@ body {
     background-color: #f0eeeb !important;
 }
 
+@font-face {
+    font-family: 'Open Sans';
+    src: url('assets/fonts/OpenSans-Regular.ttf');
+}
+
+
 .form-control {
     // color: #4b4949 !important;
     color: #454545 !important;
     // box-shadow: none !important;
     // font-family: 'circular' !important;
+    font-family: 'Open Sans' !important;
     font-size: 1rem !important;
 }
+
+
+.bsDatePicker {
+    border-right: none !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.bsDatePickerIcon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #ccc;
+    border-left: none;
+}
+
+ngx-calendar-icon {
+    position: absolute !important;
+    display: flex !important;
+    right: 0 !important;
+    margin-right: 35px !important;
+    margin-top: 10px !important;
+    font-size: 20px !important;
+}
+
+.ngx-calendar-icon {
+    position: absolute !important;
+    display: flex !important;
+    right: 0 !important;
+    margin-right: 35px !important;
+    margin-top: 10px !important;
+    font-size: 20px !important;
+}
+
+// .bs-datepicker-head {
+//     background-color: #FF0087 !important;
+// }

@@ -31,6 +31,10 @@ export const ROUTES: RouteInfo[] = [
     {
         path: '/admin/main-report', title: 'Report Show', icon: 'fa fa-file text-danger', type: 'link', isCollapsed: false,
         children: []
+    },
+    {
+        path: '/admin/currency-daily-rate', title: 'Daily Currency', icon: 'fa fa-dollar-sign text-info', type: 'link', isCollapsed: false,
+        children: []
     }
 ];
 
@@ -43,7 +47,8 @@ export const ALLROUTES: any[] = [
     { path: '/admin/organization', title: 'Organization' },
     { path: '/admin/financial-info', title: 'Financial Info' },
     { path: '/admin/company-list', title: 'Company List' },
-    { path: '/admin/main-report', title: 'Report Show' }
+    { path: '/admin/main-report', title: 'Report Show' },
+    { path: '/admin/currency-daily-rate', title: 'Daily Currency'}
 ]
 
 @Component({
