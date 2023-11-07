@@ -7,6 +7,7 @@ import { ExcelUploadService } from 'src/app/services/excel-upload.service';
 import { OperationInfoService } from 'src/app/services/financial-info/operation-info.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-operation-information',
@@ -20,6 +21,7 @@ export class OperationInformationComponent implements OnInit {
     oldOperationInfoObj: OperationInfo;
     newOperationInfoObj: OperationInfo;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
@@ -27,7 +29,8 @@ export class OperationInformationComponent implements OnInit {
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private operationInfoService:OperationInfoService
+        private operationInfoService:OperationInfoService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
      }
@@ -40,60 +43,6 @@ export class OperationInformationComponent implements OnInit {
     }
 
     getList() {
-        // let operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Activity Status :';
-        // operationInfoObj.itemValue = 'Active';
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Activities:';
-        // operationInfoObj.itemValue = this.companyInfo.businessType;
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'NAICS Code :';
-        // operationInfoObj.itemValue = '315240 Womens, Girls, and Infants Cut and Sew Apparel Manufacturing 315220 Mens and Boys Cut and Sew Apparel Manufacturing';
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Items Dealing In:';
-        // operationInfoObj.itemValue = 'Apparel products';
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Export/Import Permit:';
-        // operationInfoObj.itemValue = 'Yes';
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Purchasing Terms Domestic:';
-        // operationInfoObj.itemValue = 'Mostly within agreed terms, in individual cases installment payments';
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Purchasing Terms International:';
-        // operationInfoObj.itemValue = 'Letter of Credit (At-sight/Defferd), Telegraphic Transfer (T/T).';
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Export Market:';
-        // operationInfoObj.itemValue = '● Australia ● Hong–Kong ●  USA';
-        // this.operationInfoList.push(operationInfoObj);
-
-        // operationInfoObj = new OperationInfo();
-        // operationInfoObj.id = this.getId();
-        // operationInfoObj.itemCode = 'Import Form:';
-        // operationInfoObj.itemValue = '● China ● India ●  Thailand';
-        // this.operationInfoList.push(operationInfoObj);
-
         this.loader.show();
         this.operationInfoService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -101,13 +50,10 @@ export class OperationInformationComponent implements OnInit {
             },
             complete: () => {
                 this.operationInfoList.forEach(obj => {
-                    obj.isEdit = false;
-                    // if(obj.itemCode === 'Activities:'){
-                    //     obj.itemValue = obj.companyInfo.businessType;
-                    // }
-                    
+                    obj.isEdit = false;   
                 });
 
+                this.templateButtonActivate()
                 this.loader.hide();
             },
             error: (err) => {
@@ -115,8 +61,36 @@ export class OperationInformationComponent implements OnInit {
                 this.loader.hide();
             },
         });
-
     }
+
+    templateButtonActivate() {
+        if (this.operationInfoList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'operation_info';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+                this.loader.hide();
+            },
+        });
+    }
+
 
     onSave() {
         this.operationInfoList.forEach(obj => {

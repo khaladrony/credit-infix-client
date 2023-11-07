@@ -7,6 +7,7 @@ import { FinancialSummary } from 'src/app/models/financial-info/financial-summar
 import { FinancialSummaryService } from 'src/app/services/financial-info/financial-summary.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-financial-summary',
@@ -25,13 +26,15 @@ export class FinancialSummaryComponent implements OnInit {
     currencyCode: string;
     comments: string;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private financialSummaryService: FinancialSummaryService
+        private financialSummaryService: FinancialSummaryService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
     }
@@ -44,33 +47,6 @@ export class FinancialSummaryComponent implements OnInit {
     }
 
     getFinancialSummaryList() {
-        // let financialSummaryObj = new FinancialSummary();
-        // financialSummaryObj.id = this.getId();
-        // financialSummaryObj.itemCode = 'Authorized Capital';
-        // financialSummaryObj.currency = '';
-        // financialSummaryObj.amount = 0;
-        // financialSummaryObj.isEdit = true;
-        // this.financialSummaryList.push(financialSummaryObj);
-
-        // financialSummaryObj = new FinancialSummary();
-        // financialSummaryObj.id = this.getId();
-        // financialSummaryObj.itemCode = 'Paid Up Capital';
-        // financialSummaryObj.currency = '';
-        // financialSummaryObj.amount = 0;
-        // financialSummaryObj.isEdit = true;
-        // this.financialSummaryList.push(financialSummaryObj);
-
-        // financialSummaryObj = new FinancialSummary();
-        // financialSummaryObj.id = this.getId();
-        // financialSummaryObj.itemCode = 'Each Share Value';
-        // financialSummaryObj.currency = '';
-        // financialSummaryObj.amount = 0;
-        // financialSummaryObj.isEdit = true;
-        // this.financialSummaryList.push(financialSummaryObj);
-
-        // this.financialSummaryList;
-
-
         this.loader.show();
         this.financialSummaryService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -82,10 +58,40 @@ export class FinancialSummaryComponent implements OnInit {
                     this.comments = obj.comments;
                 });
 
+                this.templateButtonActivate();
+
                 this.loader.hide();
             },
             error: (err) => {
                 console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    templateButtonActivate() {
+        if (this.financialSummaryList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'financial_summary';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getFinancialSummaryList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
                 this.loader.hide();
             },
         });
@@ -221,5 +227,6 @@ export class FinancialSummaryComponent implements OnInit {
             return lastFinancialSummaryObj.id + 1;
         }
     }
+
 
 }

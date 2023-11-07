@@ -6,6 +6,7 @@ import { OrderDetail } from 'src/app/models/financial-info/order-detail.model';
 import { OrderDetailService } from 'src/app/services/financial-info/order-detail.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-order-details',
@@ -19,13 +20,15 @@ export class OrderDetailsComponent implements OnInit {
     oldOrderDetailObj: OrderDetail;
     orderDetailNewObj: OrderDetail;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private orderDetailService: OrderDetailService
+        private orderDetailService: OrderDetailService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
      }
@@ -38,58 +41,7 @@ export class OrderDetailsComponent implements OnInit {
     }
 
 
-    getOrderDetailList() {
-        // let orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Name Given:';
-        // orderDetailObj.itemValue = 'Chiefway Katunayake (Pvt) Limited';
-        // this.orderDetailList.push(orderDetailObj);
-
-        // orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Address Given:';
-        // orderDetailObj.itemValue = 'Ring Road 3, Phase II. E.P.Z. Katunayake. 11450. Sri Lanka, Katunayake 10500, Sri Lanka';
-        // this.orderDetailList.push(orderDetailObj);
-
-        // orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Tel No Given:';
-        // orderDetailObj.itemValue = 'Nil';
-        // this.orderDetailList.push(orderDetailObj);
-
-        // orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Website address:';
-        // orderDetailObj.itemValue = 'Nil';
-        // this.orderDetailList.push(orderDetailObj);
-
-        // orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Fax No Given:';
-        // orderDetailObj.itemValue = 'Nil';
-        // this.orderDetailList.push(orderDetailObj);
-
-        // orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Other Details:';
-        // orderDetailObj.itemValue = 'Date of Incorporation: 31/03/2017, Company No.: PV 121177';
-        // this.orderDetailList.push(orderDetailObj);
-
-        // orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Investigation Record:';
-        // orderDetailObj.itemValue = `Interviewee: Mr. Tharushi; Job Title: Human Resources & Administration
-        // Officer Tel: +94 112252542; Investigation Way: Telephone Interview`;
-        // this.orderDetailList.push(orderDetailObj);
-
-        // orderDetailObj = new OrderDetail();
-        // orderDetailObj.id = this.getId();
-        // orderDetailObj.itemCode = 'Investigation Note:';
-        // orderDetailObj.itemValue = `The SBE’s inquiry name is inaccurate and Reg. Number, date of incorporation
-        // with address is accurate.`;
-        // this.orderDetailList.push(orderDetailObj);
-
-
+    getOrderDetailList() {        
         this.loader.show();
         this.orderDetailService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -100,6 +52,7 @@ export class OrderDetailsComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.templateButtonActivate();
                 this.loader.hide();
             },
             error: (err) => {
@@ -107,6 +60,62 @@ export class OrderDetailsComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    templateButtonActivate() {
+        if (this.orderDetailList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'order_detail';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getOrderDetailList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+                this.loader.hide();
+            },
+        });
+    }
+
+    onSave() {
+        this.orderDetailList.forEach(obj => {
+            obj.companyInfo = this.companyInfo;
+        });
+
+        if (this.orderDetailList.length > 0) {
+            this.loader.show();
+
+            this.orderDetailService.save(this.orderDetailList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getOrderDetailList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     onEdit(orderDetailObj: OrderDetail) {
@@ -150,35 +159,7 @@ export class OrderDetailsComponent implements OnInit {
         }
 
     }
-
-    onSave() {
-        this.orderDetailList.forEach(obj => {
-            obj.companyInfo = this.companyInfo;
-        });
-
-        if (this.orderDetailList.length > 0) {
-            this.loader.show();
-
-            this.orderDetailService.save(this.orderDetailList, this.companyInfo.id).subscribe({
-                next: (response) => {
-                    console.log(response);
-                    this.notifyService.showSuccess("success", response.message);
-
-                    this.router.navigate(["admin/financial-info"]);
-                },
-                complete: () => {
-                    this.getOrderDetailList();
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.notifyService.showError("error", err.error?.message);
-                    this.loader.hide();
-                },
-            });
-        }
-    }
-
+    
     validateField(item: any) {
         if (item !== '') {
             return false;

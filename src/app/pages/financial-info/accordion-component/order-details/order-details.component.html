@@ -13,6 +13,11 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8">
+                                        <button *ngIf="templateBtnShow" type="button" class="btn btn-warning add-new"
+                                            style="float: left;" (click)="addTemplate()">
+                                            <i class="fa fa-plus"></i>
+                                            Add Template
+                                        </button>
                                     </div>
                                     <div class="col-sm-4 pb-2">
                                         <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
@@ -21,10 +26,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <table class="table table-bordered">                                
+                            <table class="table table-bordered">
                                 <tbody>
                                     <tr *ngFor="let orderDetail of orderDetailList; let i = index">
-                                        
+
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="orderDetail.isEdit">
                                                 <input type="text" [(ngModel)]="orderDetail.itemCode">
@@ -47,20 +52,22 @@
                                                 {{orderDetail.itemValue}}
                                             </div>
                                         </td>
-                                        
+
                                         <td class="action-td">
                                             <div *ngIf="!orderDetail.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill" (click)="onEdit(orderDetail)"></i></a>
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
-                                                        class="bi bi-trash-fill" (click)="onDelete(orderDetail)"></i></a>
+                                                        class="bi bi-trash-fill"
+                                                        (click)="onDelete(orderDetail)"></i></a>
                                             </div>
                                             <div *ngIf="orderDetail.isEdit">
                                                 <a class="add" [ngClass]="{'isDisabled':validateForm(orderDetail)}"
                                                     title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(orderDetail)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
-                                                        class="fa fa-times-circle" (click)="onCancel(orderDetail)"></i></a>
+                                                        class="fa fa-times-circle"
+                                                        (click)="onCancel(orderDetail)"></i></a>
                                             </div>
 
                                         </td>

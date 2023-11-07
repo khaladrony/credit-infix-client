@@ -6,6 +6,7 @@ import { Location } from 'src/app/models/financial-info/location.model';
 import { LocationService } from 'src/app/services/financial-info/location.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 declare const google: any;
 
 @Component({
@@ -19,13 +20,15 @@ export class LocationComponent implements OnInit {
     oldLocationObj: Location;
     newLocationObj: Location;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private locationService:LocationService
+        private locationService:LocationService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) { 
         this.companyInfo = new CompanyInfo();
     }
@@ -80,42 +83,6 @@ export class LocationComponent implements OnInit {
 
 
     getList() {
-        // let locationObj = new Location();
-        // locationObj.id = this.getId();
-        // locationObj.itemCode = 'Registered Address:';
-        // locationObj.itemValue = 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
-        // this.locationList.push(locationObj);
-
-        // locationObj = new Location();
-        // locationObj.id = this.getId();
-        // locationObj.itemCode = 'Business Address:';
-        // locationObj.itemValue = 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
-        // this.locationList.push(locationObj);
-
-        // let locationObj = new Location();
-        // locationObj.id = this.getId();
-        // locationObj.itemCode = 'Factory Address:';
-        // locationObj.itemValue = 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
-        // this.locationList.push(locationObj);
-
-        // locationObj = new Location();
-        // locationObj.id = this.getId();
-        // locationObj.itemCode = 'Branch Office:';
-        // locationObj.itemValue = 'NA';
-        // this.locationList.push(locationObj);
-
-        // locationObj = new Location();
-        // locationObj.id = this.getId();
-        // locationObj.itemCode = 'Warehouses Address:';
-        // locationObj.itemValue = 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
-        // this.locationList.push(locationObj);
-
-        // locationObj = new Location();
-        // locationObj.id = this.getId();
-        // locationObj.itemCode = 'Previous Address:';
-        // locationObj.itemValue = 'NA';
-        // this.locationList.push(locationObj);
-
         this.loader.show();
         this.locationService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -126,6 +93,7 @@ export class LocationComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.templateButtonActivate();
                 this.loader.hide();
             },
             error: (err) => {
@@ -133,7 +101,34 @@ export class LocationComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
 
+    templateButtonActivate() {
+        if (this.locationList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'location';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+                this.loader.hide();
+            },
+        });
     }
 
     onSave() {

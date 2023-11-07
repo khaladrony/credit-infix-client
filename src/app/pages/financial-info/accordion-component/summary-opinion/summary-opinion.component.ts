@@ -6,6 +6,7 @@ import { SummaryOpinion } from 'src/app/models/financial-info/summary-opinion.mo
 import { SummaryOpinionService } from 'src/app/services/financial-info/summary-opinion.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-summary-opinion',
@@ -18,13 +19,15 @@ export class SummaryOpinionComponent implements OnInit {
     oldSummaryOpinionObj: SummaryOpinion;
     newSummaryOpinionObj: SummaryOpinion;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private summaryOpinionService:SummaryOpinionService
+        private summaryOpinionService:SummaryOpinionService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) { 
         this.companyInfo = new CompanyInfo();
     }
@@ -38,55 +41,6 @@ export class SummaryOpinionComponent implements OnInit {
 
 
     getSummaryOpinionList() {
-        // let summaryOpinionObj = new SummaryOpinion();
-        // summaryOpinionObj.id = this.getId();
-        // summaryOpinionObj.itemCode = 'Summary:';
-        // summaryOpinionObj.itemValue = '';
-        // this.summaryOpinionList.push(summaryOpinionObj);
-
-        // summaryOpinionObj = new SummaryOpinion();
-        // summaryOpinionObj.id = this.getId();
-        // summaryOpinionObj.itemCode = '';
-        // summaryOpinionObj.itemValue = `Mr. Wickramasinghe Senanayake Appuhamilage Vipul Abayanga Senanayake,
-        // the Managing Director of the company is responsible for its overall
-        // management, strategic planning and business developments.`;
-        // this.summaryOpinionList.push(summaryOpinionObj);
-
-        // summaryOpinionObj = new SummaryOpinion();
-        // summaryOpinionObj.id = this.getId();
-        // summaryOpinionObj.itemCode = '';
-        // summaryOpinionObj.itemValue = `Subject is engaged in Manufacture, Import and Export of apparel product. It’s
-        // products includes wide range of blazers, coats, jackets, pants and skirts etc.`;
-        // this.summaryOpinionList.push(summaryOpinionObj);
-
-        // summaryOpinionObj = new SummaryOpinion();
-        // summaryOpinionObj.id = this.getId();
-        // summaryOpinionObj.itemCode = '';
-        // summaryOpinionObj.itemValue = `Market reputation is excellent and no detrimental information was found
-        // during the course of investigation.`;
-        // this.summaryOpinionList.push(summaryOpinionObj);
-
-        // summaryOpinionObj = new SummaryOpinion();
-        // summaryOpinionObj.id = this.getId();
-        // summaryOpinionObj.itemCode = '';
-        // summaryOpinionObj.itemValue = `Payment records are satisfactory and a search of public records and
-        // bankruptcy courts returned no derogatory information or record of the
-        // company filing a bankruptcy petition.`;
-        // this.summaryOpinionList.push(summaryOpinionObj);
-
-        // summaryOpinionObj = new SummaryOpinion();
-        // summaryOpinionObj.id = this.getId();
-        // summaryOpinionObj.itemCode = 'Opinion:';
-        // summaryOpinionObj.itemValue = '';
-        // this.summaryOpinionList.push(summaryOpinionObj);
-
-        // summaryOpinionObj = new SummaryOpinion();
-        // summaryOpinionObj.id = this.getId();
-        // summaryOpinionObj.itemCode = '';
-        // summaryOpinionObj.itemValue = `The company is acceptable for normal business engagements. Risk factors are
-        // moderate level.`;
-        // this.summaryOpinionList.push(summaryOpinionObj);
-
         this.loader.show();
         this.summaryOpinionService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -97,10 +51,39 @@ export class SummaryOpinionComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.templateButtonActivate();
                 this.loader.hide();
             },
             error: (err) => {
                 console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    templateButtonActivate() {
+        if (this.summaryOpinionList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'summary_opinion';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getSummaryOpinionList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
                 this.loader.hide();
             },
         });

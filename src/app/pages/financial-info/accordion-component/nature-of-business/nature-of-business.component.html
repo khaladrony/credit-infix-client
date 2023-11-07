@@ -12,6 +12,11 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8">
+                                        <button *ngIf="templateBtnShow" type="button" class="btn btn-warning add-new"
+                                            style="float: left;" (click)="addTemplate()">
+                                            <i class="fa fa-plus"></i>
+                                            Add Template
+                                        </button>
                                     </div>
                                     <div class="col-sm-4 pb-2">
                                         <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
@@ -28,17 +33,18 @@
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="natureOfBusiness.isEdit">
                                                 <input type="text" [(ngModel)]="natureOfBusiness.itemCode">
-                                                <div class="text-danger" *ngIf="validateField(natureOfBusiness.itemCode)">
+                                                <div class="text-danger"
+                                                    *ngIf="validateField(natureOfBusiness.itemCode)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
                                             <div *ngIf="!natureOfBusiness.isEdit">
                                                 {{natureOfBusiness.itemCode}}
                                             </div>
-                                        </td>                                        
+                                        </td>
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="natureOfBusiness.isEdit">
-                                                <textarea [(ngModel)]="natureOfBusiness.itemValue" rows="2"></textarea>                                                
+                                                <textarea [(ngModel)]="natureOfBusiness.itemValue" rows="2"></textarea>
                                             </div>
                                             <div *ngIf="!natureOfBusiness.isEdit">
                                                 {{natureOfBusiness.itemValue}}
@@ -55,8 +61,7 @@
                                                         (click)="onDelete(natureOfBusiness)"></i></a>
                                             </div>
                                             <div *ngIf="natureOfBusiness.isEdit">
-                                                <a class="add"
-                                                    [ngClass]="{'isDisabled':validateForm(natureOfBusiness)}"
+                                                <a class="add" [ngClass]="{'isDisabled':validateForm(natureOfBusiness)}"
                                                     title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(natureOfBusiness)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i

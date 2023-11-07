@@ -6,6 +6,7 @@ import { RegistrationDetail } from 'src/app/models/financial-info/registration-d
 import { RegistrationDetailService } from 'src/app/services/financial-info/registration-detail.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-registration-details',
@@ -19,13 +20,15 @@ export class RegistrationDetailsComponent implements OnInit {
     oldRegistrationDetailObj: RegistrationDetail;
     newRegistrationDetailObj: RegistrationDetail;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private registrationDetailService: RegistrationDetailService
+        private registrationDetailService: RegistrationDetailService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
     }
@@ -37,97 +40,7 @@ export class RegistrationDetailsComponent implements OnInit {
         this.getList();
     }
 
-    getList() {
-        // let registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Registration Information :';
-        // registrationDetailObj.subItem = 'Registration Date';
-        // registrationDetailObj.itemValue = '31st March 2017';
-        // registrationDetailObj.isRowSpan = false;
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Registration Information :';
-        // registrationDetailObj.subItem = 'Company Registration No';
-        // registrationDetailObj.itemValue = 'AAD44882';
-        // registrationDetailObj.isRowSpan = true;
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Registration Information :';
-        // registrationDetailObj.subItem = 'Business Identification No(BIN)';
-        // registrationDetailObj.itemValue = 'NA';
-        // registrationDetailObj.isRowSpan = true;
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Registration Information :';
-        // registrationDetailObj.subItem = 'Import Registration Certificate No (IRC):';
-        // registrationDetailObj.itemValue = 'NA';
-        // registrationDetailObj.isRowSpan = true;
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Registration Information :';
-        // registrationDetailObj.subItem = 'Tax Identification No (TIN):';
-        // registrationDetailObj.itemValue = 'NA';
-        // registrationDetailObj.isRowSpan = true;
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Registration Information :';
-        // registrationDetailObj.subItem = 'BGMEA Reg. No:';
-        // registrationDetailObj.itemValue = 'NA';
-        // registrationDetailObj.isRowSpan = true;
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Capital:';
-        // registrationDetailObj.subItem = 'Share Capital:';
-        // registrationDetailObj.itemValue = 'LKR 696,190,000.00';
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Capital:';
-        // registrationDetailObj.subItem = 'Number of Share:';
-        // registrationDetailObj.itemValue = 'LKR 69,619,000.00';
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Capital:';
-        // registrationDetailObj.subItem = 'Per Share Value:';
-        // registrationDetailObj.itemValue = 'NA';
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Legal Status:';
-        // registrationDetailObj.subItem = '';
-        // registrationDetailObj.itemValue = 'Private Limited Liability Company';
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Secretary';
-        // registrationDetailObj.subItem = '';
-        // registrationDetailObj.itemValue = 'Corporate Services (Private) Limited Address: No. 216, De Saram Place, Colombo–10, Sri Lanka';
-        // this.registrationDetailList.push(registrationDetailObj);
-
-        // registrationDetailObj = new RegistrationDetail();
-        // registrationDetailObj.id = this.getId();
-        // registrationDetailObj.item = 'Issuing Authority:';
-        // registrationDetailObj.subItem = '';
-        // registrationDetailObj.itemValue = 'The Department of the Registrar of Companies, Sri Lanka.';
-        // this.registrationDetailList.push(registrationDetailObj);
-
+    getList() {        
         this.loader.show();
         this.registrationDetailService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -138,6 +51,7 @@ export class RegistrationDetailsComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.templateButtonActivate()
                 this.loader.hide();
             },
             error: (err) => {
@@ -145,6 +59,64 @@ export class RegistrationDetailsComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    templateButtonActivate() {
+        if (this.registrationDetailList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'registration_detail';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+                this.loader.hide();
+            },
+        });
+    }
+
+    onSave() {
+        this.registrationDetailList.forEach(obj => {
+            obj.companyInfo = this.companyInfo;
+        });
+
+        this.setSequence();
+
+        if (this.registrationDetailList.length > 0) {
+            this.loader.show();
+
+            this.registrationDetailService.save(this.registrationDetailList, this.companyInfo.id).subscribe({
+                next: (response) => {
+                    console.log(response);
+                    this.notifyService.showSuccess("success", response.message);
+
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.getList();
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.notifyService.showError("error", err.error?.message);
+                    this.loader.hide();
+                },
+            });
+        }
     }
 
     onEdit(registrationDetailObj: RegistrationDetail) {
@@ -201,36 +173,6 @@ export class RegistrationDetailsComponent implements OnInit {
             registrationDetailObj.isEdit = false;
         }
 
-    }
-
-    onSave() {
-        this.registrationDetailList.forEach(obj => {
-            obj.companyInfo = this.companyInfo;
-        });
-
-        this.setSequence();
-
-        if (this.registrationDetailList.length > 0) {
-            this.loader.show();
-
-            this.registrationDetailService.save(this.registrationDetailList, this.companyInfo.id).subscribe({
-                next: (response) => {
-                    console.log(response);
-                    this.notifyService.showSuccess("success", response.message);
-
-                    this.router.navigate(["admin/financial-info"]);
-                },
-                complete: () => {
-                    this.getList();
-                    this.loader.hide();
-                },
-                error: (err) => {
-                    console.log(err);
-                    this.notifyService.showError("error", err.error?.message);
-                    this.loader.hide();
-                },
-            });
-        }
     }
 
     setSequence() {

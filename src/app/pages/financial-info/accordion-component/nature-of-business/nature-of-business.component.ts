@@ -7,6 +7,7 @@ import { ExcelUploadService } from 'src/app/services/excel-upload.service';
 import { NatureOfBusinessService } from 'src/app/services/financial-info/nature-of-business.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-nature-of-business',
@@ -20,6 +21,7 @@ export class NatureOfBusinessComponent implements OnInit {
     oldNatureOfBusinessObj: NatureOfBusiness;
     newNatureOfBusinessObj: NatureOfBusiness;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
@@ -27,7 +29,8 @@ export class NatureOfBusinessComponent implements OnInit {
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private natureOfBusinessService: NatureOfBusinessService
+        private natureOfBusinessService: NatureOfBusinessService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
     }
@@ -40,36 +43,6 @@ export class NatureOfBusinessComponent implements OnInit {
     }
 
     getList() {
-        // let natureOfBusinessObj = new NatureOfBusiness();
-        // natureOfBusinessObj.id = this.getId();
-        // natureOfBusinessObj.itemCode = 'Business Activity:';
-        // natureOfBusinessObj.itemValue = this.companyInfo.businessType;
-        // this.natureOfBusinessList.push(natureOfBusinessObj);
-
-        // natureOfBusinessObj = new NatureOfBusiness();
-        // natureOfBusinessObj.id = this.getId();
-        // natureOfBusinessObj.itemCode = 'Range of Products:';
-        // natureOfBusinessObj.itemValue = '● Blazers ●  Coats ● Jackets ● Pants ● Skirts';
-        // this.natureOfBusinessList.push(natureOfBusinessObj);
-
-        // natureOfBusinessObj = new NatureOfBusiness();
-        // natureOfBusinessObj.id = this.getId();
-        // natureOfBusinessObj.itemCode = 'Certifications:';
-        // natureOfBusinessObj.itemValue = 'NA';
-        // this.natureOfBusinessList.push(natureOfBusinessObj);
-
-        // natureOfBusinessObj = new NatureOfBusiness();
-        // natureOfBusinessObj.id = this.getId();
-        // natureOfBusinessObj.itemCode = 'Brands :';
-        // natureOfBusinessObj.itemValue = 'NA';
-        // this.natureOfBusinessList.push(natureOfBusinessObj);
-
-        // natureOfBusinessObj = new NatureOfBusiness();
-        // natureOfBusinessObj.id = this.getId();
-        // natureOfBusinessObj.itemCode = 'Group Name::';
-        // natureOfBusinessObj.itemValue = 'NA';
-        // this.natureOfBusinessList.push(natureOfBusinessObj);
-
         this.loader.show();
         this.natureOfBusinessService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -80,10 +53,10 @@ export class NatureOfBusinessComponent implements OnInit {
                     obj.isEdit = false;
                     if(obj.itemCode === 'Business Activity:'){
                         obj.itemValue = obj.companyInfo.businessType;
-                    }
-                    
+                    }                    
                 });
 
+                this.templateButtonActivate();
                 this.loader.hide();
             },
             error: (err) => {
@@ -92,6 +65,34 @@ export class NatureOfBusinessComponent implements OnInit {
             },
         });
 
+    }
+
+    templateButtonActivate() {
+        if (this.natureOfBusinessList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'nature_of_business';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+                this.loader.hide();
+            },
+        });
     }
 
     onSave() {

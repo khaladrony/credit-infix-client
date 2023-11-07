@@ -7,6 +7,7 @@ import { ExcelUploadService } from 'src/app/services/excel-upload.service';
 import { RiskProfileService } from 'src/app/services/financial-info/risk-profile.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-risk-profile',
@@ -21,7 +22,7 @@ export class RiskProfileComponent implements OnInit {
     newRiskProfileObj: RiskProfile;
     trGroupMax: number;
     companyInfo: CompanyInfo;
-
+    templateBtnShow: boolean = false;
 
     constructor(
         private router: Router,
@@ -29,7 +30,8 @@ export class RiskProfileComponent implements OnInit {
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private riskProfileService: RiskProfileService
+        private riskProfileService: RiskProfileService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
     }
@@ -45,29 +47,7 @@ export class RiskProfileComponent implements OnInit {
         return value+'%';
     }
 
-    getList() {
-        // let riskProfileObj = new RiskProfile();
-        // riskProfileObj.id = this.getId();
-        // riskProfileObj.itemCode = 'Age / Operation';
-        // riskProfileObj.percentage = 30;
-        // riskProfileObj.status = 'Moderate';
-        // this.riskProfileList.push(riskProfileObj);
-
-        // riskProfileObj = new RiskProfile();
-        // riskProfileObj.id = this.getId();
-        // riskProfileObj.itemCode = 'Management';
-        // riskProfileObj.percentage = 70;
-        // riskProfileObj.status = 'Good';
-        // this.riskProfileList.push(riskProfileObj);
-
-        // riskProfileObj = new RiskProfile();
-        // riskProfileObj.id = this.getId();
-        // riskProfileObj.itemCode = 'Finance';
-        // riskProfileObj.percentage = 70;
-        // riskProfileObj.status = 'Excellent';
-        // this.riskProfileList.push(riskProfileObj);
-
-
+    getList() {        
         this.loader.show();
         this.riskProfileService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -78,10 +58,40 @@ export class RiskProfileComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.templateButtonActivate();
+
                 this.loader.hide();
             },
             error: (err) => {
                 console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    templateButtonActivate() {
+        if (this.riskProfileList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'risk_profile';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
                 this.loader.hide();
             },
         });

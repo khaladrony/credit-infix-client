@@ -9,6 +9,7 @@ import { FinancialInformationService } from 'src/app/services/financial-info/fin
 import { FinancialNoteService } from 'src/app/services/financial-info/financial-note.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
+import { StoredProcedureExecuteService } from 'src/app/services/stored-procedure-execute.service';
 
 @Component({
     selector: 'app-financial-information',
@@ -27,6 +28,7 @@ export class FinancialInformationComponent implements OnInit {
     oldFinancialNoteObj: FinancialNote;
     newFinancialNoteObj: FinancialNote;
     companyInfo: CompanyInfo;
+    templateBtnShow: boolean = false;
 
     public FINANCIAL_INFO = 'FINANCIAL_INFO';
     public FINANCIAL_NOTE = 'FINANCIAL_NOTE';
@@ -38,7 +40,8 @@ export class FinancialInformationComponent implements OnInit {
         private notifyService: NotificationService,
         private sharedService: SharedService,
         private financialInformationService: FinancialInformationService,
-        private financialNoteService: FinancialNoteService
+        private financialNoteService: FinancialNoteService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
     }
@@ -55,47 +58,7 @@ export class FinancialInformationComponent implements OnInit {
     }
 
 
-    getFinancialInformationList() {
-        // let financialInformationObj = new FinancialInformation();
-        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        // financialInformationObj.itemCode = 'Year';
-        // financialInformationObj.thirdYear = '2022';
-        // financialInformationObj.secondYear = '2021';
-        // financialInformationObj.firstYear = '2020';
-        // this.financialInformationList.push(financialInformationObj);
-
-        // financialInformationObj = new FinancialInformation();
-        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        // financialInformationObj.itemCode = 'Turnover';
-        // financialInformationObj.thirdYear = '3325.17';
-        // financialInformationObj.secondYear = '3291.42';
-        // financialInformationObj.firstYear = '3259.85';
-        // this.financialInformationList.push(financialInformationObj);
-
-        // financialInformationObj = new FinancialInformation();
-        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        // financialInformationObj.itemCode = 'Profit/(Loss)';
-        // financialInformationObj.thirdYear = '89.90';
-        // financialInformationObj.secondYear = '81.53';
-        // financialInformationObj.firstYear = '73.82';
-        // this.financialInformationList.push(financialInformationObj);
-
-        // financialInformationObj = new FinancialInformation();
-        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        // financialInformationObj.itemCode = 'Liability';
-        // financialInformationObj.thirdYear = '2187.00';
-        // financialInformationObj.secondYear = '2194.76';
-        // financialInformationObj.firstYear = '2170.11';
-        // this.financialInformationList.push(financialInformationObj);
-
-        // financialInformationObj = new FinancialInformation();
-        // financialInformationObj.id = this.getId(this.FINANCIAL_INFO);
-        // financialInformationObj.itemCode = 'Assets';
-        // financialInformationObj.thirdYear = '2280.29';
-        // financialInformationObj.secondYear = '2265.10';
-        // financialInformationObj.firstYear = '2258.30';
-        // this.financialInformationList.push(financialInformationObj);
-
+    getFinancialInformationList() {        
         this.loader.show();
         this.financialInformationService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -116,35 +79,6 @@ export class FinancialInformationComponent implements OnInit {
     }
 
     getFinancialNoteList() {
-        // let financialNoteObj = new FinancialNote();
-        // financialNoteObj.id = this.getId('');
-        // financialNoteObj.itemCode = 'Financial Note';
-        // financialNoteObj.itemValue = 'Financial Year ended as of 30th June.';
-        // this.financialNoteList.push(financialNoteObj);
-
-        // financialNoteObj = new FinancialNote();
-        // financialNoteObj.id = this.getId('');
-        // financialNoteObj.itemCode = 'Financial Note';
-        // financialNoteObj.itemValue = `The information provided is collected unofficially. Noted based on the
-        // Corporate Laws of Sri Lanka, Legal Entities Which is Private Company with
-        // Limited Liability is not required to Make Public Disclosure of Their Annual
-        // Financials. Therefore, No Financials are Available for this Entity.`;
-        // this.financialNoteList.push(financialNoteObj);
-
-        // financialNoteObj = new FinancialNote();
-        // financialNoteObj.id = this.getId('');
-        // financialNoteObj.itemCode = 'Auditor';
-        // financialNoteObj.itemValue = `Name: BDO Partners`;
-        // this.financialNoteList.push(financialNoteObj);
-
-        // financialNoteObj = new FinancialNote();
-        // financialNoteObj.id = this.getId('');
-        // financialNoteObj.itemCode = 'Auditor';
-        // financialNoteObj.itemValue = `Address: Charter House” No. 65/2, Sir. Chittampalam A. Gardiner Mawatha,
-        // Colombo–2, Sri Lanka`;
-        // this.financialNoteList.push(financialNoteObj);
-
-
         this.loader.show();
         this.financialNoteService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -155,10 +89,40 @@ export class FinancialInformationComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.templateButtonActivate();
                 this.loader.hide();
             },
             error: (err) => {
                 console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+
+    templateButtonActivate() {
+        if (this.financialNoteList.length == 0
+            && this.companyInfo.id > 0) {
+            this.templateBtnShow = true;
+        }
+    }
+
+    addTemplate() {
+        let templateName = 'financial_summary';
+        this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.notifyService.showSuccess("success", response.message);
+
+                this.router.navigate(["admin/financial-info"]);
+            },
+            complete: () => {
+                this.getFinancialNoteList();
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
                 this.loader.hide();
             },
         });

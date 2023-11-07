@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BasicInfo } from 'src/app/models/financial-info/basic-info.model';
+import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
+import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
     selector: 'app-basic-information',
@@ -12,70 +14,80 @@ export class BasicInformationComponent implements OnInit {
     basicInfoList: BasicInfo[] = [];
     oldBasicInfoObj: BasicInfo;
     basicInfoNewObj: BasicInfo;
+    companyInfo: CompanyInfo;
 
-    constructor() { }
+    constructor(
+        private sharedService: SharedService,
+    ) {
+        this.companyInfo = new CompanyInfo();
+     }
 
     ngOnInit(): void {
         this.title = 'Basic Information';
-        this.getBasicInfoList();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.getBasicInfoList(this.companyInfo);
     }
 
 
-    getBasicInfoList() {
+    getBasicInfoList(companyInfo: CompanyInfo) {
         let basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Name:';
-        basicInfoObj.itemValue = 'Chiefway Katunayake (Private) Limited';  
+        basicInfoObj.itemValue = this.getCapitalize(companyInfo.name);
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Established:';
-        basicInfoObj.itemValue = '2017:';
+        basicInfoObj.itemValue = companyInfo.yearEstablished;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Legal Address:';
-        basicInfoObj.itemValue = 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
+        basicInfoObj.itemValue = companyInfo.legalAddress;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Operation Address:';
-        basicInfoObj.itemValue= 'Ring Road 3, Phase II, EPZ, Katunayake, Sri Lanka';
+        basicInfoObj.itemValue = companyInfo.operationAddress;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
-        basicInfoObj.itemCode = 'State:';
-        basicInfoObj.itemValue= '';
+        basicInfoObj.itemCode = 'Country:';
+        basicInfoObj.itemValue = companyInfo.country;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Main Activity:';
-        basicInfoObj.itemValue= 'Manufacture, Import and Export of apparel';
+        basicInfoObj.itemValue = companyInfo.businessType;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Legal Form:';
-        basicInfoObj.itemValue= 'Private Limited Liability Company';
+        basicInfoObj.itemValue = companyInfo.legalStatus;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Business Scale:';
-        basicInfoObj.itemValue= 'Medium';
+        basicInfoObj.itemValue = companyInfo.businessScale;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Status:';
-        basicInfoObj.itemValue= 'Active';
+        basicInfoObj.itemValue = companyInfo.status;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Listed Status:';
-        basicInfoObj.itemValue= 'Not Listed';
+        basicInfoObj.itemValue = companyInfo.listedStatus;
         this.basicInfoList.push(basicInfoObj);
 
         basicInfoObj = new BasicInfo();
         basicInfoObj.itemCode = 'Payment Practices:';
-        basicInfoObj.itemValue= 'Payments Are Made Mostly According To Terms';
+        basicInfoObj.itemValue = companyInfo.paymentPractices;
         this.basicInfoList.push(basicInfoObj);
+    }
+
+    getCapitalize(sentence: string) {
+        return sentence.toLowerCase().replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase());
     }
 
     onEdit(basicInfoObj: BasicInfo) {

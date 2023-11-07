@@ -12,6 +12,11 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8">
+                                        <button *ngIf="templateBtnShow" type="button" class="btn btn-warning add-new"
+                                            style="float: left;" (click)="addTemplate()">
+                                            <i class="fa fa-plus"></i>
+                                            Add Template
+                                        </button>
                                     </div>
                                     <div class="col-sm-4 pb-2">
                                         <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
@@ -35,10 +40,10 @@
                                             <div *ngIf="!operationInfo.isEdit">
                                                 {{operationInfo.itemCode}}
                                             </div>
-                                        </td>                                        
+                                        </td>
                                         <td style="width: 60%;white-space: normal;">
                                             <div *ngIf="operationInfo.isEdit">
-                                                <textarea [(ngModel)]="operationInfo.itemValue" rows="2"></textarea>                                                
+                                                <textarea [(ngModel)]="operationInfo.itemValue" rows="2"></textarea>
                                             </div>
                                             <div *ngIf="!operationInfo.isEdit">
                                                 {{operationInfo.itemValue}}
@@ -55,8 +60,7 @@
                                                         (click)="onDelete(operationInfo)"></i></a>
                                             </div>
                                             <div *ngIf="operationInfo.isEdit">
-                                                <a class="add"
-                                                    [ngClass]="{'isDisabled':validateForm(operationInfo)}"
+                                                <a class="add" [ngClass]="{'isDisabled':validateForm(operationInfo)}"
                                                     title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(operationInfo)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
