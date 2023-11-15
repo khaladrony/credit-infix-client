@@ -34,12 +34,12 @@ export class RiskProfileComponent implements OnInit {
         private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
         this.title = 'Risk Profile';
 
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
         this.getList();
     }
 

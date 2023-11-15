@@ -1,32 +1,32 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { EnvService } from '../env.service';
 import { Observable } from 'rxjs';
+import { EnvService } from '../env.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
-export class FinancialSummaryService {
+export class BankersService {
 
-    API_FEATURE_NAME: String;
+  API_FEATURE_NAME: String;
 
     constructor(
         private router: Router,
         private httpClient: HttpClient,
         private environment: EnvService
     ) {
-        this.API_FEATURE_NAME = '/financial-info/financial-summary';
+        this.API_FEATURE_NAME = '/financial-info/bankers';
     }
 
-    save(financialSummaryList: any, companyInfoId: any): Observable<any> {
+    save(bankersList: any, companyInfoId: any): Observable<any> {
         const token = sessionStorage.getItem('token');
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`
         });
 
         const formData: FormData = new FormData();
-        formData.append('financialSummaryList', JSON.stringify(financialSummaryList));
+        formData.append('bankersList', JSON.stringify(bankersList));
         formData.append('companyInfoId', companyInfoId);
 
         return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/save`, formData, { headers: headers });
@@ -42,17 +42,5 @@ export class FinancialSummaryService {
         params = params.append('companyInfoId', companyInfoId);
 
         return this.httpClient.get(`${this.environment.apiURL}${this.API_FEATURE_NAME}/list`, { headers: headers, params: params });
-    }
-
-    delete(id: any): Observable<any> {
-        const token = sessionStorage.getItem("token");
-        const headers = new HttpHeaders({
-            Authorization: `Bearer ${token}`,
-        });
-
-        let params = new HttpParams();
-        params = params.append('id', id);
-
-        return this.httpClient.delete(`${this.environment.apiURL}${this.API_FEATURE_NAME}/delete`, { headers, params });
     }
 }

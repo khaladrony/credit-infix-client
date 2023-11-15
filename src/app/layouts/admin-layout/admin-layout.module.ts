@@ -42,6 +42,7 @@ import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
 import { CurrencyDailyRateComponent } from 'src/app/pages/financial-info/currency-daily-rate/currency-daily-rate.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { BankersComponent } from 'src/app/pages/financial-info/accordion-component/bankers/bankers.component';
 
 @NgModule({
   imports: [
@@ -88,7 +89,8 @@ import { NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
     InlineTableComponent,
     CompanyListComponent,
     MainReportComponent,
-    CurrencyDailyRateComponent
+    CurrencyDailyRateComponent,
+    BankersComponent
     
   ]
 })

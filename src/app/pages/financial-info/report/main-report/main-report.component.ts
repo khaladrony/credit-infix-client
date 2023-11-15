@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { BasicInfo } from 'src/app/models/financial-info/basic-info.model';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
@@ -46,6 +46,10 @@ import domtoimage from 'dom-to-image';
 import { CurrencyDailyRate } from 'src/app/models/financial-info/currency-daily-rate.model';
 import { CurrencyDailyRateService } from 'src/app/services/financial-info/currency-daily-rate.service';
 import { UtilService } from 'src/app/services/util.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { BankersService } from 'src/app/services/financial-info/bankers.service';
+import { Bankers } from 'src/app/models/financial-info/bankers.model';
 
 @Component({
     selector: 'app-main-report',
@@ -81,6 +85,7 @@ export class MainReportComponent implements OnInit {
     basicInfoList: BasicInfo[] = [];
     //-----------------
     locationList: Location[] = [];
+    url: any;
     //-----------------
     regReportData: any;
     //-----------------
@@ -97,6 +102,9 @@ export class MainReportComponent implements OnInit {
     //-----------------
     corporateStructureList: CorporateStructure[] = [];
     corporateStructureReportData: any;
+    //-----------------
+    bankersList: Bankers[] = [];
+    trGroupMaxBankers: number;
     //-----------------
     financialInformationList: FinancialInformation[] = [];
     firstRowData: string;
@@ -120,10 +128,11 @@ export class MainReportComponent implements OnInit {
     currencyDailyRateList: CurrencyDailyRate[] = [];
 
 
-    @ViewChild('content', { static: false }) el!: ElementRef;
+    // @ViewChild('content', { static: false }) el!: ElementRef;
 
     constructor(
         private router: Router,
+        private route: ActivatedRoute,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
@@ -148,14 +157,21 @@ export class MainReportComponent implements OnInit {
         private ratingService: RatingService,
         private currencyDailyRateService: CurrencyDailyRateService,
         private utilService: UtilService,
-
+        private fileUploadService: FileUploadService,
+        private sanitizer: DomSanitizer,
+        private bankersService: BankersService
     ) {
         this.companyInfo = new CompanyInfo();
     }
 
     ngOnInit(): void {
 
-        this.loadCompanyInfo();
+        this.route.queryParams.subscribe((params: any) => {
+            this.companyInfo = JSON.parse(params.data);
+            if (this.companyInfo != null) {
+                this.loadCompanyInfo();
+            }
+        })
     }
 
     async convetToPDF_1() {
@@ -316,53 +332,45 @@ export class MainReportComponent implements OnInit {
 
         var elementHTML = document.querySelector("#contentToConvert");
 
-        // jspdf.html(elementHTML, {
-        //     callback: function (jspdf) {
-        //         jspdf.save('test.pdf');
-        //     },
-        //     margin: [10, 10, 10, 10],
-        //     autoPaging: 'text',
-        //     x: 0,
-        //     y: 0,
-        //     width: 190,
-        //     windowWidth: 675
-        // });
     }
 
     loadCompanyInfo() {
-        let data = {};
-        this.loader.show();
-        this.companyInfoService.getList(data).subscribe({
-            next: (data) => {
-                this.companyInfo = data.data[0];
-            },
-            complete: () => {
-                this.getCreditAssessment(this.companyInfo.id);
-                this.getBasicInfoList(this.companyInfo)
-                this.getContactList(this.companyInfo.id);
-                this.getRegistrationDetail(this.companyInfo.id);
-                this.getManagement(this.companyInfo.id);
-                this.getShareholder(this.companyInfo.id);
-                this.getOperationInfo(this.companyInfo.id);
-                this.getNatureOfBusiness(this.companyInfo.id);
-                this.getCorporateStructure(this.companyInfo.id);
-                this.getFinancialInformationList(this.companyInfo.id);
-                this.getFinancialNoteList(this.companyInfo.id);
-                this.getRecommendedCreditStaticData();
-                this.getRiskLevelList();
-                this.getSummaryOpinionList(this.companyInfo.id);
-                this.getCountryRiskAssessmentList(this.companyInfo.country);
-                this.getRatingList();
-                this.firstPageDataList();
-                this.getCurrencyDailyRateList(this.utilService.dateFormat(this.companyInfo.transactionDate, 'yyyy-MM-dd'));
+        // let data = {};
+        // this.loader.show();
+        // this.companyInfoService.getList(data).subscribe({
+        //     next: (data) => {
+        //         this.companyInfo = data.data[0];
+        //     },
+        //     complete: () => {
 
-                this.loader.hide();
-            },
-            error: (err) => {
-                console.log(err);
-                this.loader.hide();
-            },
-        });
+        //         this.loader.hide();
+        //     },
+        //     error: (err) => {
+        //         console.log(err);
+        //         this.loader.hide();
+        //     },
+        // });
+
+        this.getCreditAssessment(this.companyInfo.id);
+        this.getBasicInfoList(this.companyInfo)
+        this.getContactList(this.companyInfo.id);
+        this.getRegistrationDetail(this.companyInfo.id);
+        this.getManagement(this.companyInfo.id);
+        this.getShareholder(this.companyInfo.id);
+        this.getOperationInfo(this.companyInfo.id);
+        this.getNatureOfBusiness(this.companyInfo.id);
+        this.getCorporateStructure(this.companyInfo.id);
+        this.getBankers(this.companyInfo.id);
+        this.getFinancialInformationList(this.companyInfo.id);
+        this.getFinancialNoteList(this.companyInfo.id);
+        this.getRecommendedCreditStaticData();
+        this.getRiskLevelList();
+        this.getSummaryOpinionList(this.companyInfo.id);
+        this.getCountryRiskAssessmentList(this.companyInfo.country);
+        this.getRatingList();
+        this.firstPageDataList();
+        this.getCurrencyDailyRateList(this.utilService.dateFormat(this.companyInfo.transactionDate, 'yyyy-MM-dd'));
+
     }
 
     //First page data START
@@ -404,12 +412,12 @@ export class MainReportComponent implements OnInit {
     }
 
     styleBackgroundColor() {
-        let colorCode = "#" + this.creditAssessment.colorCode; //'#ffc107'
+        let colorCode = "#" + this.creditAssessment?.colorCode; //'#ffc107'
         return { 'background-color': colorCode };
     }
 
     styleRiskAssessmentArrowImg() {
-        let paddingPercent = this.creditAssessment.paddingPercent + "%";
+        let paddingPercent = this.creditAssessment?.paddingPercent + "%";
         return { 'padding-bottom': '5px', 'padding-left': paddingPercent }
     }
     //End
@@ -471,7 +479,7 @@ export class MainReportComponent implements OnInit {
             complete: () => {
                 if (this.orderDetailList.length > 0) {
                     this.setCompanyName(this.orderDetailList[0]);
-                }               
+                }
                 this.loader.hide();
             },
             error: (err) => {
@@ -575,12 +583,44 @@ export class MainReportComponent implements OnInit {
                 this.locationList = data.data;
             },
             complete: () => {
+                this.getImagePathDTO();
                 this.loader.hide();
             },
             error: (err) => {
                 console.log(err);
                 this.loader.hide();
             },
+        });
+    }
+
+    getImagePathDTO() {
+        this.locationService.getImagePathDTO(this.companyInfo.id).subscribe({
+            next: (response) => {
+                console.log(response);
+                this.imagePreview(response.data?.name);
+            },
+            complete: () => { },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+            },
+        });
+    }
+
+    imagePreview(fileName: string) {
+        let fileType = 'image/(jpeg|jpg|png|gif|bmp)';
+
+        this.fileUploadService.imagePreview(fileName).subscribe({
+            next: (response) => {
+                console.log(response)
+                const blob = new Blob([response], { type: fileType });
+                this.url = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
+            },
+            complete: () => {
+            },
+            error: (err) => {
+                console.log(err);
+            }
         });
     }
     //END
@@ -772,9 +812,38 @@ export class MainReportComponent implements OnInit {
     }
     //END
 
+    //Bankers
+    getBankers(companyInfoId: number) {
+        this.loader.show();
+        this.bankersService.getList(companyInfoId).subscribe({
+            next: (data) => {
+                this.bankersList = data.data;
+            },
+            complete: () => {
+                this.trGroupMaxBankers = Math.max.apply(null, this.bankersList.map(function (o) { return o.sequence; }));
+
+                this.loader.hide();
+            },
+            error: (err) => {
+                console.log(err);
+                this.loader.hide();
+            },
+        });
+    }
+
+    styleObjectBankers(index: number): Object {
+
+        if (index == 1) {
+            return { 'border-top': '1.4px solid  #cdcbcb' };
+        } else if (index % this.trGroupMaxBankers == 0) {
+            return { 'border-bottom': '1.4px solid  #cdcbcb' };
+        }
+    }
+    //END
+
     //FinancialInformation
     getFinancialInformationList(companyInfoId: number) {
-        this.firstRowData = 'Figure in LKR - Million';
+        this.firstRowData = 'Figure in' + this.companyInfo.currency + '- Million';
         this.loader.show();
         this.financialInformationService.getList(companyInfoId).subscribe({
             next: (data) => {
@@ -840,15 +909,21 @@ export class MainReportComponent implements OnInit {
         });
     }
 
+    trimCountryFromCurrency(str: string): string {
+        const strArray = str.split("-");
+        strArray.shift();
+        return strArray.join('').trim();
+    }
+
     //END
 
     //Static Data
     getRecommendedCreditStaticData() {
         this.recommendedreditInfoList = [
             { range: 'Above 40%', description: 'Above 4 times of base credit limit' },
-            { range: `30%～40%`, description: '3 to 4 times of base credit limit' },
-            { range: `20%～30%`, description: '2 to 3 times of base credit limit' },
-            { range: `10%～20%`, description: '1 to 2 times of base credit limit' },
+            { range: `30%-40%`, description: '3 to 4 times of base credit limit' },
+            { range: `20%-30%`, description: '2 to 3 times of base credit limit' },
+            { range: `10%-20%`, description: '1 to 2 times of base credit limit' },
             { range: 'Below 10%', description: 'within base credit limit' }
         ];
 

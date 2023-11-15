@@ -31,47 +31,16 @@ export class ManagementComponent implements OnInit {
         private managementService:ManagementService
     ) { 
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
         this.title = 'Management';
-
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
         this.getList();
     }
 
 
     getList() {
-        // let managementObj = new Management();
-        // managementObj.id = this.getId();
-        // managementObj.itemCode = 'Name'
-        // managementObj.itemValue = 'Mr. Wickramasinghe Senanayake Appuhamilage Vipul Abayanga Senanayake'
-        // this.managementList.push(managementObj);
-
-        // managementObj = new Management();
-        // managementObj.id = this.getId();
-        // managementObj.itemCode = 'Designation:'
-        // managementObj.itemValue = 'Managing Director'
-        // this.managementList.push(managementObj);
-
-        // managementObj = new Management();
-        // managementObj.id = this.getId();
-        // managementObj.itemCode = 'NIC/Passport No.'
-        // managementObj.itemValue = '692440129 V'
-        // this.managementList.push(managementObj);
-
-        // managementObj = new Management();
-        // managementObj.id = this.getId();
-        // managementObj.itemCode = 'Address:'
-        // managementObj.itemValue = 'No. 45/2, Negombo Road, Bopitiya, Sri Lanka'
-        // this.managementList.push(managementObj);
-
-        // managementObj = new Management();
-        // managementObj.id = this.getId();
-        // managementObj.itemCode = 'Nationality:'
-        // managementObj.itemValue = 'Sri Lankan'
-        // this.managementList.push(managementObj);
-
         this.loader.show();
         this.managementService.getList(this.companyInfo.id).subscribe({
             next: (data) => {

@@ -44,14 +44,12 @@ export class FinancialInformationComponent implements OnInit {
         private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
         this.title = 'Financial Information';
-
         this.firstRowData = 'Figure in LKR - Million';
-
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
 
         this.getFinancialInformationList();
         this.getFinancialNoteList();
@@ -108,7 +106,7 @@ export class FinancialInformationComponent implements OnInit {
     }
 
     addTemplate() {
-        let templateName = 'financial_summary';
+        let templateName = 'financial_note';
         this.storedProcedureExecuteService.execute(templateName, this.companyInfo.id).subscribe({
             next: (response) => {
                 console.log(response);

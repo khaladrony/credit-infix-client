@@ -47,7 +47,6 @@ export class CurrencyDailyRateComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.getCurrencyDailyRateListByDate(this.currencyDate);
         this.getCurrencyDailyRateList();
         this.getCountryList();
     }

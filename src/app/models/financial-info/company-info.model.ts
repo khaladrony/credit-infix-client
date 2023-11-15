@@ -13,6 +13,7 @@ export class CompanyInfo {
     ageOfBusiness: string
     businessType: string
     country: string
+    currency: string
     businessScale: string
     paymentPractices: string
     listedStatus: string

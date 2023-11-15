@@ -12,11 +12,6 @@
                             <div class="table-title">
                                 <div class="row">
                                     <div class="col-sm-8">
-                                        <button *ngIf="templateBtnShow" type="button" class="btn btn-warning add-new"
-                                            style="float: left;" (click)="addTemplate()">
-                                            <i class="fa fa-plus"></i>
-                                            Add Template
-                                        </button>
                                     </div>
                                     <div class="col-sm-4 pb-2">
                                         <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
@@ -28,52 +23,64 @@
 
                             <table class="table table-bordered">
                                 <tbody>
-                                    <tr *ngFor="let operationInfo of operationInfoList; let i = index">
+                                    <tr *ngFor="let bankers of bankersList; let i = index"
+                                    [ngStyle]="styleObject(i+1)">
 
                                         <td style="width: 30%; font-weight: bold;">
-                                            <div *ngIf="operationInfo.isEdit">
-                                                <input type="text" [(ngModel)]="operationInfo.itemCode">
-                                                <div class="text-danger" *ngIf="validateField(operationInfo.itemCode)">
+                                            <div *ngIf="bankers.isEdit">
+                                                <input type="text" [(ngModel)]="bankers.itemCode">
+                                                <div class="text-danger" *ngIf="validateField(bankers.itemCode)">
                                                     <span>*Required</span>
                                                 </div>
                                             </div>
-                                            <div *ngIf="!operationInfo.isEdit">
-                                                {{operationInfo.itemCode}}
+                                            <div *ngIf="!bankers.isEdit">
+                                                {{bankers.itemCode}}
                                             </div>
                                         </td>
                                         <td style="width: 60%;white-space: normal;">
-                                            <div *ngIf="operationInfo.isEdit">
-                                                <textarea [(ngModel)]="operationInfo.itemValue" rows="2"></textarea>
+                                            <div *ngIf="bankers.isEdit">
+                                                <input type="text" [(ngModel)]="bankers.itemValue">
+                                                <div class="text-danger" *ngIf="validateField(bankers.itemValue)">
+                                                    <span>*Required</span>
+                                                </div>
                                             </div>
-                                            <div *ngIf="!operationInfo.isEdit">
-                                                {{operationInfo.itemValue}}
+                                            <div *ngIf="!bankers.isEdit">
+                                                {{bankers.itemValue}}
                                             </div>
                                         </td>
 
-                                        <td class="action-td">
-                                            <div *ngIf="!operationInfo.isEdit">
+                                        <td style="width: 10%;">
+                                            <div *ngIf="!bankers.isEdit">
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                        class="bi bi-pencil-fill"
-                                                        (click)="onEdit(operationInfo)"></i></a>
+                                                        class="bi bi-pencil-fill" (click)="onEdit(bankers)"></i></a>
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
-                                                        (click)="onDelete(operationInfo.id)"></i></a>
+                                                        (click)="onDelete(bankers)"></i></a>
                                             </div>
-                                            <div *ngIf="operationInfo.isEdit">
-                                                <a class="add" [ngClass]="{'isDisabled':validateForm(operationInfo)}"
-                                                    title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
-                                                        (click)="onUpdate(operationInfo)"></i></a>
+                                            <div *ngIf="bankers.isEdit">
+                                                <a class="add" [ngClass]="{'isDisabled':validateForm(bankers)}"
+                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
+                                                        (click)="onUpdate(bankers)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
                                                         class="fa fa-times-circle"
-                                                        (click)="onCancel(operationInfo)"></i></a>
+                                                        (click)="onCancel(bankers)"></i></a>
                                             </div>
 
                                         </td>
+
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="pl-lg-4">
+                <div class="mt-1 d-flex form-group">
+                    <label class="col-md-0 exl-label" for="excelAttachment">Excel File Upload: </label>
+                    <input class="col-md-7 exl-input" type="file" name="excelAttachment" id="excelAttachment"
+                        (change)="onExcelFileUpload($event)">
                 </div>
             </div>
 

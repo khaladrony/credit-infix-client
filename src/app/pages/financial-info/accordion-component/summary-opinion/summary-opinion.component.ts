@@ -30,12 +30,11 @@ export class SummaryOpinionComponent implements OnInit {
         private storedProcedureExecuteService: StoredProcedureExecuteService
     ) { 
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
         this.title = 'Summary Opinion';
-        
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
         this.getSummaryOpinionList();
     }
 

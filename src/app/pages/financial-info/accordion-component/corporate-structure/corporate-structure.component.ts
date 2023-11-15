@@ -33,12 +33,11 @@ export class CorporateStructureComponent implements OnInit {
         private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
         this.title = 'Corporate Structure';
-
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
         this.getList();
     }
 

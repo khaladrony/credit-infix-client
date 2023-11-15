@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { Location } from 'src/app/models/financial-info/location.model';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
+import { FileUploadService } from 'src/app/services/file-upload.service';
 import { LocationService } from 'src/app/services/financial-info/location.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
@@ -21,66 +24,27 @@ export class LocationComponent implements OnInit {
     newLocationObj: Location;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    url: any;
+    file: File;
 
     constructor(
+        private sanitizer: DomSanitizer,
         private router: Router,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private locationService:LocationService,
-        private storedProcedureExecuteService: StoredProcedureExecuteService
-    ) { 
+        private locationService: LocationService,
+        private storedProcedureExecuteService: StoredProcedureExecuteService,
+        private fileUploadService: FileUploadService,
+        private confirmationModalService: ConfirmationModalService
+    ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
-        let map = document.getElementById('map-canvas');
-        let lat = map.getAttribute('data-lat');
-        let lng = map.getAttribute('data-lng');
-
-        var myLatlng = new google.maps.LatLng(lat, lng);
-        var mapOptions = {
-            zoom: 12,
-            scrollwheel: false,
-            center: myLatlng,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            styles: [
-                { "featureType": "administrative", "elementType": "labels.text.fill", "stylers": [{ "color": "#444444" }] },
-                { "featureType": "landscape", "elementType": "all", "stylers": [{ "color": "#f2f2f2" }] },
-                { "featureType": "poi", "elementType": "all", "stylers": [{ "visibility": "off" }] },
-                { "featureType": "road", "elementType": "all", "stylers": [{ "saturation": -100 }, { "lightness": 45 }] },
-                { "featureType": "road.highway", "elementType": "all", "stylers": [{ "visibility": "simplified" }] },
-                { "featureType": "road.arterial", "elementType": "labels.icon", "stylers": [{ "visibility": "off" }] },
-                { "featureType": "transit", "elementType": "all", "stylers": [{ "visibility": "off" }] },
-                { "featureType": "water", "elementType": "all", "stylers": [{ "color": '#5e72e4' }, { "visibility": "on" }] }]
-        }
-
-        map = new google.maps.Map(map, mapOptions);
-
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map,
-            animation: google.maps.Animation.DROP,
-            title: 'Hello World!'
-        });
-
-        var contentString = '<div class="info-window-content"><h2>Argon Dashboard</h2>' +
-            '<p>A beautiful Dashboard for Bootstrap 4. It is Free and Open Source.</p></div>';
-
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
-
-        google.maps.event.addListener(marker, 'click', function () {
-            infowindow.open(map, marker);
-        });
-
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
-
         this.getList();
     }
-
-
 
     getList() {
         this.loader.show();
@@ -93,6 +57,7 @@ export class LocationComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.getImagePathDTO();
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -160,6 +125,35 @@ export class LocationComponent implements OnInit {
         }
     }
 
+    onDelete(id: any) {
+        this.confirmationModalService
+            .confirm("Delete confirmation!", "Are you sure you want to delete?")
+            .subscribe((answer) => {
+                if (answer === "yes") {
+                    this.locationService.delete(id).subscribe({
+                        next: () => {
+                            this.notifyService.showSuccess(
+                                "success",
+                                "Deleted Successfully."
+                            );
+
+                            this.router.navigate(["admin/financial-info"]);
+                        },
+                        complete: () => {
+                            this.getList();
+                            this.loader.hide();
+                        },
+                        error: (err) => {
+                            this.notifyService.showError("error", err.message);
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    return;
+                }
+            });
+    }
+
     onEdit(locationObj: Location) {
         this.oldLocationObj = locationObj;
         this.locationList.forEach(obj => {
@@ -169,9 +163,9 @@ export class LocationComponent implements OnInit {
 
     }
 
-    onDelete(locationObj: Location) {
-        this.locationList.splice(this.locationList.findIndex(e => e.id === locationObj.id), 1);
-    }
+    // onDelete(locationObj: Location) {
+    //     this.locationList.splice(this.locationList.findIndex(e => e.id === locationObj.id), 1);
+    // }
 
     onAdd() {
         this.oldLocationObj = null;
@@ -231,5 +225,107 @@ export class LocationComponent implements OnInit {
         }
     }
 
+    selectFile(event: any) {
+        if (event.target.files) {
+            var reader = new FileReader();
+            this.file = event.target.files[0];
+            reader.readAsDataURL(this.file);
+            reader.onload = (event: any) => {
+                this.url = event.target.result;
+            }
+        }
+    }
 
+    onImageFileUpload() {
+        let fileName = this.file.name;
+        let regex = /(.jpeg|.png)$/;
+
+        if (regex.test(fileName.toLowerCase())) {
+            let formData = new FormData();
+            formData.append('file', this.file);
+            formData.append('fileName', this.file.name);
+            formData.append('type', this.file.type);
+            // formData.append('size', event.target.files[0].size);
+
+            this.loader.show();
+
+            this.fileUploadService.uploadImage(formData).subscribe({
+                next: (response) => {
+                    console.log(response.data);
+
+                    this.imagePreview(response.data.filename);
+                    this.saveImagePath(response.data.filename);
+
+                    this.notifyService.showSuccess("success", response.message);
+                    this.router.navigate(["admin/financial-info"]);
+                },
+                complete: () => {
+                    this.loader.hide();
+                },
+                error: (err) => {
+                    console.log(err);
+                    this.loader.hide();
+                    this.notifyService.showError('error', err.error?.message);
+                }
+            });
+
+        } else {
+            this.notifyService.showError('error', 'Please upload a valid Image!');
+            this.loader.hide();
+        }
+    }
+
+    saveImagePath(imageName: string) {
+        let locationImage: any = {
+            companyInfo: this.companyInfo,
+            name: imageName,
+            type: imageName.split('.').pop()
+        };
+
+        this.locationService.saveImagePath(locationImage).subscribe({
+            next: (response) => {
+                console.log(response);
+            },
+            complete: () => { },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+            },
+        });
+    }
+
+    getImagePathDTO() {
+        this.locationService.getImagePathDTO(this.companyInfo.id).subscribe({
+            next: (response) => {
+                this.imagePreview(response.data.name);
+            },
+            complete: () => { },
+            error: (err) => {
+                console.log(err);
+                this.notifyService.showError("error", err.error?.message);
+            },
+        });
+    }
+
+    imagePreview(fileName: string) {
+        let fileExtension = fileName.split('.').pop();
+        let fileType = '';
+        if (fileExtension === 'pdf') {
+            fileType = 'application/pdf';
+        } else {
+            // fileType = 'image/jpeg';
+            fileType = 'image/(jpeg|jpg|png|gif|bmp)';
+        }
+        this.fileUploadService.imagePreview(fileName).subscribe({
+            next: (response) => {
+                const blob = new Blob([response], { type: fileType });
+                this.url = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(blob));
+            },
+            complete: () => {
+            },
+            error: (err) => {
+                console.log(err);
+            }
+        });
+    }
 }

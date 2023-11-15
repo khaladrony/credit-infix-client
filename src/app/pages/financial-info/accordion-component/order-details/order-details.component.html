@@ -59,7 +59,7 @@
                                                         class="bi bi-pencil-fill" (click)="onEdit(orderDetail)"></i></a>
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
-                                                        (click)="onDelete(orderDetail)"></i></a>
+                                                        (click)="onDelete(orderDetail.id)"></i></a>
                                             </div>
                                             <div *ngIf="orderDetail.isEdit">
                                                 <a class="add" [ngClass]="{'isDisabled':validateForm(orderDetail)}"

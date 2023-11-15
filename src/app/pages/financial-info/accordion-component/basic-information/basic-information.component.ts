@@ -20,11 +20,11 @@ export class BasicInformationComponent implements OnInit {
         private sharedService: SharedService,
     ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
      }
 
     ngOnInit(): void {
-        this.title = 'Basic Information';
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.title = 'Basic Information';        
         this.getBasicInfoList(this.companyInfo);
     }
 

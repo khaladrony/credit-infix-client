@@ -1,52 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Bankers } from 'src/app/models/financial-info/bankers.model';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
-import { Shareholder } from 'src/app/models/financial-info/shareholder.model';
 import { ExcelUploadService } from 'src/app/services/excel-upload.service';
-import { ShareholderService } from 'src/app/services/financial-info/shareholder.service';
+import { BankersService } from 'src/app/services/financial-info/bankers.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
 
 @Component({
-    selector: 'app-shareholder',
-    templateUrl: './shareholder.component.html',
-    styleUrls: ['./shareholder.component.scss']
+    selector: 'app-bankers',
+    templateUrl: './bankers.component.html',
+    styleUrls: ['./bankers.component.scss']
 })
-export class ShareholderComponent implements OnInit {
+export class BankersComponent implements OnInit {
 
     title: string;
-    shareholderList: Shareholder[] = [];
-    oldShareholderObj: Shareholder;
-    newShareholderObj: Shareholder;
+    bankersList: Bankers[] = [];
+    oldBankersObj: Bankers;
+    newBankersObj: Bankers;
     trGroupMax: number;
     companyInfo: CompanyInfo;
-
     constructor(
         private router: Router,
         private excelUploadService: ExcelUploadService,
         private loader: NgxSpinnerService,
         private notifyService: NotificationService,
         private sharedService: SharedService,
-        private shareholderService:ShareholderService
-    ) {
+        private bankersService:BankersService
+    ) { 
         this.companyInfo = new CompanyInfo();
         this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
-        this.title = 'Shareholder';
+        this.title = 'Bankers';
         this.getList();
     }
 
     getList() {
         this.loader.show();
-        this.shareholderService.getList(this.companyInfo.id).subscribe({
+        this.bankersService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
-                this.shareholderList = data.data;
+                this.bankersList = data.data;
             },
             complete: () => {
-                this.shareholderList.forEach(obj => {
+                this.bankersList.forEach(obj => {
                     obj.isEdit = false;
                 });
 
@@ -59,81 +58,80 @@ export class ShareholderComponent implements OnInit {
         });
     }
 
-    onEdit(shareholderObj: Shareholder) {
-        this.oldShareholderObj = shareholderObj;
-        this.shareholderList.forEach(obj => {
+    onEdit(bankersObj: Bankers) {
+        this.oldBankersObj = bankersObj;
+        this.bankersList.forEach(obj => {
             obj.isEdit = false;
         });
-        shareholderObj.isEdit = true;
+        bankersObj.isEdit = true;
 
     }
 
-    onDelete(shareholderObj: Shareholder) {
-        this.shareholderList.splice(this.shareholderList.findIndex(e => e.id === shareholderObj.id), 1);
+    onDelete(bankersObj: Bankers) {
+        this.bankersList.splice(this.bankersList.findIndex(e => e.id === bankersObj.id), 1);
     }
 
     onAdd() {
-        this.oldShareholderObj = null;
+        this.oldBankersObj = null;
 
-        this.newShareholderObj = new Shareholder();
-        this.newShareholderObj.id = this.getId();
-        this.newShareholderObj.itemCode = 'Name:';
-        this.newShareholderObj.itemValue = '';
-        this.newShareholderObj.isEdit = true;
-        this.shareholderList.push(this.newShareholderObj);
+        this.newBankersObj = new Bankers();
+        this.newBankersObj.id = this.getId();
+        this.newBankersObj.itemCode = 'Name:';
+        this.newBankersObj.itemValue = '';
+        this.newBankersObj.isEdit = true;
+        this.bankersList.push(this.newBankersObj);
 
-        this.newShareholderObj = new Shareholder();
-        this.newShareholderObj.id = this.getId();
-        this.newShareholderObj.itemCode = 'Share Amount:';
-        this.newShareholderObj.itemValue = '';
-        this.newShareholderObj.isEdit = true;
-        this.shareholderList.push(this.newShareholderObj);
+        this.newBankersObj = new Bankers();
+        this.newBankersObj.id = this.getId();
+        this.newBankersObj.itemCode = 'Branch:';
+        this.newBankersObj.itemValue = '';
+        this.newBankersObj.isEdit = true;
+        this.bankersList.push(this.newBankersObj);
 
-        this.newShareholderObj = new Shareholder();
-        this.newShareholderObj.id = this.getId();
-        this.newShareholderObj.itemCode = 'Share Percent:';
-        this.newShareholderObj.itemValue = '';
-        this.newShareholderObj.isEdit = true;
-        this.shareholderList.push(this.newShareholderObj);
+        this.newBankersObj = new Bankers();
+        this.newBankersObj.id = this.getId();
+        this.newBankersObj.itemCode = 'Address:';
+        this.newBankersObj.itemValue = '';
+        this.newBankersObj.isEdit = true;
+        this.bankersList.push(this.newBankersObj);
 
-        this.newShareholderObj = new Shareholder();
-        this.newShareholderObj.id = this.getId();
-        this.newShareholderObj.itemCode = 'Country:';
-        this.newShareholderObj.itemValue = '';
-        this.newShareholderObj.isEdit = true;
-        this.shareholderList.push(this.newShareholderObj);
-
+        this.newBankersObj = new Bankers();
+        this.newBankersObj.id = this.getId();
+        this.newBankersObj.itemCode = 'SWIFT:';
+        this.newBankersObj.itemValue = '';
+        this.newBankersObj.isEdit = true;
+        this.bankersList.push(this.newBankersObj);
 
     }
 
-    onUpdate(shareholderObj: Shareholder) {
-        console.log(shareholderObj);
-        shareholderObj.isEdit = false;
+    onUpdate(bankersObj: Bankers) {
+        console.log(bankersObj);
+        bankersObj.isEdit = false;
     }
 
-    onCancel(shareholderObj: Shareholder) {
-        if (this.oldShareholderObj == undefined || this.oldShareholderObj == null) {
-            shareholderObj.isEdit = true;
-            this.shareholderList.splice(this.shareholderList.findIndex(e => e.id === shareholderObj.id), 1);
+    onCancel(bankersObj: Bankers) {
+        if (this.oldBankersObj == undefined || this.oldBankersObj == null) {
+            bankersObj.isEdit = true;
+            this.bankersList.splice(this.bankersList.findIndex(e => e.id === bankersObj.id), 1);
         } else {
 
-            shareholderObj.itemCode = this.oldShareholderObj.itemCode;
-            shareholderObj.itemValue = this.oldShareholderObj.itemValue;
-            shareholderObj.isEdit = false;
+            bankersObj.itemCode = this.oldBankersObj.itemCode;
+            bankersObj.itemValue = this.oldBankersObj.itemValue;
+            bankersObj.isEdit = false;
         }
 
     }
 
     onSave() {
-        this.shareholderList.forEach(obj => {
+        this.bankersList.forEach(obj => {
             obj.companyInfo = this.companyInfo;
         });
-        console.log(this.shareholderList);
+        console.log(this.bankersList);
 
-        if (this.shareholderList.length > 0) {
+        if (this.bankersList.length > 0) {
             this.loader.show();
 
-            this.shareholderService.save(this.shareholderList, this.companyInfo.id).subscribe({
+            this.bankersService.save(this.bankersList, this.companyInfo.id).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
@@ -162,8 +160,8 @@ export class ShareholderComponent implements OnInit {
 
     }
 
-    validateForm(shareholderObj: Shareholder) {
-        if (shareholderObj.itemCode !== '' && shareholderObj.itemValue !== '') {
+    validateForm(bankersObj: Bankers) {
+        if (bankersObj.itemCode !== '' && bankersObj.itemValue !== '') {
             return false;
         } else {
             return true;
@@ -171,11 +169,11 @@ export class ShareholderComponent implements OnInit {
     }
 
     getId() {
-        if (this.shareholderList.length == 0) {
+        if (this.bankersList.length == 0) {
             return 1;
         } else {
-            let lastShareholderObj: Shareholder = this.shareholderList[this.shareholderList.length - 1];
-            return lastShareholderObj.id + 1;
+            let lastBankersObj: Bankers = this.bankersList[this.bankersList.length - 1];
+            return lastBankersObj.id + 1;
         }
     }
 
@@ -183,7 +181,7 @@ export class ShareholderComponent implements OnInit {
     onExcelFileUpload(event: any) {
         let fileName = event.target.files[0].name;
         let regex = /(.xlsx|.xls)$/;
-        this.shareholderList = [];
+        this.bankersList = [];
 
         if (regex.test(fileName.toLowerCase())) {
             let formData = new FormData();
@@ -197,9 +195,9 @@ export class ShareholderComponent implements OnInit {
             this.excelUploadService.shareholderFile(formData).subscribe({
                 next: (response) => {
                     console.log(response);
-                    this.shareholderList = response.data.responseDTOs;
+                    this.bankersList = response.data.responseDTOs;
 
-                    this.trGroupMax = Math.max.apply(null, this.shareholderList.map(function (o) { return o.sequence; }));
+                    this.trGroupMax = Math.max.apply(null, this.bankersList.map(function (o) { return o.sequence; }));
                 },
                 complete: () => {
                     event.target.value = null;

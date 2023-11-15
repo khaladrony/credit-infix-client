@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { FinancialSummary } from 'src/app/models/financial-info/financial-summary.model';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
 import { FinancialSummaryService } from 'src/app/services/financial-info/financial-summary.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
@@ -34,7 +35,8 @@ export class FinancialSummaryComponent implements OnInit {
         private notifyService: NotificationService,
         private sharedService: SharedService,
         private financialSummaryService: FinancialSummaryService,
-        private storedProcedureExecuteService: StoredProcedureExecuteService
+        private storedProcedureExecuteService: StoredProcedureExecuteService,
+        private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
     }
@@ -136,9 +138,9 @@ export class FinancialSummaryComponent implements OnInit {
 
     }
 
-    onDelete(financialSummary: FinancialSummary) {
-        this.financialSummaryList.splice(this.financialSummaryList.findIndex(e => e.itemCode === financialSummary.itemCode), 1);
-    }
+    // onDelete(financialSummary: FinancialSummary) {
+    //     this.financialSummaryList.splice(this.financialSummaryList.findIndex(e => e.itemCode === financialSummary.itemCode), 1);
+    // }
 
     onAdd() {
         this.oldFinancialSummaryObj = null;
@@ -199,6 +201,35 @@ export class FinancialSummaryComponent implements OnInit {
                 },
             });
         }
+    }
+
+    onDelete(id: any) {
+        this.confirmationModalService
+            .confirm("Delete confirmation!", "Are you sure you want to delete?")
+            .subscribe((answer) => {
+                if (answer === "yes") {
+                    this.financialSummaryService.delete(id).subscribe({
+                        next: () => {
+                            this.notifyService.showSuccess(
+                                "success",
+                                "Deleted Successfully."
+                            );
+
+                            this.router.navigate(["admin/financial-info"]);
+                        },
+                        complete: () => {
+                            this.getFinancialSummaryList();
+                            this.loader.hide();
+                        },
+                        error: (err) => {
+                            this.notifyService.showError("error", err.message);
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    return;
+                }
+            });
     }
 
     validateField(item: any) {

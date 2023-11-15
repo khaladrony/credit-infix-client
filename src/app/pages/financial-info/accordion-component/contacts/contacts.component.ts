@@ -32,11 +32,11 @@ export class ContactsComponent implements OnInit {
     ) {
         this.companyInfo = new CompanyInfo();
         this.contact = new Contact();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
-
+        
         this.contactsForm = this.formBuilder.group({
             name: new FormControl(""),
             telephoneNo: new FormControl(""),

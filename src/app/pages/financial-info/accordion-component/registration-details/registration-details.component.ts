@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { RegistrationDetail } from 'src/app/models/financial-info/registration-detail.model';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
 import { RegistrationDetailService } from 'src/app/services/financial-info/registration-detail.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
@@ -28,15 +29,15 @@ export class RegistrationDetailsComponent implements OnInit {
         private notifyService: NotificationService,
         private sharedService: SharedService,
         private registrationDetailService: RegistrationDetailService,
-        private storedProcedureExecuteService: StoredProcedureExecuteService
+        private storedProcedureExecuteService: StoredProcedureExecuteService,
+        private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
         this.title = 'Registration Details';
-
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
         this.getList();
     }
 
@@ -119,6 +120,35 @@ export class RegistrationDetailsComponent implements OnInit {
         }
     }
 
+    onDelete(id: any) {
+        this.confirmationModalService
+            .confirm("Delete confirmation!", "Are you sure you want to delete?")
+            .subscribe((answer) => {
+                if (answer === "yes") {
+                    this.registrationDetailService.delete(id).subscribe({
+                        next: () => {
+                            this.notifyService.showSuccess(
+                                "success",
+                                "Deleted Successfully."
+                            );
+
+                            this.router.navigate(["admin/financial-info"]);
+                        },
+                        complete: () => {
+                            this.getList();
+                            this.loader.hide();
+                        },
+                        error: (err) => {
+                            this.notifyService.showError("error", err.message);
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    return;
+                }
+            });
+    }
+
     onEdit(registrationDetailObj: RegistrationDetail) {
         this.oldRegistrationDetailObj = registrationDetailObj;
         this.registrationDetailList.forEach(obj => {
@@ -128,9 +158,9 @@ export class RegistrationDetailsComponent implements OnInit {
 
     }
 
-    onDelete(registrationDetailObj: RegistrationDetail) {
-        this.registrationDetailList.splice(this.registrationDetailList.findIndex(e => e.id === registrationDetailObj.id), 1);
-    }
+    // onDelete(registrationDetailObj: RegistrationDetail) {
+    //     this.registrationDetailList.splice(this.registrationDetailList.findIndex(e => e.id === registrationDetailObj.id), 1);
+    // }
 
     onAdd() {
         this.oldRegistrationDetailObj = null;

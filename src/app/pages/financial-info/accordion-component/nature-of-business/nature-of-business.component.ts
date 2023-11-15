@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { NatureOfBusiness } from 'src/app/models/financial-info/nature-of-business.model';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
 import { ExcelUploadService } from 'src/app/services/excel-upload.service';
 import { NatureOfBusinessService } from 'src/app/services/financial-info/nature-of-business.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -30,15 +31,15 @@ export class NatureOfBusinessComponent implements OnInit {
         private notifyService: NotificationService,
         private sharedService: SharedService,
         private natureOfBusinessService: NatureOfBusinessService,
-        private storedProcedureExecuteService: StoredProcedureExecuteService
+        private storedProcedureExecuteService: StoredProcedureExecuteService,
+        private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
     }
 
     ngOnInit(): void {
-        this.title = 'Nature Of Business';
-
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.title = 'Nature Of Business';        
         this.getList();
     }
 
@@ -124,6 +125,35 @@ export class NatureOfBusinessComponent implements OnInit {
         }
     }
 
+    onDelete(id: any) {
+        this.confirmationModalService
+            .confirm("Delete confirmation!", "Are you sure you want to delete?")
+            .subscribe((answer) => {
+                if (answer === "yes") {
+                    this.natureOfBusinessService.delete(id).subscribe({
+                        next: () => {
+                            this.notifyService.showSuccess(
+                                "success",
+                                "Deleted Successfully."
+                            );
+
+                            this.router.navigate(["admin/financial-info"]);
+                        },
+                        complete: () => {
+                            this.getList();
+                            this.loader.hide();
+                        },
+                        error: (err) => {
+                            this.notifyService.showError("error", err.message);
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    return;
+                }
+            });
+    }
+
     onEdit(natureOfBusinessObj: NatureOfBusiness) {
         this.oldNatureOfBusinessObj = natureOfBusinessObj;
         this.natureOfBusinessList.forEach(obj => {
@@ -133,9 +163,9 @@ export class NatureOfBusinessComponent implements OnInit {
 
     }
 
-    onDelete(natureOfBusinessObj: NatureOfBusiness) {
-        this.natureOfBusinessList.splice(this.natureOfBusinessList.findIndex(e => e.id === natureOfBusinessObj.id), 1);
-    }
+    // onDelete(natureOfBusinessObj: NatureOfBusiness) {
+    //     this.natureOfBusinessList.splice(this.natureOfBusinessList.findIndex(e => e.id === natureOfBusinessObj.id), 1);
+    // }
 
     onAdd() {
         this.oldNatureOfBusinessObj = null;

@@ -55,4 +55,16 @@ export class OperationInfoService {
 
         return this.httpClient.get(`${this.environment.apiURL}${this.API_FEATURE_NAME}/report-data`, { headers: headers, params: params });
     }
+
+    delete(id: any): Observable<any> {
+        const token = sessionStorage.getItem("token");
+        const headers = new HttpHeaders({
+            Authorization: `Bearer ${token}`,
+        });
+
+        let params = new HttpParams();
+        params = params.append('id', id);
+
+        return this.httpClient.delete(`${this.environment.apiURL}${this.API_FEATURE_NAME}/delete`, { headers, params });
+    }
 }

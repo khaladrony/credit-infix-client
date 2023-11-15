@@ -14,7 +14,7 @@
                                 <h5 class="mb-0">
                                     <a (click)="clickedEvent(i)" class="fill-div" data-toggle="collapse" data-parent="#accordionExample-2" href="{{feature.href}}"
                                         role="button" aria-expanded="{{feature.ariaExpanded}}" aria-controls="{{feature.ariaControls}}">
-                                        <div  [ngClass]="feature.id == i && feature.ariaExpanded ?'fas fa-arrow-up fa-pull-right fa-3x':'fas fa-arrow-down fa-pull-right fa-3x'">
+                                        <div  [ngClass]="feature.id == i && feature.ariaExpanded ?'fas fa-arrow-up fa-pull-left fa-3x':'fas fa-arrow-down fa-pull-left fa-3x'">
                                             
                                         </div>
                                         {{feature.name}}
@@ -66,16 +66,19 @@
                                 <div class="card-body" *ngIf="feature.name==='Corporate Structure'">
                                     <app-corporate-structure></app-corporate-structure>
                                 </div>
+                                <div class="card-body" *ngIf="feature.name==='Bankers'">
+                                    <app-bankers></app-bankers>
+                                </div>
                                 <div class="card-body" *ngIf="feature.name==='Financial Information'">
                                     <app-financial-information></app-financial-information>
                                 </div>
-                                <div class="card-body" *ngIf="feature.name==='Infix Credit Information'">
+                                <!-- <div class="card-body" *ngIf="feature.name==='Infix Credit Information'">
                                     <app-infix-credit-information></app-infix-credit-information>
-                                </div>
+                                </div> -->
                                 <div class="card-body" *ngIf="feature.name==='Summary & Opinion'">
                                     <app-summary-opinion></app-summary-opinion>
                                 </div>
-                                <div class="card-body" *ngIf="feature.name==='Country Risk'">
+                                <!-- <div class="card-body" *ngIf="feature.name==='Country Risk'">
                                     <app-country-risk></app-country-risk>
                                 </div>
                                 <div class="card-body" *ngIf="feature.name==='Infix Rating Glossary'">
@@ -83,7 +86,7 @@
                                 </div>
                                 <div class="card-body" *ngIf="feature.name==='Inline Table Editing'">
                                     <app-inline-table></app-inline-table>
-                                </div>
+                                </div> -->
 
                             </div>
                         </div>

@@ -42,9 +42,13 @@ export class CompanyListComponent implements OnInit {
         });
     }
 
-    onSelectRow(companyInfo: CompanyInfo, index: number) {
+    onSelectRow(companyInfo: CompanyInfo) {
 
         this.router.navigate(['admin/financial-info/company-info'], { queryParams: { data: JSON.stringify(companyInfo), type: 1 } });
+    }
+
+    preview(companyInfo: CompanyInfo){
+        this.router.navigate(['admin/main-report'], { queryParams: { data: JSON.stringify(companyInfo), type: 1 } });
     }
 
 }

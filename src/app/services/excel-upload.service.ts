@@ -9,36 +9,40 @@ import { EnvService } from './env.service';
 })
 export class ExcelUploadService {
 
+    API_FEATURE_NAME: String;
+
     constructor(
         private router: Router,
         private httpClient: HttpClient,
         private environment: EnvService
-    ) { }
+    ) {
+        this.API_FEATURE_NAME = '/api/excel';
+     }
 
     financialInformationFile(formData: any): Observable<any> {
         const token = sessionStorage.getItem("token");
         const headers = new HttpHeaders({
-          Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         });
 
-        return this.httpClient.post(`${this.environment.apiURL}/api/excel/financial-information`, formData, { headers: headers });
+        return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/financial-information`, formData, { headers: headers });
     }
 
     shareholderFile(formData: any): Observable<any> {
         const token = sessionStorage.getItem("token");
         const headers = new HttpHeaders({
-          Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         });
 
-        return this.httpClient.post(`${this.environment.apiURL}/api/excel/shareholder`, formData, { headers: headers });
+        return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/shareholder`, formData, { headers: headers });
     }
 
     managementFile(formData: any): Observable<any> {
         const token = sessionStorage.getItem("token");
         const headers = new HttpHeaders({
-          Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         });
 
-        return this.httpClient.post(`${this.environment.apiURL}/api/excel/management`, formData, { headers: headers });
+        return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/management`, formData, { headers: headers });
     }
 }

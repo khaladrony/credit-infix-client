@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { OrderDetail } from 'src/app/models/financial-info/order-detail.model';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
 import { OrderDetailService } from 'src/app/services/financial-info/order-detail.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { SharedService } from 'src/app/services/shared/shared.service';
@@ -28,10 +29,11 @@ export class OrderDetailsComponent implements OnInit {
         private notifyService: NotificationService,
         private sharedService: SharedService,
         private orderDetailService: OrderDetailService,
-        private storedProcedureExecuteService: StoredProcedureExecuteService
+        private storedProcedureExecuteService: StoredProcedureExecuteService,
+        private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
-     }
+    }
 
     ngOnInit(): void {
         this.title = 'Order Details';
@@ -41,7 +43,7 @@ export class OrderDetailsComponent implements OnInit {
     }
 
 
-    getOrderDetailList() {        
+    getOrderDetailList() {
         this.loader.show();
         this.orderDetailService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -118,6 +120,35 @@ export class OrderDetailsComponent implements OnInit {
         }
     }
 
+    onDelete(id: any) {
+        this.confirmationModalService
+            .confirm("Delete confirmation!", "Are you sure you want to delete?")
+            .subscribe((answer) => {
+                if (answer === "yes") {
+                    this.orderDetailService.delete(id).subscribe({
+                        next: () => {
+                            this.notifyService.showSuccess(
+                                "success",
+                                "Deleted Successfully."
+                            );
+
+                            this.router.navigate(["admin/financial-info"]);
+                        },
+                        complete: () => {
+                            this.getOrderDetailList();
+                            this.loader.hide();
+                        },
+                        error: (err) => {
+                            this.notifyService.showError("error", err.message);
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    return;
+                }
+            });
+    }
+
     onEdit(orderDetailObj: OrderDetail) {
         this.oldOrderDetailObj = orderDetailObj;
         this.orderDetailList.forEach(obj => {
@@ -127,9 +158,9 @@ export class OrderDetailsComponent implements OnInit {
 
     }
 
-    onDelete(orderDetailObj: OrderDetail) {
-        this.orderDetailList.splice(this.orderDetailList.findIndex(e => e.id === orderDetailObj.id), 1);
-    }
+    // onDelete(orderDetailObj: OrderDetail) {
+    //     this.orderDetailList.splice(this.orderDetailList.findIndex(e => e.id === orderDetailObj.id), 1);
+    // }
 
     onAdd() {
         this.oldOrderDetailObj = null;
@@ -159,7 +190,7 @@ export class OrderDetailsComponent implements OnInit {
         }
 
     }
-    
+
     validateField(item: any) {
         if (item !== '') {
             return false;

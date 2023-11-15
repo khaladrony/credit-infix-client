@@ -48,22 +48,8 @@
                                                 {{fSummary.itemCode}}
                                             </div>
                                         </td>
-                                        <td style="width: 10%;">
-                                            <div *ngIf="fSummary.isEdit">
-
-                                                <ng-select id="currency" [(ngModel)]="fSummary.currency"
-                                                    (change)="onCurrencyChange($event)" (search)="loadCurrencyList()"
-                                                    (scrollToEnd)="onCurrencyScrollToEnd()">
-                                                    <ng-option *ngFor="let currency of currencyList"
-                                                        [value]="currency.code">
-                                                        {{currency.code}}
-                                                    </ng-option>
-                                                </ng-select>
-
-                                            </div>
-                                            <div *ngIf="!fSummary.isEdit">
-                                                {{fSummary.currency}}
-                                            </div>
+                                        <td style="width: 10%;">                                           
+                                            {{companyInfo.currency}}
                                         </td>
                                         <td style="width: 30%; text-align: center;">
                                             <div *ngIf="fSummary.isEdit">
@@ -81,7 +67,7 @@
                                                 <a class="edit" title="Edit" data-toggle="tooltip"><i
                                                         class="bi bi-pencil-fill" (click)="onEdit(fSummary)"></i></a>
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
-                                                        class="bi bi-trash-fill" (click)="onDelete(fSummary)"></i></a>
+                                                        class="bi bi-trash-fill" (click)="onDelete(fSummary.id)"></i></a>
                                             </div>
                                             <div *ngIf="fSummary.isEdit">
                                                 <a class="add" [ngClass]="{'isDisabled':validateForm(fSummary)}"

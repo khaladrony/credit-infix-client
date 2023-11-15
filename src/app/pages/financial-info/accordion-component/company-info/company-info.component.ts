@@ -38,6 +38,15 @@ export class CompanyInfoComponent implements OnInit {
         private countryService: CountryService
     ) {
         this.companyInfo = new CompanyInfo();
+
+        this.route.queryParams.subscribe((params: any) => {
+            this.companyInfo = JSON.parse(params.data);
+            if (this.companyInfo != null) {
+                this.isUpdateMode = true;
+            }
+        })
+
+        this.sharedService.setCompanyInfoObject(this.companyInfo);
     }
 
     ngOnInit(): void {
@@ -70,17 +79,7 @@ export class CompanyInfoComponent implements OnInit {
             isEdit: false
         });
 
-
-        this.route.queryParams.subscribe((params: any) => {
-            this.companyInfo = JSON.parse(params.data);
-            if (this.companyInfo != null) {
-                this.isUpdateMode = true;
-            }
-        })
-
-        this.sharedService.setCompanyInfoObject(this.companyInfo);
-
-        this.loadCountryList();
+        this.getCountryList();
     }
 
     submit() {
@@ -148,7 +147,7 @@ export class CompanyInfoComponent implements OnInit {
         this.isUpdateMode = false;
     }
 
-    loadCountryList() {
+    getCountryList() {
         let data = {};
         this.countryService.getList().subscribe({
             next: (data) => {
@@ -161,8 +160,15 @@ export class CompanyInfoComponent implements OnInit {
         });
     }
 
+    loadCountryList() {
+        this.countryList;
+    }
+
+
     onCountryChange(name: string) {
         this.selectedCountry = this.countryList.find((country) => country.name === name) || null;
+
+        this.companyInfo.currency = this.selectedCountry.currency;
     }
 
     onScrollToEnd() {

@@ -4,5 +4,6 @@
     window.__env.projectName = "credit-infix";
     // window.__env.apiURL = "http://localhost:8181/credit-infix-server";
     // window.__env.apiURL = "http://172.18.0.3:8080/credit-infix-server";
+    // window.__env.apiURL = "http://192.168.48.4:8080";
     window.__env.apiURL = "http://localhost:8081";
 })(this)

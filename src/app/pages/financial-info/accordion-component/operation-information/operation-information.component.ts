@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { OperationInfo } from 'src/app/models/financial-info/operation-info.model';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
 import { ExcelUploadService } from 'src/app/services/excel-upload.service';
 import { OperationInfoService } from 'src/app/services/financial-info/operation-info.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
@@ -30,15 +31,15 @@ export class OperationInformationComponent implements OnInit {
         private notifyService: NotificationService,
         private sharedService: SharedService,
         private operationInfoService:OperationInfoService,
-        private storedProcedureExecuteService: StoredProcedureExecuteService
+        private storedProcedureExecuteService: StoredProcedureExecuteService,
+        private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
+        this.companyInfo = this.sharedService.getCompanyInfoObject();
      }
 
     ngOnInit(): void {
-        this.title = 'Operation Information';
-
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        this.title = 'Operation Information';        
         this.getList();
     }
 
@@ -122,6 +123,35 @@ export class OperationInformationComponent implements OnInit {
         }
     }
 
+    onDelete(id: any) {
+        this.confirmationModalService
+            .confirm("Delete confirmation!", "Are you sure you want to delete?")
+            .subscribe((answer) => {
+                if (answer === "yes") {
+                    this.operationInfoService.delete(id).subscribe({
+                        next: () => {
+                            this.notifyService.showSuccess(
+                                "success",
+                                "Deleted Successfully."
+                            );
+
+                            this.router.navigate(["admin/financial-info"]);
+                        },
+                        complete: () => {
+                            this.getList();
+                            this.loader.hide();
+                        },
+                        error: (err) => {
+                            this.notifyService.showError("error", err.message);
+                            console.log(err);
+                        },
+                    });
+                } else {
+                    return;
+                }
+            });
+    }
+
     setSequence() {
         let previousObj = new OperationInfo();
         let i = 0;
@@ -152,9 +182,9 @@ export class OperationInformationComponent implements OnInit {
 
     }
 
-    onDelete(operationInfoObj: OperationInfo) {
-        this.operationInfoList.splice(this.operationInfoList.findIndex(e => e.id === operationInfoObj.id), 1);
-    }
+    // onDelete(operationInfoObj: OperationInfo) {
+    //     this.operationInfoList.splice(this.operationInfoList.findIndex(e => e.id === operationInfoObj.id), 1);
+    // }
 
     onAdd() {
         this.oldOperationInfoObj = null;
