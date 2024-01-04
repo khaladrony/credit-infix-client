@@ -20,6 +20,8 @@ export class SummaryOpinionComponent implements OnInit {
     newSummaryOpinionObj: SummaryOpinion;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -50,6 +52,7 @@ export class SummaryOpinionComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -58,6 +61,11 @@ export class SummaryOpinionComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -150,7 +158,7 @@ export class SummaryOpinionComponent implements OnInit {
         if (this.summaryOpinionList.length > 0) {
             this.loader.show();
 
-            this.summaryOpinionService.save(this.summaryOpinionList, this.companyInfo.id).subscribe({
+            this.summaryOpinionService.save(this.summaryOpinionList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);

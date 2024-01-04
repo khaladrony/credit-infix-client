@@ -38,7 +38,7 @@ export class ContactsComponent implements OnInit {
     ngOnInit(): void {
         
         this.contactsForm = this.formBuilder.group({
-            name: new FormControl(""),
+            registrationAddress: new FormControl(""),
             telephoneNo: new FormControl(""),
             faxNo: new FormControl(""),
             email: new FormControl(""),

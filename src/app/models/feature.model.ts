@@ -7,10 +7,11 @@ export class Feature {
     name: string;
     path: string;
     icon: string;
-    type: string;   //link,submenu
+    type: string;   //link,''
     isCollapsed: boolean;
-    menu:Menu;
-    status:string;
+    menu: Menu;
+    menuType: string;    //Main, Sub
+    status: string;
 
     createdBy: number;
     updatedBy: number;

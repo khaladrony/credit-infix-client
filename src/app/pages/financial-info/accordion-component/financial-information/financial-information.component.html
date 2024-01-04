@@ -8,31 +8,23 @@
             <div class="pl-lg-4">
                 <div class="row">
                     <div class="col-lg-12 pb-2">
-                        <div class="table-wrapper">
-                            <div class="table-title">
-                                <div class="row">
-                                    <div class="col-sm-8">
-                                    </div>
-                                    <div class="col-sm-4 pb-2">
-                                        <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
-                                                class="fa fa-plus"></i>
-                                            Add New</button>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="table-wrapper">                           
 
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" id="summary">
                                 <tbody>
-                                    <tr>
-                                        <td style="width: 30%;"></td>
-                                        <td colspan="3" align="right" style="width: 60%; font-weight: bold;">
-                                            {{firstRowData}}</td>
-                                    </tr>
+                                    
+                                    <!-- <tr>
+                                        <td colspan="4" style="width: 90%;white-space: normal;">
+                                            <textarea [(ngModel)]="firstRowData" rows="2"></textarea>
+                                            
+                                        </td>
+                                    </tr> -->
+                                    
                                     <tr *ngFor="let financialInformation of financialInformationList; let i = index">
 
                                         <td style="width: 30%; font-weight: bold;">
                                             <div *ngIf="financialInformation.isEdit">
-                                                <input type="text" [(ngModel)]="financialInformation.itemCode">
+                                                <textarea type="text" [(ngModel)]="financialInformation.itemCode" rows="2"></textarea>
                                                 <div class="text-danger"
                                                     *ngIf="validateField(financialInformation.itemCode)">
                                                     <span>*Required</span>
@@ -86,7 +78,7 @@
                                                         (click)="onEdit(financialInformation,FINANCIAL_INFO)"></i></a>
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
-                                                        (click)="onDelete(financialInformation, FINANCIAL_INFO)"></i></a>
+                                                        (click)="onDelete(financialInformation.id, FINANCIAL_INFO)"></i></a>
                                             </div>
                                             <div *ngIf="financialInformation.isEdit">
                                                 <a class="update"
@@ -102,34 +94,52 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="pl-lg-4">                
-                <div class="mt-1 d-flex form-group">
-                    <label class="col-md-0 exl-label" for="excelAttachment">Excel File Upload: </label>
-                    <input class="col-md-7 exl-input" type="file" name="excelAttachment" id="excelAttachment"
-                        (change)="onExcelFileUpload($event)">
+            <div class="pl-lg-4">
+                <div class="row">
+                    <div class="col-sm-6 mt-1 d-flex form-group">
+                        <!-- <input class="check-box-input" id="checkSummary" type="checkbox" value="Summary" (change)="checkValue($event)" /> -->
+                        <label class="col-md-0 exl-label" for="excelAttachment">Excel File Upload: </label>
+                        <input class="col-md-7 exl-input" type="file" name="excelAttachment" id="excelAttachment"
+                            (change)="onExcelFileUpload($event)">
+                    </div>
+                    <!-- <div class="col-sm-4 mt-1 d-flex form-group">
+                        <input class="check-box-input" id="checkLiability" type="checkbox" value="Liability" (change)="checkValue($event)" />
+                        <label class="col-md-0 exl-label" for="excelAttachment">Liability: </label>
+                        <input class="col-md-7 exl-input" type="file" name="excelAttachment" id="excelAttachment"
+                            (change)="onExcelFileUpload($event)">
+                    </div>
+                    <div class="col-sm-4 mt-1 d-flex form-group">
+                        <input class="check-box-input" id="checkIncome" type="checkbox" value="Income" (change)="checkValue($event)" />
+                        <label class="col-md-0 exl-label" for="excelAttachment">Income: </label>
+                        <input class="col-md-7 exl-input" type="file" name="excelAttachment" id="excelAttachment"
+                            (change)="onExcelFileUpload($event)">
+                    </div> -->
                 </div>
             </div>
 
             <div class="pl-lg-4 pb-4">
-                <button type="button" class="btn btn-primary" (click)="onSave(FINANCIAL_INFO)">Save</button>
+                <button type="button" [ngClass]="isUpdateMode?'btn btn-warning':'btn btn-primary'"
+                    (click)="onSave(FINANCIAL_INFO)">{{btnLabel}}</button>
             </div>
 
 
             <div class="pl-lg-4">
                 <div class="row">
                     <div class="col-sm-8">
-                        <button *ngIf="templateBtnShow" type="button" class="btn btn-warning templ_btn" style="float: left;"
-                            (click)="addTemplate()">
+                        <button *ngIf="templateBtnShow" type="button" class="btn btn-warning templ_btn"
+                            style="float: left;" (click)="addTemplate()">
                             <i class="fa fa-plus"></i>
                             Add Template
                         </button>
                     </div>
-                    <div class="col-sm-4 pb-2">                        
+                    <div class="col-sm-4 pb-2">
                     </div>
                 </div>
                 <table class="table table-bordered">
@@ -158,13 +168,12 @@
                                     <a class="edit" title="Edit" data-toggle="tooltip"><i class="bi bi-pencil-fill"
                                             (click)="onEdit(financialNote,'')"></i></a>
                                     <a class="delete" title="Delete" data-toggle="tooltip"><i class="bi bi-trash-fill"
-                                            (click)="onDelete(financialNote, '')"></i></a>
+                                            (click)="onDelete(financialNote.id, FINANCIAL_NOTE)"></i></a>
                                     <a class="add" title="Add" data-toggle="tooltip"><i class="fa fa-plus"
                                             (click)="addRow(i)"></i></a>
                                 </div>
                                 <div *ngIf="financialNote.isEdit">
-                                    <a class="update"
-                                        [ngClass]="{'isDisabled':validateForm(financialNote,'')}"
+                                    <a class="update" [ngClass]="{'isDisabled':validateForm(financialNote,'')}"
                                         title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                             (click)="onUpdate(financialNote)"></i></a>
                                     <a class="cancel" title="Cancel" data-toggle="tooltip"><i class="fa fa-times-circle"
@@ -179,7 +188,8 @@
             </div>
 
             <div class="pl-lg-4 pb-4 pt-4">
-                <button type="button" class="btn btn-primary" (click)="onSave(FINANCIAL_NOTE)">Save</button>
+                <button type="button" [ngClass]="isUpdateModeNote?'btn btn-warning':'btn btn-primary'"
+                    (click)="onSave(FINANCIAL_NOTE)">{{btnLabelNote}}</button>
             </div>
 
 

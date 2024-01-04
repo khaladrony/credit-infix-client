@@ -23,6 +23,8 @@ export class NatureOfBusinessComponent implements OnInit {
     newNatureOfBusinessObj: NatureOfBusiness;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -57,6 +59,7 @@ export class NatureOfBusinessComponent implements OnInit {
                     }                    
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -66,6 +69,11 @@ export class NatureOfBusinessComponent implements OnInit {
             },
         });
 
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -105,7 +113,7 @@ export class NatureOfBusinessComponent implements OnInit {
         if (this.natureOfBusinessList.length > 0) {
             this.loader.show();
 
-            this.natureOfBusinessService.save(this.natureOfBusinessList, this.companyInfo.id).subscribe({
+            this.natureOfBusinessService.save(this.natureOfBusinessList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
@@ -176,9 +184,18 @@ export class NatureOfBusinessComponent implements OnInit {
         this.newNatureOfBusinessObj.itemValue = '';
         this.newNatureOfBusinessObj.isEdit = true;
         this.natureOfBusinessList.push(this.newNatureOfBusinessObj);
+    }
 
+    addRow(index: number) {
+        this.oldNatureOfBusinessObj = null;
 
+        this.newNatureOfBusinessObj = new NatureOfBusiness();
+        this.newNatureOfBusinessObj.id = this.getId();
+        this.newNatureOfBusinessObj.itemCode = '';
+        this.newNatureOfBusinessObj.itemValue = '';
+        this.newNatureOfBusinessObj.isEdit = true;
 
+        this.natureOfBusinessList.splice(index + 1, 0, this.newNatureOfBusinessObj);
     }
 
     onUpdate(natureOfBusinessObj: NatureOfBusiness) {

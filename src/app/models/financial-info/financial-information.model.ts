@@ -9,6 +9,7 @@ export class FinancialInformation {
     thirdYear: string
     secondYear: string
     firstYear: string
+    htmlType: string
 
     isEdit: boolean;
 

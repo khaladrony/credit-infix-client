@@ -18,11 +18,11 @@
                                             Add Template
                                         </button>
                                     </div>
-                                    <div class="col-sm-4 pb-2">
+                                    <!-- <div class="col-sm-4 pb-2">
                                         <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
                                                 class="fa fa-plus"></i>
                                             Add New</button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
@@ -92,7 +92,7 @@
             </div>
 
             <div class="pl-lg-4 pb-4">
-                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+                <button type="button" [ngClass]="isUpdateMode?'btn btn-warning':'btn btn-primary'" (click)="onSave()">{{btnLabel}}</button>
             </div>
 
 

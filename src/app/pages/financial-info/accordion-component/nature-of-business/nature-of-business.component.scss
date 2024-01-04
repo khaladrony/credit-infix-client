@@ -57,7 +57,7 @@ table.table td a {
     min-width: 24px;
 }
 
-table.table td a.add {
+table.table td a.update {
     color: #27C46B;
 }
 
@@ -109,6 +109,11 @@ select {
 .text-danger {
     font-size: 0.7rem;
     color: #f5365c !important;
+}
+
+table.table td.action-td {
+    width: 10%;
+    text-align: center;
 }
 
 // table css end

@@ -21,6 +21,8 @@ export class ShareholderComponent implements OnInit {
     newShareholderObj: Shareholder;
     trGroupMax: number;
     companyInfo: CompanyInfo;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -50,6 +52,7 @@ export class ShareholderComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.loader.hide();
             },
             error: (err) => {
@@ -57,6 +60,11 @@ export class ShareholderComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     onEdit(shareholderObj: Shareholder) {
@@ -133,7 +141,7 @@ export class ShareholderComponent implements OnInit {
         if (this.shareholderList.length > 0) {
             this.loader.show();
 
-            this.shareholderService.save(this.shareholderList, this.companyInfo.id).subscribe({
+            this.shareholderService.save(this.shareholderList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);

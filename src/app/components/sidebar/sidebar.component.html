@@ -97,7 +97,7 @@
                     </a>
 
                     <!--If it has a submenu-->
-                    <a data-toggle="collapse" routerLinkActive="active" *ngIf="menuItem.type === 'submenu'"
+                    <a data-toggle="collapse" routerLinkActive="active" *ngIf="menuItem.type === ''"
                         (click)="menuItem.isCollapsed = !menuItem.isCollapsed"
                         [attr.aria-expanded]="!menuItem.isCollapsed" [attr.aria-controls]="menuItem.collapse"
                         class="nav-link">
@@ -106,7 +106,7 @@
                     </a>
 
                     <!--Display the submenu items-->
-                    <div id="" class="collapse" *ngIf="menuItem.type === 'submenu'" [collapse]="menuItem.isCollapsed"
+                    <div id="" class="collapse" *ngIf="menuItem.type === ''" [collapse]="menuItem.isCollapsed"
                         [ngStyle]="{ 'display': (menuItem.isCollapsed)? 'none':'block'}">
 
                         <ul class="nav nav-sm flex-column">

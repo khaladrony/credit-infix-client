@@ -5,42 +5,55 @@ import { Observable } from 'rxjs';
 import { EnvService } from '../env.service';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class FinancialNoteService {
 
-  API_FEATURE_NAME: String;
+    API_FEATURE_NAME: String;
 
-  constructor(
-      private router: Router,
-      private httpClient: HttpClient,
-      private environment: EnvService
-  ) {
-      this.API_FEATURE_NAME = '/financial-info/financial-note';
-  }
+    constructor(
+        private router: Router,
+        private httpClient: HttpClient,
+        private environment: EnvService
+    ) {
+        this.API_FEATURE_NAME = '/financial-info/financial-note';
+    }
 
-  save(financialNoteList: any, companyInfoId: any): Observable<any> {
-      const token = sessionStorage.getItem('token');
-      const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`
-      });
+    save(financialNoteList: any, companyInfoId: any, submitType: string): Observable<any> {
+        const token = sessionStorage.getItem('token');
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
 
-      const formData: FormData = new FormData();
-      formData.append('financialNoteList', JSON.stringify(financialNoteList));
-      formData.append('companyInfoId', companyInfoId);
+        const formData: FormData = new FormData();
+        formData.append('financialNoteList', JSON.stringify(financialNoteList));
+        formData.append('companyInfoId', companyInfoId);
+        formData.append('submitType', submitType);
 
-      return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/save`, formData, { headers: headers });
-  }
+        return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/save`, formData, { headers: headers });
+    }
 
-  getList(companyInfoId: any): Observable<any> {
-      const token = sessionStorage.getItem('token');
-      const headers = new HttpHeaders({
-          'Authorization': `Bearer ${token}`
-      });
+    getList(companyInfoId: any): Observable<any> {
+        const token = sessionStorage.getItem('token');
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`
+        });
 
-      let params = new HttpParams();
-      params = params.append('companyInfoId', companyInfoId);
+        let params = new HttpParams();
+        params = params.append('companyInfoId', companyInfoId);
 
-      return this.httpClient.get(`${this.environment.apiURL}${this.API_FEATURE_NAME}/list`, { headers: headers, params: params });
-  }
+        return this.httpClient.get(`${this.environment.apiURL}${this.API_FEATURE_NAME}/list`, { headers: headers, params: params });
+    }
+
+    delete(id: any): Observable<any> {
+        const token = sessionStorage.getItem("token");
+        const headers = new HttpHeaders({
+            Authorization: `Bearer ${token}`,
+        });
+
+        let params = new HttpParams();
+        params = params.append('id', id);
+
+        return this.httpClient.delete(`${this.environment.apiURL}${this.API_FEATURE_NAME}/delete`, { headers, params });
+    }
 }

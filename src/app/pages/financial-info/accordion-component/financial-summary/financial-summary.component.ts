@@ -28,6 +28,8 @@ export class FinancialSummaryComponent implements OnInit {
     comments: string;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -60,6 +62,7 @@ export class FinancialSummaryComponent implements OnInit {
                     this.comments = obj.comments;
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.templateButtonActivate();
 
                 this.loader.hide();
@@ -69,6 +72,11 @@ export class FinancialSummaryComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -183,7 +191,7 @@ export class FinancialSummaryComponent implements OnInit {
         if (this.financialSummaryList.length > 0) {
             this.loader.show();
 
-            this.financialSummaryService.save(this.financialSummaryList, this.companyInfo.id).subscribe({
+            this.financialSummaryService.save(this.financialSummaryList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);

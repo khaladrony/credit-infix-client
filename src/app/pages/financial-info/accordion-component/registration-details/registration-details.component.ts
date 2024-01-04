@@ -22,6 +22,8 @@ export class RegistrationDetailsComponent implements OnInit {
     newRegistrationDetailObj: RegistrationDetail;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -52,6 +54,7 @@ export class RegistrationDetailsComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange()
                 this.templateButtonActivate()
                 this.loader.hide();
             },
@@ -60,6 +63,11 @@ export class RegistrationDetailsComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -100,7 +108,7 @@ export class RegistrationDetailsComponent implements OnInit {
         if (this.registrationDetailList.length > 0) {
             this.loader.show();
 
-            this.registrationDetailService.save(this.registrationDetailList, this.companyInfo.id).subscribe({
+            this.registrationDetailService.save(this.registrationDetailList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);

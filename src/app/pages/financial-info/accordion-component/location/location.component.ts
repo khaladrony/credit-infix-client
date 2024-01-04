@@ -26,6 +26,8 @@ export class LocationComponent implements OnInit {
     templateBtnShow: boolean = false;
     url: any;
     file: File;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private sanitizer: DomSanitizer,
@@ -58,6 +60,7 @@ export class LocationComponent implements OnInit {
                 });
 
                 this.getImagePathDTO();
+                this.saveAndUpdateBtnChange();
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -66,6 +69,11 @@ export class LocationComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -105,7 +113,7 @@ export class LocationComponent implements OnInit {
         if (this.locationList.length > 0) {
             this.loader.show();
 
-            this.locationService.save(this.locationList, this.companyInfo.id).subscribe({
+            this.locationService.save(this.locationList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
@@ -176,9 +184,18 @@ export class LocationComponent implements OnInit {
         this.newLocationObj.itemValue = '';
         this.newLocationObj.isEdit = true;
         this.locationList.push(this.newLocationObj);
+    }
 
+    addRow(index: number) {
+        this.oldLocationObj = null;
 
+        this.newLocationObj = new Location();
+        this.newLocationObj.id = this.getId();
+        this.newLocationObj.itemCode = '';
+        this.newLocationObj.itemValue = '';
+        this.newLocationObj.isEdit = true;
 
+        this.locationList.splice(index + 1, 0, this.newLocationObj);
     }
 
     onUpdate(newLocationObj: Location) {

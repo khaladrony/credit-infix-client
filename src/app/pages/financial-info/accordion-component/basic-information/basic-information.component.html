@@ -15,9 +15,6 @@
                                     <div class="col-sm-8">
                                     </div>
                                     <div class="col-sm-4 pb-2">
-                                        <!-- <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
-                                                class="fa fa-plus"></i>
-                                            Add New</button> -->
                                     </div>
                                 </div>
                             </div>
@@ -46,24 +43,7 @@
                                             <div *ngIf="!basicInfo.isEdit">
                                                 {{basicInfo.itemValue}}
                                             </div>
-                                        </td>
-                                        
-                                        <!-- <td style="width: 10%;">
-                                            <div *ngIf="!basicInfo.isEdit">
-                                                <a class="edit" title="Edit" data-toggle="tooltip"><i
-                                                        class="bi bi-pencil-fill" (click)="onEdit(basicInfo)"></i></a>
-                                                <a class="delete" title="Delete" data-toggle="tooltip"><i
-                                                        class="bi bi-trash-fill" (click)="onDelete(basicInfo)"></i></a>
-                                            </div>
-                                            <div *ngIf="basicInfo.isEdit">
-                                                <a class="add" [ngClass]="{'isDisabled':validateForm(basicInfo)}"
-                                                    title="Add" data-toggle="tooltip"><i class="fa fa-cloud"
-                                                        (click)="onUpdate(basicInfo)"></i></a>
-                                                <a class="cancel" title="Cancel" data-toggle="tooltip"><i
-                                                        class="fa fa-times-circle" (click)="onCancel(basicInfo)"></i></a>
-                                            </div>
-
-                                        </td> -->
+                                        </td>                                        
                                     </tr>
                                 </tbody>
                             </table>
@@ -71,11 +51,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="pl-lg-4 pb-4">
-                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
-            </div>
-
 
         </div>
     </div>

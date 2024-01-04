@@ -48,6 +48,8 @@ export class FeatureComponent implements OnInit {
         this.title = 'Create Feature';
 
         this.featureForm = this.formBuilder.group({
+            menu: new FormControl(""),
+            menuType: new FormControl(""),
             featureId: new FormControl(""),
             featureName: new FormControl('', Validators.required),
             path: new FormControl('', Validators.required),
@@ -56,8 +58,7 @@ export class FeatureComponent implements OnInit {
             status: ['Active']
         });
 
-        this.loadListData();
-        this.loadMenuList();
+        this.resetForm();
     }
 
     submit() {
@@ -70,6 +71,7 @@ export class FeatureComponent implements OnInit {
         this.feature.name = this.featureForm.value.featureName;
         this.feature.path = this.featureForm.value.path;
         this.feature.menu = this.selectedMenu;
+        this.feature.menuType = this.featureForm.value.menuType;
         this.feature.icon = this.featureForm.value.featureIcon;
         this.feature.status = this.featureForm.value.status;
 
@@ -101,6 +103,7 @@ export class FeatureComponent implements OnInit {
         this.feature.name = this.featureForm.value.featureName;
         this.feature.path = this.featureForm.value.path;
         this.feature.menu = this.selectedMenu;
+        this.feature.menuType = this.featureForm.value.menuType;
         this.feature.icon = this.featureForm.value.featureIcon;
         this.feature.status = this.featureForm.value.status;
 
@@ -176,9 +179,12 @@ export class FeatureComponent implements OnInit {
         this.featureForm.controls['featureId'].setValue(feature.id);
         this.featureForm.controls['featureName'].setValue(feature.name);
         this.featureForm.controls['path'].setValue(feature.path);
-        this.featureForm.controls['menu'].setValue(feature.menu);
+        this.featureForm.controls['menu'].setValue(feature.menu.id);
+        this.featureForm.controls['menuType'].setValue(feature.menuType);
         this.featureForm.controls['featureIcon'].setValue(feature.icon);
         this.featureForm.controls['status'].setValue(feature.status);
+
+        this.onMenuChange(feature.menu.id);
 
     }
 

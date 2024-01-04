@@ -19,7 +19,7 @@ export class BankersService {
         this.API_FEATURE_NAME = '/financial-info/bankers';
     }
 
-    save(bankersList: any, companyInfoId: any): Observable<any> {
+    save(bankersList: any, companyInfoId: any, submitType: string): Observable<any> {
         const token = sessionStorage.getItem('token');
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`
@@ -28,6 +28,7 @@ export class BankersService {
         const formData: FormData = new FormData();
         formData.append('bankersList', JSON.stringify(bankersList));
         formData.append('companyInfoId', companyInfoId);
+        formData.append('submitType', submitType);
 
         return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/save`, formData, { headers: headers });
     }

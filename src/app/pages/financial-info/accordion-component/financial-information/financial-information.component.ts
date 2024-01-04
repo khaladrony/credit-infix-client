@@ -4,6 +4,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { CompanyInfo } from 'src/app/models/financial-info/company-info.model';
 import { FinancialInformation } from 'src/app/models/financial-info/financial-information.model';
 import { FinancialNote } from 'src/app/models/financial-info/financial-note.model';
+import { ConfirmationModalService } from 'src/app/services/confirmation-modal/confirmation-modal.service';
 import { ExcelUploadService } from 'src/app/services/excel-upload.service';
 import { FinancialInformationService } from 'src/app/services/financial-info/financial-information.service';
 import { FinancialNoteService } from 'src/app/services/financial-info/financial-note.service';
@@ -29,6 +30,10 @@ export class FinancialInformationComponent implements OnInit {
     newFinancialNoteObj: FinancialNote;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
+    isUpdateModeNote: boolean = false;
+    btnLabelNote: string = 'Save';
 
     public FINANCIAL_INFO = 'FINANCIAL_INFO';
     public FINANCIAL_NOTE = 'FINANCIAL_NOTE';
@@ -41,7 +46,8 @@ export class FinancialInformationComponent implements OnInit {
         private sharedService: SharedService,
         private financialInformationService: FinancialInformationService,
         private financialNoteService: FinancialNoteService,
-        private storedProcedureExecuteService: StoredProcedureExecuteService
+        private storedProcedureExecuteService: StoredProcedureExecuteService,
+        private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
         this.companyInfo = this.sharedService.getCompanyInfoObject();
@@ -56,7 +62,7 @@ export class FinancialInformationComponent implements OnInit {
     }
 
 
-    getFinancialInformationList() {        
+    getFinancialInformationList() {
         this.loader.show();
         this.financialInformationService.getList(this.companyInfo.id).subscribe({
             next: (data) => {
@@ -67,6 +73,7 @@ export class FinancialInformationComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange(this.FINANCIAL_INFO);
                 this.loader.hide();
             },
             error: (err) => {
@@ -87,6 +94,7 @@ export class FinancialInformationComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange(this.FINANCIAL_NOTE);
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -97,6 +105,16 @@ export class FinancialInformationComponent implements OnInit {
         });
     }
 
+    saveAndUpdateBtnChange(type: string) {
+        if (type === this.FINANCIAL_INFO) {
+            this.isUpdateMode = true;
+            this.btnLabel = 'Update';
+        } else {
+            this.isUpdateModeNote = true;
+            this.btnLabelNote = 'Update';
+        }
+
+    }
 
     templateButtonActivate() {
         if (this.financialNoteList.length == 0
@@ -127,13 +145,13 @@ export class FinancialInformationComponent implements OnInit {
     }
 
     onSave(type: string) {
-        if (this.FINANCIAL_NOTE && this.financialNoteList.length > 0) {
+        if (type === this.FINANCIAL_NOTE && this.financialNoteList.length > 0) {
             this.loader.show();
             this.financialNoteList.forEach(obj => {
                 obj.companyInfo = this.companyInfo;
             });
 
-            this.financialNoteService.save(this.financialNoteList, this.companyInfo.id).subscribe({
+            this.financialNoteService.save(this.financialNoteList, this.companyInfo.id, this.btnLabelNote).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
@@ -150,13 +168,13 @@ export class FinancialInformationComponent implements OnInit {
                     this.loader.hide();
                 },
             });
-        } else if (this.FINANCIAL_INFO && this.financialInformationList.length > 0) {
+        } else if (type === this.FINANCIAL_INFO && this.financialInformationList.length > 0) {
             this.loader.show();
             this.financialInformationList.forEach(obj => {
                 obj.companyInfo = this.companyInfo;
             });
 
-            this.financialInformationService.save(this.financialInformationList, this.companyInfo.id).subscribe({
+            this.financialInformationService.save(this.financialInformationList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
@@ -174,6 +192,57 @@ export class FinancialInformationComponent implements OnInit {
                 },
             });
         }
+    }
+
+    onDelete(id: any, type: string) {
+        this.confirmationModalService
+            .confirm("Delete confirmation!", "Are you sure you want to delete?")
+            .subscribe((answer) => {
+                if (answer === "yes") {
+                    if (type === this.FINANCIAL_NOTE) {
+                        this.financialNoteService.delete(id).subscribe({
+                            next: () => {
+                                this.notifyService.showSuccess(
+                                    "success",
+                                    "Deleted Successfully."
+                                );
+
+                                this.router.navigate(["admin/financial-info"]);
+                            },
+                            complete: () => {
+                                this.getFinancialNoteList();
+                                this.loader.hide();
+                            },
+                            error: (err) => {
+                                this.notifyService.showError("error", err.message);
+                                console.log(err);
+                            },
+                        });
+                    }
+                    else if (type === this.FINANCIAL_INFO) {
+                        this.financialInformationService.delete(id).subscribe({
+                            next: () => {
+                                this.notifyService.showSuccess(
+                                    "success",
+                                    "Deleted Successfully."
+                                );
+
+                                this.router.navigate(["admin/financial-info"]);
+                            },
+                            complete: () => {
+                                this.getFinancialInformationList();
+                                this.loader.hide();
+                            },
+                            error: (err) => {
+                                this.notifyService.showError("error", err.message);
+                                console.log(err);
+                            },
+                        });
+                    }
+                } else {
+                    return;
+                }
+            });
     }
 
     onEdit(object: any, type: string) {
@@ -195,16 +264,16 @@ export class FinancialInformationComponent implements OnInit {
 
     }
 
-    onDelete(object: any, type: string) {
-        if (type === this.FINANCIAL_INFO) {
-            let financialInformationObj = object;
-            this.financialInformationList.splice(this.financialInformationList.findIndex(e => e.id === financialInformationObj.id), 1);
-        } else {
-            let financialNoteObj = object;
-            this.financialNoteList.splice(this.financialNoteList.findIndex(e => e.id === financialNoteObj.id), 1);
-        }
+    // onDelete(object: any, type: string) {
+    //     if (type === this.FINANCIAL_INFO) {
+    //         let financialInformationObj = object;
+    //         this.financialInformationList.splice(this.financialInformationList.findIndex(e => e.id === financialInformationObj.id), 1);
+    //     } else {
+    //         let financialNoteObj = object;
+    //         this.financialNoteList.splice(this.financialNoteList.findIndex(e => e.id === financialNoteObj.id), 1);
+    //     }
 
-    }
+    // }
 
     onAdd() {
         this.oldFinancialInformationObj = null;
@@ -346,6 +415,11 @@ export class FinancialInformationComponent implements OnInit {
             event.target.value = null;
             this.loader.hide();
         }
+    }
+
+    checkValue(event: any){
+        console.log(event.currentTarget.checked);
+        console.log(event.target.defaultValue);
     }
 
 }

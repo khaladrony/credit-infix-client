@@ -22,6 +22,8 @@ export class CorporateStructureComponent implements OnInit {
     newCorporateStructureObj: CorporateStructure;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -56,6 +58,7 @@ export class CorporateStructureComponent implements OnInit {
 
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -64,6 +67,11 @@ export class CorporateStructureComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -104,7 +112,7 @@ export class CorporateStructureComponent implements OnInit {
         if (this.corporateStructureList.length > 0) {
             this.loader.show();
 
-            this.corporateStructureService.save(this.corporateStructureList, this.companyInfo.id).subscribe({
+            this.corporateStructureService.save(this.corporateStructureList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);

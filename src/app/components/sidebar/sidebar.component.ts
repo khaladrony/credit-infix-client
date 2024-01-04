@@ -11,7 +11,7 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     {
-        path: '/admin/user-profile', title: 'User profile', icon: 'ni-single-02 text-yellow', type: 'submenu', isCollapsed: true,
+        path: '/admin/user-profile', title: 'User profile', icon: 'ni-single-02 text-yellow', type: '', isCollapsed: true,
         children: [
             { path: '/admin/user-profile', title: 'User', type: 'link' },
             { path: '/admin/role', title: 'Roles', type: 'link' },

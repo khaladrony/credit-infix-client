@@ -849,29 +849,30 @@
 
                                 <table class="table table-bordered" id="financial-info-tbl">
                                     <tbody>
-                                        <tr>
+                                        <!-- <tr>
                                             <td style="width: 30%;"></td>
                                             <td colspan="3" align="right" style="width: 70%; font-weight: bold;">
                                                 {{firstRowData}}
                                             </td>
-                                        </tr>
-                                        <tr
-                                            *ngFor="let financialInformation of financialInformationList; let i = index">
+                                        </tr> -->
+                                        <tr *ngFor="let finInfo of financialInformationList; let i = index">
 
-                                            <td style="width: 30%; font-weight: bold;">
-                                                {{financialInformation.itemCode}}
+                                            <td [attr.colspan]="finInfo.htmlType === 'header' ? '4' : '0'" 
+                                                style="width: 30%; font-weight: bold; white-space: pre-line;"
+                                                [ngStyle]="{'text-align': finInfo.htmlType === 'header' ? 'center' : 'left'}">
+                                                {{finInfo.itemCode}}
                                             </td>
                                             <td style="width: 23%; text-align: center;"
-                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}">
-                                                {{financialInformation.thirdYear}}
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}" *ngIf="finInfo.htmlType != 'header'">
+                                                {{finInfo.thirdYear}}
                                             </td>
                                             <td style="width: 24%; text-align: center;"
-                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}">
-                                                {{financialInformation.secondYear}}
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}" *ngIf="finInfo.htmlType != 'header'">
+                                                {{finInfo.secondYear}}
                                             </td>
                                             <td style="width: 23%; text-align: center;"
-                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}">
-                                                {{financialInformation.firstYear}}
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}" *ngIf="finInfo.htmlType != 'header'">
+                                                {{finInfo.firstYear}}
                                             </td>
                                         </tr>
                                     </tbody>

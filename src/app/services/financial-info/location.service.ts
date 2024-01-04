@@ -21,7 +21,7 @@ export class LocationService {
         this.API_FEATURE_NAME_2 = '/financial-info/location-image-path';
     }
 
-    save(locationList: any, companyInfoId: any): Observable<any> {
+    save(locationList: any, companyInfoId: any, submitType: string): Observable<any> {
         const token = sessionStorage.getItem('token');
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`
@@ -30,6 +30,7 @@ export class LocationService {
         const formData: FormData = new FormData();
         formData.append('locationList', JSON.stringify(locationList));
         formData.append('companyInfoId', companyInfoId);
+        formData.append('submitType', submitType);
 
         return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/save`, formData, { headers: headers });
     }

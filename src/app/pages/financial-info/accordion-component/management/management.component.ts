@@ -21,6 +21,8 @@ export class ManagementComponent implements OnInit {
     newManagementObj: Management;
     trGroupMax: number;
     companyInfo: CompanyInfo;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -51,6 +53,7 @@ export class ManagementComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.loader.hide();
             },
             error: (err) => {
@@ -58,6 +61,11 @@ export class ManagementComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     onSave() {
@@ -69,7 +77,7 @@ export class ManagementComponent implements OnInit {
         if (this.managementList.length > 0) {
             this.loader.show();
 
-            this.managementService.save(this.managementList, this.companyInfo.id).subscribe({
+            this.managementService.save(this.managementList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);

@@ -19,11 +19,11 @@
                                             Add Template
                                         </button>
                                     </div>
-                                    <div class="col-sm-4 pb-2">
+                                    <!-- <div class="col-sm-4 pb-2">
                                         <button type="button" class="btn btn-primary add-new" (click)="onAdd()"><i
                                                 class="fa fa-plus"></i>
                                             Add New</button>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                             <table class="table table-bordered">
@@ -60,9 +60,12 @@
                                                 <a class="delete" title="Delete" data-toggle="tooltip"><i
                                                         class="bi bi-trash-fill"
                                                         (click)="onDelete(orderDetail.id)"></i></a>
+                                                <a class="add" title="Add" data-toggle="tooltip"
+                                                    style="font-size: 1rem;"><i class="fa fa-plus"
+                                                        (click)="addRow(i)"></i></a>
                                             </div>
                                             <div *ngIf="orderDetail.isEdit">
-                                                <a class="add" [ngClass]="{'isDisabled':validateForm(orderDetail)}"
+                                                <a class="update" [ngClass]="{'isDisabled':validateForm(orderDetail)}"
                                                     title="Update" data-toggle="tooltip"><i class="bi bi-floppy-fill"
                                                         (click)="onUpdate(orderDetail)"></i></a>
                                                 <a class="cancel" title="Cancel" data-toggle="tooltip"><i
@@ -80,7 +83,7 @@
             </div>
 
             <div class="pl-lg-4 pb-4">
-                <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+                <button type="button" [ngClass]="isUpdateMode?'btn btn-warning':'btn btn-primary'" (click)="onSave()">{{btnLabel}}</button> 
             </div>
 
 

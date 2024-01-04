@@ -19,7 +19,7 @@ export class RiskProfileService {
         this.API_FEATURE_NAME = '/financial-info/risk-profile';
     }
 
-    save(riskProfileList: any, companyInfoId: any): Observable<any> {
+    save(riskProfileList: any, companyInfoId: any, submitType: string): Observable<any> {
         const token = sessionStorage.getItem('token');
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`
@@ -28,6 +28,7 @@ export class RiskProfileService {
         const formData: FormData = new FormData();
         formData.append('riskProfileList', JSON.stringify(riskProfileList));
         formData.append('companyInfoId', companyInfoId);
+        formData.append('submitType', submitType);
 
         return this.httpClient.post(`${this.environment.apiURL}${this.API_FEATURE_NAME}/save`, formData, { headers: headers });
     }

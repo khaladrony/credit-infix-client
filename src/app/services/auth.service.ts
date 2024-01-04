@@ -34,5 +34,13 @@ export class AuthService {
     login(user: any): Observable<any> {
         return this.httpClient.post(`${this.environment.apiURL}/auth/login`, user);
     }
+
+    apiTest(): Observable<any> {
+        return this.httpClient.get(`${this.environment.apiURL}/auth/test`);
+    }
+
+    apiTest2(): Observable<any> {
+        return this.httpClient.get(`http://172.18.0.4:8080/auth/test2`);
+    }
     
 }

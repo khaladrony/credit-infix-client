@@ -23,6 +23,9 @@ export class OperationInformationComponent implements OnInit {
     newOperationInfoObj: OperationInfo;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
+
 
     constructor(
         private router: Router,
@@ -54,6 +57,7 @@ export class OperationInformationComponent implements OnInit {
                     obj.isEdit = false;   
                 });
 
+                this.saveAndUpdateBtnChange()
                 this.templateButtonActivate()
                 this.loader.hide();
             },
@@ -62,6 +66,11 @@ export class OperationInformationComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -103,7 +112,7 @@ export class OperationInformationComponent implements OnInit {
         if (this.operationInfoList.length > 0) {
             this.loader.show();
 
-            this.operationInfoService.save(this.operationInfoList, this.companyInfo.id).subscribe({
+            this.operationInfoService.save(this.operationInfoList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
@@ -195,9 +204,18 @@ export class OperationInformationComponent implements OnInit {
         this.newOperationInfoObj.itemValue = '';
         this.newOperationInfoObj.isEdit = true;
         this.operationInfoList.push(this.newOperationInfoObj);
+    }
 
+    addRow(index: number) {
+        this.oldOperationInfoObj = null;
 
+        this.newOperationInfoObj = new OperationInfo();
+        this.newOperationInfoObj.id = this.getId();
+        this.newOperationInfoObj.itemCode = '';
+        this.newOperationInfoObj.itemValue = '';
+        this.newOperationInfoObj.isEdit = true;
 
+        this.operationInfoList.splice(index + 1, 0, this.newOperationInfoObj);
     }
 
     onUpdate(operationInfoObj: OperationInfo) {

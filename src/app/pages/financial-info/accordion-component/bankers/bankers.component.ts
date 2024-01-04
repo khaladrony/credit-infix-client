@@ -21,6 +21,9 @@ export class BankersComponent implements OnInit {
     newBankersObj: Bankers;
     trGroupMax: number;
     companyInfo: CompanyInfo;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
+
     constructor(
         private router: Router,
         private excelUploadService: ExcelUploadService,
@@ -49,6 +52,7 @@ export class BankersComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.loader.hide();
             },
             error: (err) => {
@@ -56,6 +60,11 @@ export class BankersComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     onEdit(bankersObj: Bankers) {
@@ -131,7 +140,7 @@ export class BankersComponent implements OnInit {
         if (this.bankersList.length > 0) {
             this.loader.show();
 
-            this.bankersService.save(this.bankersList, this.companyInfo.id).subscribe({
+            this.bankersService.save(this.bankersList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);

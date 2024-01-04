@@ -22,6 +22,8 @@ export class OrderDetailsComponent implements OnInit {
     orderDetailNewObj: OrderDetail;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -54,6 +56,7 @@ export class OrderDetailsComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -62,6 +65,11 @@ export class OrderDetailsComponent implements OnInit {
                 this.loader.hide();
             },
         });
+    }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
     }
 
     templateButtonActivate() {
@@ -100,7 +108,7 @@ export class OrderDetailsComponent implements OnInit {
         if (this.orderDetailList.length > 0) {
             this.loader.show();
 
-            this.orderDetailService.save(this.orderDetailList, this.companyInfo.id).subscribe({
+            this.orderDetailService.save(this.orderDetailList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
@@ -171,6 +179,17 @@ export class OrderDetailsComponent implements OnInit {
         this.orderDetailNewObj.isEdit = true;
 
         this.orderDetailList.push(this.orderDetailNewObj);
+    }
+
+    addRow(index: number) {
+        this.oldOrderDetailObj = null;
+
+        this.orderDetailNewObj = new OrderDetail();
+        this.orderDetailNewObj.itemCode = '';
+        this.orderDetailNewObj.itemValue = '';
+        this.orderDetailNewObj.isEdit = true;
+
+        this.orderDetailList.splice(index + 1, 0, this.orderDetailNewObj);
     }
 
     onUpdate(orderDetailObj: OrderDetail) {

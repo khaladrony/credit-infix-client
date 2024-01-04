@@ -20,13 +20,24 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="form-control-label" for="parentFeature">Menus</label>
-                                        <ng-select id="menu" formControlName="menu" placeholder="-Select Menus"
+                                        <label class="form-control-label" for="menu">Menus</label>
+                                        <ng-select id="menu" formControlName="menu" placeholder="-Select Menu"
                                             (change)="onMenuChange($event)" (search)="loadMenuList()"
                                             (scrollToEnd)="onMenuScrollToEnd()">
                                             <ng-option *ngFor="let menu of menus" [value]="menu.id">
                                                 {{menu.name}}
                                             </ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="menuType">Menu Type</label>
+                                        <ng-select id="menuType" formControlName="menuType" placeholder="-Select Menu Type">
+                                            <ng-option value="" selected>-Select Menu Type</ng-option>
+                                            <ng-option value="Main">Main</ng-option>
+                                            <ng-option value="Sub">Sub</ng-option>
                                         </ng-select>
                                     </div>
                                 </div>
@@ -121,6 +132,7 @@
                                 <th scope="col">Path</th>
                                 <th scope="col">Feature Icon</th>
                                 <th scope="col">Menu</th>                                
+                                <th scope="col">Menu Type</th>                                
                                 <th scope="col">Status</th>
                                 <th scope="col"></th>
                             </tr>
@@ -132,6 +144,7 @@
                                 <td>{{feature.path}}</td>
                                 <td>{{feature.icon}}</td>
                                 <td>{{feature?.menu.name}}</td>                                
+                                <td>{{feature.menuType}}</td>                                
                                 <td class="align-middle text-left text-sm">
                                     <span
                                         [ngClass]="feature.status=='Active'? 'badge badge-sm badge-success':'badge badge-sm badge-danger'">{{feature.status}}</span>

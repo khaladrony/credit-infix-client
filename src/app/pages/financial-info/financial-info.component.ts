@@ -40,13 +40,9 @@ export class FinancialInfoComponent implements OnInit {
             { id: 11, name: 'Operation Information', selector: '<app-operation-information></app-operation-information>', cardHeaderId: 'heading-12', href: '#collapse-12', ariaExpanded: false, ariaControls: 'collapse-12', collapseClass: '' },
             { id: 12, name: 'Nature Of Business', selector: '<app-nature-of-business></app-nature-of-business>', cardHeaderId: 'heading-13', href: '#collapse-13', ariaExpanded: false, ariaControls: 'collapse-13', collapseClass: '' },
             { id: 13, name: 'Corporate Structure', selector: '<app-corporate-structure></app-corporate-structure>', cardHeaderId: 'heading-14', href: '#collapse-14', ariaExpanded: false, ariaControls: 'collapse-14', collapseClass: '' },
-            { id: 20, name: 'Bankers', selector: '<app-bankers></app-bankers>', cardHeaderId: 'heading-21', href: '#collapse-21', ariaExpanded: false, ariaControls: 'collapse-21', collapseClass: '' },
-            { id: 14, name: 'Financial Information', selector: '<app-financial-information></app-financial-information>', cardHeaderId: 'heading-15', href: '#collapse-15', ariaExpanded: false, ariaControls: 'collapse-15', collapseClass: '' },
-            // { id: 15, name: 'Infix Credit Information', selector: '<app-infix-credit-information></app-infix-credit-information>', cardHeaderId: 'heading-16', href: '#collapse-16', ariaExpanded: false, ariaControls: 'collapse-16', collapseClass: '' },
-            { id: 16, name: 'Summary & Opinion', selector: '<app-summary-opinion></app-summary-opinion>', cardHeaderId: 'heading-17', href: '#collapse-17', ariaExpanded: false, ariaControls: 'collapse-17', collapseClass: '' }
-            // { id: 17, name: 'Country Risk', selector: '<app-country-risk></app-country-risk>', cardHeaderId: 'heading-18', href: '#collapse-18', ariaExpanded: false, ariaControls: 'collapse-18', collapseClass: '' },
-            // { id: 18, name: 'Infix Rating Glossary', selector: '<app-infix-rating-glossary></app-infix-rating-glossary>', cardHeaderId: 'heading-19', href: '#collapse-19', ariaExpanded: false, ariaControls: 'collapse-19', collapseClass: '' }
-            // { id: 19, name: 'Inline Table Editing', selector: '<app-inline-table></app-inline-table>', cardHeaderId: 'heading-20', href: '#collapse-20', ariaExpanded: false, ariaControls: 'collapse-20', collapseClass: '' }
+            { id: 14, name: 'Bankers', selector: '<app-bankers></app-bankers>', cardHeaderId: 'heading-15', href: '#collapse-15', ariaExpanded: false, ariaControls: 'collapse-15', collapseClass: '' },
+            { id: 15, name: 'Financial Information', selector: '<app-financial-information></app-financial-information>', cardHeaderId: 'heading-16', href: '#collapse-16', ariaExpanded: false, ariaControls: 'collapse-16', collapseClass: '' },
+            { id: 16, name: 'Summary & Opinion', selector: '<app-summary-opinion></app-summary-opinion>', cardHeaderId: 'heading-17', href: '#collapse-17', ariaExpanded: false, ariaControls: 'collapse-17', collapseClass: '' }            
 
         ]
 

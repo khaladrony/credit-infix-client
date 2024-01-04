@@ -23,6 +23,8 @@ export class RiskProfileComponent implements OnInit {
     trGroupMax: number;
     companyInfo: CompanyInfo;
     templateBtnShow: boolean = false;
+    isUpdateMode: boolean = false;
+    btnLabel: string = 'Save';
 
     constructor(
         private router: Router,
@@ -58,6 +60,7 @@ export class RiskProfileComponent implements OnInit {
                     obj.isEdit = false;
                 });
 
+                this.saveAndUpdateBtnChange();
                 this.templateButtonActivate();
 
                 this.loader.hide();
@@ -68,6 +71,12 @@ export class RiskProfileComponent implements OnInit {
             },
         });
     }
+
+    saveAndUpdateBtnChange() {
+        this.isUpdateMode = true;
+        this.btnLabel = 'Update';
+    }
+
 
     templateButtonActivate() {
         if (this.riskProfileList.length == 0
@@ -106,7 +115,7 @@ export class RiskProfileComponent implements OnInit {
         if (this.riskProfileList.length > 0) {
             this.loader.show();
 
-            this.riskProfileService.save(this.riskProfileList, this.companyInfo.id).subscribe({
+            this.riskProfileService.save(this.riskProfileList, this.companyInfo.id, this.btnLabel).subscribe({
                 next: (response) => {
                     console.log(response);
                     this.notifyService.showSuccess("success", response.message);
