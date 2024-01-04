@@ -109,28 +109,6 @@ export class LoginComponent implements OnInit {
       });    
   }
 
-  apiTest2(): void {
-      this.loader.show();
-
-      this.auth.apiTest2().subscribe({
-        next: (data) => {
-          console.log(data);
-        },
-        complete: () => {
-          this.router.navigate(["/"]);
-          this.loader.hide();
-        },
-        error: (err) => {
-          this.loader.hide();
-          console.log(err);
-          this.notifyService.showError(
-            "An Error Occurred Please Try Again later!",
-            "ERROR"
-          );
-        },
-      });    
-  }
-
   private measureStrength(pass: string) {
     let score = 0;
     // award every unique letter until 5 repetitions
