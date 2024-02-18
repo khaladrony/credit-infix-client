@@ -21,7 +21,7 @@ export const ROUTES: RouteInfo[] = [
         ]
     },
     {
-        path: '/admin/financial-info', title: 'Financial Info', icon: 'ni-money-coins text-primary', type: 'link', isCollapsed: false,
+        path: '/admin/financial-info', title: 'Create Reports', icon: 'ni-money-coins text-primary', type: 'link', isCollapsed: false,
         children: []
     },
     {

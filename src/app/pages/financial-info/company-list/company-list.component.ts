@@ -57,7 +57,11 @@ export class CompanyListComponent implements OnInit {
 
     preview(companyInfo: CompanyInfo) {
         const baseURL = location.origin;
-        const url = baseURL + '/#/admin/main-report';
+        // const url = baseURL + '/#/admin/main-report';
+        //For local
+        // const url = baseURL + '/#/admin/main-report';
+        //For remote 
+        const url = baseURL + '/credit-infix/#/admin/main-report';
 
         // this.router.navigate(['admin/main-report']);
         const queryParams = { data: JSON.stringify(companyInfo) };
@@ -90,7 +94,10 @@ export class CompanyListComponent implements OnInit {
         // const url = this.router.createUrlTree(['http://localhost:4200/#/admin/main-report'], { queryParams }).toString();
 
         const baseURL = location.origin;
-        const url = baseURL + '/#/admin/main-report';
+        //For local
+        // const url = baseURL + '/#/admin/main-report';
+        //For remote 
+        const url = baseURL + '/credit-infix/#/admin/main-report';
         // this.router.navigate(['admin/main-report'], { queryParams: { data: JSON.stringify(companyInfo), type: 1 } });
         // window.open(url, '_blank');
 

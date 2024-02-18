@@ -1101,7 +1101,6 @@
                                                     style="white-space: pre-line; background-color: #eeebeb; padding-left: 10px;">
                                                     <div class="row"
                                                         style="font-size: 0.6rem; font-weight: bold; color: black; margin-bottom: 20px;">
-                                                        {{creditAssessment?.currency}}
                                                         {{creditAssessment?.maximumCredit}}
                                                     </div>
                                                     <div class="row pb-2">
@@ -1198,7 +1197,7 @@
                                                     </div>
                                                     <div class="col-lg-2 div-font-size font-basic-color "
                                                         style="text-align: center;">
-                                                        {{riskLevel.startRange}}-{{riskLevel.endRange}}
+                                                        {{riskLevel.startRange>=0?riskLevel.startRange:''}}-{{riskLevel.endRange>=0?riskLevel.endRange:''}}
                                                     </div>
                                                     <div class="col-lg-7 div-font-size">
                                                         {{riskLevel.remarks}}
