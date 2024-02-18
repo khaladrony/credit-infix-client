@@ -33,12 +33,17 @@ export class ShareholderComponent implements OnInit {
         private shareholderService:ShareholderService
     ) {
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+        
     }
 
     ngOnInit(): void {
         this.title = 'Shareholder';
-        this.getList();
+        
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });
     }
 
     getList() {
@@ -50,9 +55,9 @@ export class ShareholderComponent implements OnInit {
             complete: () => {
                 this.shareholderList.forEach(obj => {
                     obj.isEdit = false;
+                    this.saveAndUpdateBtnChange();
                 });
-
-                this.saveAndUpdateBtnChange();
+                
                 this.loader.hide();
             },
             error: (err) => {

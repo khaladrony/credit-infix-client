@@ -33,12 +33,16 @@ export class BankersComponent implements OnInit {
         private bankersService:BankersService
     ) { 
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();        
     }
 
     ngOnInit(): void {
         this.title = 'Bankers';
-        this.getList();
+
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });        
     }
 
     getList() {
@@ -50,9 +54,9 @@ export class BankersComponent implements OnInit {
             complete: () => {
                 this.bankersList.forEach(obj => {
                     obj.isEdit = false;
+                    this.saveAndUpdateBtnChange();
                 });
-
-                this.saveAndUpdateBtnChange();
+                
                 this.loader.hide();
             },
             error: (err) => {

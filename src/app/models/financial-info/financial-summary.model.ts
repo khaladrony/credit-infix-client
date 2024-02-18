@@ -7,7 +7,7 @@ export class FinancialSummary {
     companyInfo: CompanyInfo;
     itemCode: string;
     currency: string
-    amount: number;
+    amount: string;
     comments: string;
     isEdit: boolean;
 

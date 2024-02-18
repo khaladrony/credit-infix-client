@@ -244,41 +244,173 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Credit Assessment -->
+                        <!-- Credit Assessment -->
+                        <hr _ngcontent-c6="" class="my-4">
+                        <h6 _ngcontent-c6="" class="heading-small text-muted mb-4">Credit Assessment</h6>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="maximumCredit">Recommended Maximum
+                                        Credit</label>
+                                    <input type="text" [(ngModel)]="companyInfo.maximumCredit" name="maximumCredit"
+                                        id="maximumCredit" formControlName="maximumCredit"
+                                        class="form-control form-control-alternative" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="creditRating">Credit Rating</label>
+                                    <input type="text" [(ngModel)]="companyInfo.creditRating" name="creditRating"
+                                        id="creditRating" formControlName="creditRating"
+                                        class="form-control form-control-alternative" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
 
-                    <hr _ngcontent-c6="" class="my-4">
-                    <h6 _ngcontent-c6="" class="heading-small text-muted mb-4">Credit Assessment</h6>
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label class="form-control-label" for="maximumCredit">Recommended Maximum Credit</label>
-                                <input type="text" [(ngModel)]="companyInfo.maximumCredit" name="maximumCredit"
-                                    id="maximumCredit" formControlName="maximumCredit"
-                                    class="form-control form-control-alternative" placeholder="">
+
+                        <!-- Basic info-->
+                        <hr _ngcontent-c6="" class="my-4">
+                        <h6 _ngcontent-c6="" class="heading-small text-muted mb-4">Basic Info</h6>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="clientName">Client Name</label>
+                                    <input type="text" [(ngModel)]="companyInfo.clientName" name="clientName"
+                                        id="clientName" formControlName="clientName"
+                                        class="form-control form-control-alternative" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="clientRefNo">Client Ref No</label>
+                                    <input type="text" [(ngModel)]="companyInfo.clientRefNo" name="clientRefNo"
+                                        id="clientRefNo" formControlName="clientRefNo"
+                                        class="form-control form-control-alternative" placeholder="">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="infixRefNo">Infix Ref No</label>
+                                    <input type="text" [(ngModel)]="companyInfo.infixRefNo" name="infixRefNo"
+                                        id="infixRefNo" formControlName="infixRefNo"
+                                        class="form-control form-control-alternative" placeholder="">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="form-group">
-                                <label class="form-control-label" for="creditRating">Credit Rating</label>
-                                <input type="text" [(ngModel)]="companyInfo.creditRating" name="creditRating"
-                                    id="creditRating" formControlName="creditRating"
-                                    class="form-control form-control-alternative" placeholder="">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="productName">Product Name</label>
+                                    <input type="text" [(ngModel)]="companyInfo.productName" name="productName"
+                                        id="productName" formControlName="productName"
+                                        class="form-control form-control-alternative" placeholder="">
+                                </div>
                             </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="serviceType">Service Type</label>
+                                    <input type="text" [(ngModel)]="companyInfo.serviceType" name="serviceType"
+                                        id="serviceType" formControlName="serviceType"
+                                        class="form-control form-control-alternative" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5" style="font-size: 0.9rem; font-weight: bold;">
+                                        Inquiry Date:
+                                    </label>
+                                    <div class="w-100 d-flex">
+                                        <input ngClass="bsDatePicker" class="form-control col-md-7" type="text"
+                                            placeholder="dd-mm-yyyy" formControlName="inquiryDate" [bsConfig]="{
+                                                        dateInputFormat: 'DD-MM-YYYY', 
+                                                        containerClass : 'theme-blue',
+                                                        isAnimated: true, 
+                                                        adaptivePosition: true }" bsDatepicker #d1="bsDatepicker">
+                                        <div class="col-1 bsDatePickerIcon" (click)="d1.toggle()">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
                         </div>
-                        <div class="col-lg-4"></div>
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5" style="font-size: 0.9rem; font-weight: bold;">
+                                        Due Date:
+                                    </label>
+                                    <div class="w-100 d-flex">
+                                        <input ngClass="bsDatePicker" class="form-control col-md-7" type="text"
+                                            placeholder="dd-mm-yyyy" formControlName="dueDate" [bsConfig]="{
+                                                            dateInputFormat: 'DD-MM-YYYY', 
+                                                            containerClass : 'theme-blue',
+                                                            isAnimated: true, 
+                                                            adaptivePosition: true }" bsDatepicker #d1="bsDatepicker">
+                                        <div class="col-1 bsDatePickerIcon" (click)="d1.toggle()">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5" style="font-size: 0.9rem; font-weight: bold;">
+                                        Delivery Date:
+                                    </label>
+                                    <div class="w-100 d-flex">
+                                        <input ngClass="bsDatePicker" class="form-control col-md-7" type="text"
+                                            placeholder="dd-mm-yyyy" formControlName="deliveryDate" [bsConfig]="{
+                                                        dateInputFormat: 'DD-MM-YYYY', 
+                                                        containerClass : 'theme-blue',
+                                                        isAnimated: true, 
+                                                        adaptivePosition: true }" bsDatepicker #d1="bsDatepicker">
+                                        <div class="col-1 bsDatePickerIcon" (click)="d1.toggle()">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-5" style="font-size: 0.9rem; font-weight: bold;">
+                                        Report Date:
+                                    </label>
+                                    <div class="w-100 d-flex">
+                                        <input ngClass="bsDatePicker" class="form-control col-md-7" type="text"
+                                            placeholder="dd-mm-yyyy" formControlName="reportDate" [bsConfig]="{
+                                                            dateInputFormat: 'DD-MM-YYYY', 
+                                                            containerClass : 'theme-blue',
+                                                            isAnimated: true, 
+                                                            adaptivePosition: true }" bsDatepicker #d1="bsDatepicker">
+                                        <div class="col-1 bsDatePickerIcon" (click)="d1.toggle()">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-4"></div>
+                        </div>
+
+
+
+                        <div class="pl-lg-4 pb-4">
+                            <button *ngIf="!isUpdateMode" type="button" class="btn btn-success"
+                                (click)="submit()">Save</button>
+                            <button *ngIf="isUpdateMode" type="button" class="btn btn-warning"
+                                (click)="update()">Update</button>
+                            <button type="button" class="btn btn-primary float-right"
+                                (click)="resetForm()">Reset</button>
+                        </div>
                     </div>
-
-
-                    <div class="pl-lg-4 pb-4">
-                        <button *ngIf="!isUpdateMode" type="button" class="btn btn-success"
-                            (click)="submit()">Save</button>
-                        <button *ngIf="isUpdateMode" type="button" class="btn btn-warning"
-                            (click)="update()">Update</button>
-                        <button type="button" class="btn btn-primary float-right" (click)="resetForm()">Reset</button>
-                    </div>
-
 
                 </form>
             </div>

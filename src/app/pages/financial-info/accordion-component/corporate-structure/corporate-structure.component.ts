@@ -35,12 +35,17 @@ export class CorporateStructureComponent implements OnInit {
         private storedProcedureExecuteService: StoredProcedureExecuteService
     ) {
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+        
     }
 
     ngOnInit(): void {
         this.title = 'Corporate Structure';
-        this.getList();
+
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });        
     }
 
     getList() {
@@ -52,8 +57,8 @@ export class CorporateStructureComponent implements OnInit {
             complete: () => {
                 this.corporateStructureList.forEach(obj => {
                     obj.isEdit = false;
-                    if (obj.itemCode === 'Business Activity:') {
-                        obj.itemValue = obj.companyInfo.businessType;
+                    if (obj.itemCode === 'Number of Employee:') {
+                        obj.itemValue = obj.companyInfo.numberOfEmployee;
                     }
 
                 });
@@ -105,6 +110,10 @@ export class CorporateStructureComponent implements OnInit {
     onSave() {
         this.corporateStructureList.forEach(obj => {
             obj.companyInfo = this.companyInfo;
+
+            if (obj.itemCode === 'Number of Employee:') {
+                obj.itemValue = obj.companyInfo.numberOfEmployee;
+            }
         });
         
         this.setSequence()

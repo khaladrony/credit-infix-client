@@ -50,15 +50,19 @@ export class FinancialInformationComponent implements OnInit {
         private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+
     }
 
     ngOnInit(): void {
         this.title = 'Financial Information';
         this.firstRowData = 'Figure in LKR - Million';
 
-        this.getFinancialInformationList();
-        this.getFinancialNoteList();
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getFinancialInformationList();
+            this.getFinancialNoteList();
+        });
     }
 
 
@@ -71,9 +75,9 @@ export class FinancialInformationComponent implements OnInit {
             complete: () => {
                 this.financialInformationList.forEach(obj => {
                     obj.isEdit = false;
+                    this.saveAndUpdateBtnChange(this.FINANCIAL_INFO);
                 });
-
-                this.saveAndUpdateBtnChange(this.FINANCIAL_INFO);
+                
                 this.loader.hide();
             },
             error: (err) => {
@@ -92,9 +96,9 @@ export class FinancialInformationComponent implements OnInit {
             complete: () => {
                 this.financialNoteList.forEach(obj => {
                     obj.isEdit = false;
+                    this.saveAndUpdateBtnChange(this.FINANCIAL_NOTE);
                 });
-
-                this.saveAndUpdateBtnChange(this.FINANCIAL_NOTE);
+                
                 this.templateButtonActivate();
                 this.loader.hide();
             },
@@ -417,7 +421,7 @@ export class FinancialInformationComponent implements OnInit {
         }
     }
 
-    checkValue(event: any){
+    checkValue(event: any) {
         console.log(event.currentTarget.checked);
         console.log(event.target.defaultValue);
     }

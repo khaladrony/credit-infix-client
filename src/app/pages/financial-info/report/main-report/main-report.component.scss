@@ -682,3 +682,13 @@ kendo-pdf-export {
     color: var(--neutral);
     background-color: #1aae6f;
 }
+.badge-danger {
+    color: var(--neutral);
+    background-color: #f80031;
+}
+.badge{
+    text-transform: none;
+    font-size: 55%;
+    font-weight: 100;
+    padding: 0.3rem 0.3rem;
+}

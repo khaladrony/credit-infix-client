@@ -59,4 +59,27 @@ export class UtilService {
         }
         return newDate
     }
+
+    getMonthNameAndYear(dateObj: any): string {
+
+        let _date = new Date(dateObj); // yyyy-mm-dd
+        // Getting full month name (e.g. "June")
+        let month = _date.toLocaleString('default', { month: 'long' });
+        let year = dateObj.substring(0, 4);
+
+        return month + ' ' + year;
+    }
+
+    getYear(dateObj: any): string {
+        return dateObj.substring(0, 4);
+    }
+
+    getCamelAndFirstCharCap(sentence: string): string {
+        const words = sentence.split(" ");
+
+        return words.map((word) => {
+            return word[0].toUpperCase() + word.substring(1);
+        }).join(" ");
+
+    }
 }

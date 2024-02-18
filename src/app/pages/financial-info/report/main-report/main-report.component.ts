@@ -124,6 +124,7 @@ export class MainReportComponent implements OnInit {
     firstPageData: any[];
     reportName: string;
     reportDate: string;
+    footerStr: string;
     //-----------------
     currencyDailyRateList: CurrencyDailyRate[] = [];
 
@@ -302,6 +303,8 @@ export class MainReportComponent implements OnInit {
 
     getPdfFooter(pdf: jsPDF, page: number, nPages: number) {
         console.log(page);
+        let footerProductName = this.utilService.getCamelAndFirstCharCap(this.reportName);
+        let footerYear = this.utilService.getMonthNameAndYear(this.utilService.dateFormat(this.companyInfo.transactionDate, 'yyyy-MM-dd'));
         pdf.setDrawColor('#1f1f6f');
         pdf.line(0.8, 10.4, 6.4, 10.4); // horizontal line    
         pdf.setLineWidth(0.02);
@@ -309,7 +312,7 @@ export class MainReportComponent implements OnInit {
         pdf.setFontSize(8);
         pdf.setTextColor('#1f1f6f');
         pdf.setFont('Open Sans, sans-serif', 'bold');
-        pdf.text('Infix Credit | International Credit Information Report | 2023', 0.8, 10.6);
+        pdf.text('Infix Credit | ' + footerProductName + ' | ' + footerYear, 0.8, 10.6);
         pdf.text('www.infixcredit.com', 0.8, 10.7);
         pdf.text('Page ' + (page + 1) + ' of ' + nPages, 7.6, 10.5);
         // pdf.addImage('Page ' + (page + 1) + ' of ' + nPages, 7, 10.7);
@@ -335,21 +338,6 @@ export class MainReportComponent implements OnInit {
     }
 
     loadCompanyInfo() {
-        // let data = {};
-        // this.loader.show();
-        // this.companyInfoService.getList(data).subscribe({
-        //     next: (data) => {
-        //         this.companyInfo = data.data[0];
-        //     },
-        //     complete: () => {
-
-        //         this.loader.hide();
-        //     },
-        //     error: (err) => {
-        //         console.log(err);
-        //         this.loader.hide();
-        //     },
-        // });
 
         this.getCreditAssessment(this.companyInfo.id);
         this.getBasicInfoList(this.companyInfo)
@@ -368,29 +356,36 @@ export class MainReportComponent implements OnInit {
         this.getSummaryOpinionList(this.companyInfo.id);
         this.getCountryRiskAssessmentList(this.companyInfo.country);
         this.getRatingList();
-        this.firstPageDataList();
+        this.firstPageDataList(this.companyInfo);
+        this.pageFooter(this.companyInfo);
         this.getCurrencyDailyRateList(this.utilService.dateFormat(this.companyInfo.transactionDate, 'yyyy-MM-dd'));
 
     }
 
     //First page data START
-
-    firstPageDataList() {
+    firstPageDataList(companyInfo: CompanyInfo) {
         this.pdfFileName = this.companyInfo.name + '.pdf';
-        this.reportName = 'INTERNATIONAL CREDIT INFORMATION REPORT';
-        this.reportDate = 'Report Generated on: May 2023';
+        this.reportName = this.companyInfo.productName;
+        this.reportDate = 'Report Generated on: ' + this.utilService.getMonthNameAndYear(this.utilService.dateFormat(companyInfo.reportDate, 'yyyy-MM-dd'));
         this.firstPageData = [
-            { key: 'Client Name', value: 'Accolade Search Ltd' },
-            { key: `Client's Ref No`, value: 'NA' },
-            { key: `Infix Ref No`, value: '16241094ASL' },
-            { key: `Service Type`, value: 'Normal 5-6 Working Days' },
-            { key: `Inquiry Date`, value: '02-05-2023' },
-            { key: `Due Date`, value: '11-05-2023' },
-            { key: `Delivery Date`, value: '11-05-2023' }
+            { key: 'Client Name', value: companyInfo.clientName },
+            { key: `Client's Ref No`, value: companyInfo.clientRefNo },
+            { key: `Infix Ref No`, value: companyInfo.infixRefNo },
+            { key: `Service Type`, value: companyInfo.serviceType },
+            { key: `Inquiry Date`, value: this.utilService.dateFormat(companyInfo.inquiryDate, 'dd-MM-yyyy') },
+            { key: `Due Date`, value: this.utilService.dateFormat(companyInfo.dueDate, 'dd-MM-yyyy') },
+            { key: `Delivery Date`, value: this.utilService.dateFormat(companyInfo.deliveryDate, 'dd-MM-yyyy') }
         ]
     }
-
     //First page data END
+
+    //Page footer START
+    pageFooter(companyInfo: CompanyInfo) {
+        let footerProductName = this.utilService.getCamelAndFirstCharCap(companyInfo.productName);
+        let footerYear = this.utilService.getYear(this.utilService.dateFormat(companyInfo.transactionDate, 'yyyy-MM-dd'));
+        this.footerStr = 'Infix Credit | ' + footerProductName + ' | ' + footerYear;
+    }
+    //END
 
     // Credit Assessment Start
     getCreditAssessment(id: number) {
@@ -961,8 +956,6 @@ export class MainReportComponent implements OnInit {
             Weight 10%-15% in the comprehensive analysis.` }
         ];
     }
-
-
     //END
 
     //RiskLevel

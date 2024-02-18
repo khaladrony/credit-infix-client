@@ -32,11 +32,12 @@ export class ContactsComponent implements OnInit {
     ) {
         this.companyInfo = new CompanyInfo();
         this.contact = new Contact();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+        
     }
 
     ngOnInit(): void {
-        
+
         this.contactsForm = this.formBuilder.group({
             registrationAddress: new FormControl(""),
             telephoneNo: new FormControl(""),
@@ -44,8 +45,11 @@ export class ContactsComponent implements OnInit {
             email: new FormControl(""),
             website: new FormControl("")
         });
-
-        this.getList();
+       
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });
     }
 
     getList() {
@@ -57,7 +61,7 @@ export class ContactsComponent implements OnInit {
                     this.isUpdateMode = true;
                 }
             },
-            complete: () => {                
+            complete: () => {
                 this.loader.hide();
             },
             error: (err) => {

@@ -33,6 +33,17 @@ export class CompanyInfo {
     maximumCredit: string
     creditRating: string
 
+    //Basic info
+    clientName:string;
+    clientRefNo:string;
+    infixRefNo:string;
+    serviceType:string;
+    inquiryDate:string;
+    dueDate:string;
+    deliveryDate:string;
+    reportDate:string;
+    productName:string;
+
     isEdit: boolean;
 
     createdBy: number;

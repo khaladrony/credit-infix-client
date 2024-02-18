@@ -44,7 +44,7 @@
                                             <td class="label-style " style="font-size: 1rem;padding-right:10px; 
                                                 padding-bottom:10px;
                                                 border-right: 2px solid #e9ecef; text-align: right;">
-                                                {{reportName}}
+                                                {{reportName | uppercase}}
                                             </td>
                                         </tr>
                                         <tr>
@@ -93,7 +93,8 @@
                                         {{companyInfo.name}}
                                     </div>
                                     <div style="margin-bottom: 5px;">
-                                        <span [ngClass]="companyInfo.status=='Active'? 'badge badge-sm badge-success':'badge badge-sm badge-danger'">
+                                        <span
+                                            [ngClass]="companyInfo.status=='Active'? 'badge badge-sm badge-success':'badge badge-sm badge-danger'">
                                             {{companyInfo.status}}
                                         </span>
                                     </div>
@@ -217,7 +218,7 @@
                                         <div class="col div-font-size" style="border-right: solid #cdcbcb 1.4px;">
                                             <div class="label-color font-size-default">Recommended Maximum Credit:</div>
                                             <div style="font-size: 0.8rem; font-weight: bold; color: black;">
-                                                {{creditAssessment?.currency}} {{creditAssessment?.maximumCredit}}
+                                                {{creditAssessment?.maximumCredit}}
                                             </div>
                                             <div class="text-justify font-color-size-default">
                                                 Main factors considered include net
@@ -506,7 +507,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td style="white-space: pre-line; padding-right: 0;">{{contact?.telephoneNo}}
+                                            <td style="white-space: pre-line; padding-right: 0;">
+                                                {{contact?.telephoneNo}}
                                             </td>
                                             <td style="white-space: pre-line; padding-right: 0;">{{contact?.faxNo}}</td>
                                             <td style="white-space: pre-line; padding-right: 0;">{{contact?.email}}</td>
@@ -804,8 +806,8 @@
                         </div>
                         <!-- CORPORATE STRUCTURE END-->
 
-                         <!-- BANKERS START-->
-                         <div class="row">
+                        <!-- BANKERS START-->
+                        <div class="row">
                             <div class="col-sm-12">
                                 <table class="table" id="bankers-tbl0">
                                     <thead>
@@ -857,21 +859,24 @@
                                         </tr> -->
                                         <tr *ngFor="let finInfo of financialInformationList; let i = index">
 
-                                            <td [attr.colspan]="finInfo.htmlType === 'header' ? '4' : '0'" 
+                                            <td [attr.colspan]="finInfo.htmlType === 'header' ? '4' : '0'"
                                                 style="width: 30%; font-weight: bold; white-space: pre-line;"
                                                 [ngStyle]="{'text-align': finInfo.htmlType === 'header' ? 'center' : 'left'}">
                                                 {{finInfo.itemCode}}
                                             </td>
                                             <td style="width: 23%; text-align: center;"
-                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}" *ngIf="finInfo.htmlType != 'header'">
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}"
+                                                *ngIf="finInfo.htmlType != 'header'">
                                                 {{finInfo.thirdYear}}
                                             </td>
                                             <td style="width: 24%; text-align: center;"
-                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}" *ngIf="finInfo.htmlType != 'header'">
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}"
+                                                *ngIf="finInfo.htmlType != 'header'">
                                                 {{finInfo.secondYear}}
                                             </td>
                                             <td style="width: 23%; text-align: center;"
-                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}" *ngIf="finInfo.htmlType != 'header'">
+                                                [ngStyle]="{'font-weight': i == 0 ? 'bold' : 'normal'}"
+                                                *ngIf="finInfo.htmlType != 'header'">
                                                 {{finInfo.firstYear}}
                                             </td>
                                         </tr>
@@ -896,7 +901,7 @@
                             </div>
                         </div>
                         <!-- FINANCIAL INFORMATION-->
-                       
+
                         <!-- CURRENCY EXCHANGE RATE START-->
                         <div class="row">
                             <div class="col-sm-12">
@@ -929,7 +934,7 @@
                                                 <tr
                                                     *ngFor="let currencyDailyRate of currencyDailyRateList; let i = index">
                                                     <td style="padding-top: 0; padding-bottom: 0;"
-                                                    [innerHtml]="trimCountryFromCurrency(currencyDailyRate.currency)">
+                                                        [innerHtml]="trimCountryFromCurrency(currencyDailyRate.currency)">
                                                         <!-- {{currencyDailyRate.currency}} -->
                                                     </td>
                                                     <td style="text-align: center; padding-top: 0; padding-bottom: 0;">
@@ -1096,7 +1101,8 @@
                                                     style="white-space: pre-line; background-color: #eeebeb; padding-left: 10px;">
                                                     <div class="row"
                                                         style="font-size: 0.6rem; font-weight: bold; color: black; margin-bottom: 20px;">
-                                                        {{creditAssessment?.currency}} {{creditAssessment?.maximumCredit}}
+                                                        {{creditAssessment?.currency}}
+                                                        {{creditAssessment?.maximumCredit}}
                                                     </div>
                                                     <div class="row pb-2">
                                                         Suggested validity of 30 days, whichever is later change.
@@ -1387,7 +1393,8 @@
                         <!-- footer -->
                         <ng-template kendoPDFTemplate let-pageNum="pageNum" let-totalPages="totalPages">
 
-                            <div class="row" *ngIf="pageNum == 1" class="footer-first-page" style="font-family: Trebuchet MS;">
+                            <div class="row" *ngIf="pageNum == 1" class="footer-first-page"
+                                style="font-family: Trebuchet MS;">
 
                                 <table class="table" id="footer-tbl">
                                     <tbody>
@@ -1404,15 +1411,20 @@
                                                     style="margin-bottom: 0%;line-height: 10px;">
                                                     Infix Business Info Limited
                                                 </div>
-                                                <div class="row font-size-footer" style="margin-bottom: 0%;line-height: 10px;">
+                                                <div class="row font-size-footer"
+                                                    style="margin-bottom: 0%;line-height: 10px;">
                                                     L- 6 | H - 38 | R – 2 | Sector -13 | Uttara | Dhaka - 1230 |
                                                     Bangladesh
                                                 </div>
-                                                <div class="row font-size-footer" style="margin-bottom: 0%;line-height: 10px;">
-                                                    <span class="font-color-weight  font-size-footer">P: </span> +880-96-11677246 | <span
-                                                        class="font-color-weight  font-size-footer">E: </span> support@infixcredit.com
+                                                <div class="row font-size-footer"
+                                                    style="margin-bottom: 0%;line-height: 10px;">
+                                                    <span class="font-color-weight  font-size-footer">P: </span>
+                                                    +880-96-11677246 | <span
+                                                        class="font-color-weight  font-size-footer">E: </span>
+                                                    support@infixcredit.com
                                                 </div>
-                                                <div class="row font-size-footer" style="margin-bottom: 10px;line-height: 10px;">
+                                                <div class="row font-size-footer"
+                                                    style="margin-bottom: 10px;line-height: 10px;">
                                                     www.infixcredit.com
                                                 </div>
 
@@ -1431,7 +1443,7 @@
                                             <td style="width: 60%;">
                                                 <div class="row font-size-footer"
                                                     style="color: #003474;font-weight: bold; margin-left: 5px; margin-right: 10px;">
-                                                    Infix Credit | International Credit Information Report | 2023
+                                                    {{footerStr}}
                                                 </div>
                                                 <div class="row font-size-footer"
                                                     style="color: #003474;font-weight: bold; margin-left: 5px; margin-right: 10px;">

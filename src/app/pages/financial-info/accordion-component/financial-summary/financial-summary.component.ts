@@ -45,9 +45,17 @@ export class FinancialSummaryComponent implements OnInit {
 
     ngOnInit(): void {
         this.title = 'Financial Summary';
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
-        this.getFinancialSummaryList();
-        this.getCurrencyList();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+
+        // Subscribe to changes in the data
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+
+            this.getFinancialSummaryList();
+            this.getCurrencyList();
+        });
+
+
     }
 
     getFinancialSummaryList() {
@@ -156,7 +164,7 @@ export class FinancialSummaryComponent implements OnInit {
         this.financialSummaryNewObj = new FinancialSummary();
         this.financialSummaryNewObj.itemCode = '';
         this.financialSummaryNewObj.currency = '';
-        this.financialSummaryNewObj.amount = 0;
+        this.financialSummaryNewObj.amount = '';
         this.financialSummaryNewObj.isEdit = true;
 
         this.financialSummaryList.push(this.financialSummaryNewObj);

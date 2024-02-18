@@ -34,14 +34,18 @@ export class OrderDetailsComponent implements OnInit {
         private storedProcedureExecuteService: StoredProcedureExecuteService,
         private confirmationModalService: ConfirmationModalService
     ) {
-        this.companyInfo = new CompanyInfo();
+        this.companyInfo = new CompanyInfo();        
     }
 
     ngOnInit(): void {
         this.title = 'Order Details';
 
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
-        this.getOrderDetailList();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+        
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getOrderDetailList();
+        });
     }
 
 

@@ -37,19 +37,24 @@ export class CompanyInfoComponent implements OnInit {
         private sharedService: SharedService,
         private countryService: CountryService
     ) {
+
         this.companyInfo = new CompanyInfo();
 
         this.route.queryParams.subscribe((params: any) => {
             this.companyInfo = JSON.parse(params.data);
             if (this.companyInfo != null) {
                 this.isUpdateMode = true;
+                this.onCountryChange(this.companyInfo.country);
             }
         })
 
-        this.sharedService.setCompanyInfoObject(this.companyInfo);
+        // this.sharedService.setCompanyInfoObject(this.companyInfo);
+        this.sharedService.updateData(this.companyInfo);
     }
 
     ngOnInit(): void {
+        this.getCountryList();
+
         this.companyInfoForm = this.formBuilder.group({
             name: new FormControl("", Validators.required),
             legalAddress: new FormControl(""),
@@ -76,10 +81,23 @@ export class CompanyInfoComponent implements OnInit {
             noOfJudicialRecord: new FormControl(""),
             maximumCredit: new FormControl(""),
             creditRating: new FormControl(""),
+            clientName: new FormControl(""),
+            clientRefNo: new FormControl(""),
+            infixRefNo: new FormControl(""),
+            serviceType: new FormControl(""),
+            inquiryDate: new FormControl(''),
+            productName: new FormControl(''),
+            dueDate: [],
+            deliveryDate: [],
+            reportDate: [],
             isEdit: false
         });
 
-        this.getCountryList();
+        this.companyInfoForm.controls['inquiryDate'].setValue(this.utilService.dateFormat(this.companyInfo.inquiryDate, 'dd-MM-yyyy'));
+        this.companyInfoForm.controls['dueDate'].setValue(this.utilService.dateFormat(this.companyInfo.dueDate, 'dd-MM-yyyy'));
+        this.companyInfoForm.controls['deliveryDate'].setValue(this.utilService.dateFormat(this.companyInfo.deliveryDate, 'dd-MM-yyyy'));
+        this.companyInfoForm.controls['reportDate'].setValue(this.utilService.dateFormat(this.companyInfo.reportDate, 'dd-MM-yyyy'));
+
     }
 
     submit() {
@@ -88,12 +106,20 @@ export class CompanyInfoComponent implements OnInit {
             return;
         }
 
+        this.companyInfo.inquiryDate = this.utilService.dateFormat(this.companyInfoForm.value.inquiryDate, 'yyyy-MM-dd');
+        this.companyInfo.dueDate = this.utilService.dateFormat(this.companyInfoForm.value.dueDate, 'yyyy-MM-dd');
+        this.companyInfo.deliveryDate = this.utilService.dateFormat(this.companyInfoForm.value.deliveryDate, 'yyyy-MM-dd');
+        this.companyInfo.reportDate = this.utilService.dateFormat(this.companyInfoForm.value.reportDate, 'yyyy-MM-dd');
+
         if (this.companyInfoForm.valid) {
             this.loader.show();
 
             this.companyInfoService.create(this.companyInfo).subscribe({
                 next: (response) => {
                     console.log(response);
+                    this.companyInfo = response.data;
+                    // this.sharedService.setCompanyInfoObject(this.companyInfo);
+                    this.sharedService.updateData(this.companyInfo);
                     this.notifyService.showSuccess("success", response.message);
 
                     this.router.navigate(["admin/financial-info"]);
@@ -118,6 +144,11 @@ export class CompanyInfoComponent implements OnInit {
             return;
         }
 
+        this.companyInfo.inquiryDate = this.utilService.dateFormat(this.companyInfoForm.value.inquiryDate, 'yyyy-MM-dd');
+        this.companyInfo.dueDate = this.utilService.dateFormat(this.companyInfoForm.value.dueDate, 'yyyy-MM-dd');
+        this.companyInfo.deliveryDate = this.utilService.dateFormat(this.companyInfoForm.value.deliveryDate, 'yyyy-MM-dd');
+        this.companyInfo.reportDate = this.utilService.dateFormat(this.companyInfoForm.value.reportDate, 'yyyy-MM-dd');
+
         if (this.companyInfoForm.valid) {
             this.loader.show();
 
@@ -125,6 +156,8 @@ export class CompanyInfoComponent implements OnInit {
                 next: (response) => {
                     console.log(response);
                     this.companyInfo = response.data;
+                    // this.sharedService.setCompanyInfoObject(this.companyInfo);
+                    this.sharedService.updateData(this.companyInfo);
                     this.notifyService.showSuccess("success", response.message);
 
                     this.router.navigate(["admin/financial-info"]);
@@ -168,6 +201,7 @@ export class CompanyInfoComponent implements OnInit {
     onCountryChange(name: string) {
         this.selectedCountry = this.countryList.find((country) => country.name === name) || null;
 
+        this.companyInfo.country = this.selectedCountry.name;
         this.companyInfo.currency = this.selectedCountry.currency;
     }
 

@@ -41,11 +41,15 @@ export class LocationComponent implements OnInit {
         private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+        
     }
 
-    ngOnInit(): void {
-        this.getList();
+    ngOnInit(): void {       
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });
     }
 
     getList() {
@@ -168,7 +172,7 @@ export class LocationComponent implements OnInit {
             obj.isEdit = false;
         });
         locationObj.isEdit = true;
-
+        // this.locationList;
     }
 
     // onDelete(locationObj: Location) {
@@ -257,7 +261,8 @@ export class LocationComponent implements OnInit {
         let fileName = this.file.name;
         let regex = /(.jpeg|.png)$/;
 
-        if (regex.test(fileName.toLowerCase())) {
+        // if (regex.test(fileName.toLowerCase())) {
+        if (true) {
             let formData = new FormData();
             formData.append('file', this.file);
             formData.append('fileName', this.file.name);

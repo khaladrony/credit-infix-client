@@ -35,12 +35,17 @@ export class RegistrationDetailsComponent implements OnInit {
         private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+        
     }
 
     ngOnInit(): void {
         this.title = 'Registration Details';
-        this.getList();
+        
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });
     }
 
     getList() {        

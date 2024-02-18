@@ -47,6 +47,9 @@ export class InlineTableComponent implements OnInit {
     ) {
         this.getInnerHtml();
         this.companyInfo = new CompanyInfo();
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+        });
     }
 
     ngOnInit(): void {
@@ -55,7 +58,7 @@ export class InlineTableComponent implements OnInit {
         this.getOperationInfoList();
         // this.getInnerHtml();
 
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();        
         this.getRegDList();
         this.getRegistrationDetailList();
 

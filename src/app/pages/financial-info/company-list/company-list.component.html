@@ -18,7 +18,7 @@
                                 <th scope="col">Country</th>
                                 <th scope="col">Industry Type</th>
                                 <th scope="col">Business Type</th>
-                                <th scope="col">Action</th>
+                                <th scope="col" style="text-align: center;">Action</th>
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>
@@ -32,8 +32,10 @@
                                 <td>
                                     <button type="button" class="btn btn-success btn"
                                         (click)="onSelectRow(companyInfo)">Edit</button>
+                                    <button type="button" class="btn btn-primary btn"
+                                        (click)="preview(companyInfo)">Preview</button>                                    
                                     <button type="button" class="btn btn-danger btn"
-                                        (click)="preview(companyInfo)">Preview</button>
+                                        (click)="onDelete(companyInfo.id)">Delete</button>
                                 </td>
                                 <td class="align-middle text-left text-sm">
                                     <span

@@ -31,16 +31,16 @@ export class CreditAssessmentComponent implements OnInit {
     ) {
         this.creditAssessment = new CreditAssessment();
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();        
     }
 
     ngOnInit(): void {
         this.title = 'Credit Assessment';
-
         
-
-        this.getInfo(this.companyInfo.id);
-
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getInfo(this.companyInfo.id);
+        });
     }
 
     getInfo(id: number) {        

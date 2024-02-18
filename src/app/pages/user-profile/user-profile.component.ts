@@ -153,7 +153,7 @@ export class UserProfileComponent implements OnInit {
                                 "Deleted Successfully."
                             );
 
-                            this.router.navigate(["admin/role"]);
+                            this.router.navigate(["admin/user-profile"]);
                         },
                         complete: () => {
                             this.loader.hide();

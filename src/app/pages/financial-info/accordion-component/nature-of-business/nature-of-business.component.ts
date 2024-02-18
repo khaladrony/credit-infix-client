@@ -37,12 +37,17 @@ export class NatureOfBusinessComponent implements OnInit {
         private confirmationModalService: ConfirmationModalService
     ) {
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();
+        
     }
 
     ngOnInit(): void {
         this.title = 'Nature Of Business';        
-        this.getList();
+        
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });
     }
 
     getList() {

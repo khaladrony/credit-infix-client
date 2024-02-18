@@ -33,12 +33,16 @@ export class ManagementComponent implements OnInit {
         private managementService:ManagementService
     ) { 
         this.companyInfo = new CompanyInfo();
-        this.companyInfo = this.sharedService.getCompanyInfoObject();
+        // this.companyInfo = this.sharedService.getCompanyInfoObject();        
     }
 
     ngOnInit(): void {
         this.title = 'Management';
-        this.getList();
+        
+        this.sharedService.data$.subscribe((companyInfo) => {
+            this.companyInfo = companyInfo;
+            this.getList();
+        });
     }
 
 
@@ -51,9 +55,9 @@ export class ManagementComponent implements OnInit {
             complete: () => {
                 this.managementList.forEach(obj => {
                     obj.isEdit = false;
+                    this.saveAndUpdateBtnChange();
                 });
-
-                this.saveAndUpdateBtnChange();
+                
                 this.loader.hide();
             },
             error: (err) => {
